@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./default.css">
+<title>HABA explanation</title>
+</head>
+
+<body>
+<nav id="top">
+<span><a href="./index.html">analysis</a></span>
+<span><a href="./notation.html">notation</a></span>
+<span>explanation</span>
+</nav>
+
+<article>
+<h1>HABA explanation</h1>
+<div>
+<p>HABA is a LALR(1) parser. When you press "Analyze" button, the lexical analysis and the syntactic analysis will be performed on the input string to create a syntax tree. It is converted into production rules, terminal symbols are extracted, and lexical analysis elements and dummy elements are obtained. Closures, state transitions, and parsing tables are also created from the production rules, and finally the grammar is output as a JavaScript program.</p>
+<p>This page uses the following addition grammar as an input string as a sample.</p>
+<pre class="rule">
+Multi ::= Num ('+' Num)* ;
+Num ::= "[0-9]+" ;
+Space ::= "\s+" ;
+</pre>
+<p>"Ignore case" is not set here as it only affects the final JavaScript output.</p>
+</div>
+
+<section>
+<h2>Result and syntax tree</h2>
+<p>If all of the lexical analysis, syntactic analysis, and compilation are successful, "Success" is displayed in the result column. Otherwise, an error message will be displayed.</p>
+<p>If the syntactic analysis is successful, even if the compilation fails, the syntax tree and other results are output and the "Display" check box will be clickable. Conversely, if there is an error in the syntactic analysis or the lexical analysis that precedes it, the "Display" check box remains disabled.</p>
+<p>When you display the syntax tree, you see what follows the <a href="./notation.html#specification">HABA grammar</a>.</p>
+<div class="tree">
+<ul>
+  <li>Gram<ul>
+    <li>Rule<ul>
+      <li>Name: Multi</li>
+      <li>::=</li>
+      <li>Expr<ul>
+        <li>List<ul>
+          <li>Term<ul>
+            <li>Fact<ul>
+              <li>Name: Num</li>
+            </ul></li>
+          </ul></li>
+          <li>Term<ul>
+            <li>Fact<ul>
+              <li>Quot<ul>
+                <li>(</li>
+                <li>Expr<ul>
+                  <li>List<ul>
+                    <li>Term<ul>
+                      <li>Fact<ul>
+                        <li>Fixd: '+'</li>
+                      </ul></li>
+                    </ul></li>
+                    <li>Term<ul>
+                      <li>Fact<ul>
+                        <li>Name: Num</li>
+                      </ul></li>
+                    </ul></li>
+                  </ul></li>
+                </ul></li>
+                <li>)</li>
+              </ul></li>
+            </ul></li>
+            <li>Rept: *</li>
+          </ul></li>
+        </ul></li>
+      </ul></li>
+      <li>;</li>
+    </ul></li>
+    <li>Rule<ul>
+      <li>Name: Num</li>
+      <li>::=</li>
+      <li>Expr<ul>
+        <li>List<ul>
+          <li>Term<ul>
+            <li>Fact<ul>
+              <li>Flex: "[0-9]+"</li>
+            </ul></li>
+          </ul></li>
+        </ul></li>
+      </ul></li>
+      <li>;</li>
+    </ul></li>
+    <li>Rule<ul>
+      <li>Name: Space</li>
+      <li>::=</li>
+      <li>Expr<ul>
+        <li>List<ul>
+          <li>Term<ul>
+            <li>Fact<ul>
+              <li>Flex: "\s+"</li>
+            </ul></li>
+          </ul></li>
+        </ul></li>
+      </ul></li>
+      <li>;</li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+</section>
+
+<section>
+<h2>Lexical analysis elements and dummy elements</h2>
+<p>The terminal symbols are extracted from the syntax tree and listed.</p>
+<table>
+  <tr><th>No.</th><th>type</th><th>element</th></tr>
+  <tr><td class="number">1</td><td>Fixed</td><td>'+'</td></tr>
+  <tr><td class="number">2</td><td>RegExp</td><td>"[0-9]+"</td></tr>
+</table>
+<p>Valid terminal symbols are classified as lexical analysis elements and invalid terminal symbols are classified as dummy elements. Within the same classification, the fixed values are placed first and the regular expressions are placed later. Within the same type, they are arranged in the order they appear in the syntax tree. Identical elements are merged into one.</p>
+<p>This allows the fixed value to be preferentially interpreted even if the fixed value and the regular expression match the same string. For example:</p>
+<pre class="rule">
+Variable ::= "[a-z]+" ;
+IfState ::= 'if' Expr 'then' Expr ;
+...
+</pre>
+<p>In this production rules, the word "if" can be interpreted as a keyword in the if statement rather than as a variable.</p>
+</section>
+
+<section>
+<h2>Production rules</h2>
+<p>Production rules are extracted from the syntax tree, expanded and listed.</p>
+<table>
+  <tr><th>No.</th><th>expanded rule</th></tr>
+  <tr><td class="number">0</td><td>#0# ::= Multi ;</td></tr>
+  <tr><td class="number">1</td><td>Multi ::= Num #1# ;</td></tr>
+  <tr><td class="number">2</td><td>#1# ::= #1# '+' Num ;</td></tr>
+  <tr><td class="number">3</td><td>#1# ::= ;</td></tr>
+  <tr><td class="number">4</td><td>Num ::= "[0-9]+" ;</td></tr>
+</table>
+<p>There can be multiple production rules for the start symbol (here Multi). In order to simplify the parsing process, a production rule using the new start symbol #0# is added to the beginning of the list.</p>
+<p>The rule definition is only a concatenation of zero or more symbols. This is also to simplify the subsequent analysis process. The production rule entered as:</p>
+<pre class="rule">
+Multi ::= Num ('+' Num)* ;
+</pre>
+<p>is expanded as follows. The repeating part is extracted as another production rule.</p>
+<pre class="rule">
+Multi ::= Num #1# ;
+#1# ::= ('+' Num)* ;
+</pre>
+<p>And expanding the repetition symbol from the second production rule,</p>
+<pre class="rule">
+Multi ::= Num #1# ;
+#1# ::= #1# '+' Num ;
+#1# ::= ;
+</pre>
+<p>there is no repetition, no alternative, no grouping, just concatenation.</p>
+<p>The final production rule:</p>
+<pre class="rule">
+Space ::= "\s+" ;
+</pre>
+<p>has been removed because Space is an invalid non-terminal symbol that does not appear in other rule definitions.</p>
+<p>In the rest of parsing process, we will use the five expanded production rules shown here, instead of the three input production rules. Notice that rule numbers start at 0.</p>
+<p>The non-terminal symbols #0#, #1#, ... added by the expansion of production rules can not be entered on the screen (an error will occur even if they are entered), so they do not overlap with other non-terminal symbols.</p>
+</section>
+
+<section>
+<h2>Closures and state transitions</h2>
+<p>First, we create an LR(0) closures and its state transitions by a closure operation from the production rules. After that, all LR(0) items will be converted to LR(1) items by adding "next symbols" in order, and listed as a closure.</p>
+<table class="top">
+  <tr><th>No.</th><th>item</th><th>next symbols</th></tr>
+  <tr><td rowspan="3" class="number">0</td><td>#0# ::= &bull; Multi</td><td>$</td></tr>
+  <tr><td>Multi ::= &bull; Num #1#</td><td>$</td></tr>
+  <tr><td>Num ::= &bull; "[0-9]+"</td><td>'+' $</td></tr>
+  <tr><td rowspan="1" class="number">1</td><td>#0# ::= Multi &bull;</td><td>$</td></tr>
+  <tr><td rowspan="3" class="number">2</td><td>Multi ::= Num &bull; #1#</td><td>$</td></tr>
+  <tr><td>#1# ::= &bull; #1# '+' Num</td><td>$ '+'</td></tr>
+  <tr><td>#1# ::= &bull;</td><td>$ '+'</td></tr>
+  <tr><td rowspan="2" class="number">3</td><td>Multi ::= Num #1# &bull;</td><td>$</td></tr>
+  <tr><td>#1# ::= #1# &bull; '+' Num	</td><td>$ '+'</td></tr>
+  <tr><td rowspan="2" class="number">4</td><td>#1# ::= #1# '+' &bull; Num</td><td>$ '+'</td></tr>
+  <tr><td>Num ::= &bull; "[0-9]+"</td><td>$ '+'</td></tr>
+  <tr><td rowspan="1" class="number">5</td><td>#1# ::= #1# '+' Num &bull;</td><td>$ '+'</td></tr>
+  <tr><td rowspan="1" class="number">6</td><td>Num ::= "[0-9]+" &bull;</td><td>$ '+'</td></tr>
+</table>
+<p>&bull; is the analysis position. Although $ is a terminal symbol that represents the end of a sentence, it also can not be entered, so it does not overlap with other terminal symbols.</p>
+<p>The state transitions are as follows.</p>
+<table>
+  <tr><th>No.</th><th>from</th><th>symbol</th><th>to</th></tr>
+  <tr><td class="number">1</td><td class="number">0</td><td>Multi</td><td class="number">1</td></tr>
+  <tr><td class="number">2</td><td class="number">0</td><td>Num</td><td class="number">2</td></tr>
+  <tr><td class="number">3</td><td class="number">2</td><td>#1#</td><td class="number">3</td></tr>
+  <tr><td class="number">4</td><td class="number">3</td><td>'+'</td><td class="number">4</td></tr>
+  <tr><td class="number">5</td><td class="number">4</td><td>Num</td><td class="number">5</td></tr>
+  <tr><td class="number">6</td><td class="number">4</td><td>"[0-9]+"</td><td class="number">6</td></tr>
+  <tr><td class="number">7</td><td class="number">0</td><td>"[0-9]+"</td><td class="number">6</td></tr>
+</table>
+<p>The from and to numbers are closure numbers. The state transition number has no meaning. In this example, there are 7 closures and 7 state transitions, which are the same number, but generally different numbers. Symbols can be terminal or non-terminal.</p>
+</section>
+
+<section>
+<h2>Parsing table</h2>
+<p>A parsing table is created based on closures and state transitions.</p>
+<table>
+  <tr><th>No.</th><th>'+'</th><th>"[0-9]+"</th><th>$</th><th>Multi</th><th>#1#</th><th>Num</th></tr>
+  <tr><td class="number">0</td><td></td><td>s6</td><td></td><td>g1</td><td></td><td>g2</td></tr>
+  <tr><td class="number">1</td><td></td><td></td><td>r0</td><td></td><td></td><td></td></tr>
+  <tr><td class="number">2</td><td>r3</td><td></td><td>r3</td><td></td><td>g3</td><td></td></tr>
+  <tr><td class="number">3</td><td>s4</td><td></td><td>r1</td><td></td><td></td><td></td></tr>
+  <tr><td class="number">4</td><td></td><td>s6</td><td></td><td></td><td></td><td>g5</td></tr>
+  <tr><td class="number">5</td><td>r2</td><td></td><td>r2</td><td></td><td></td><td></td></tr>
+  <tr><td class="number">6</td><td>r4</td><td></td><td>r4</td><td></td><td></td><td></td></tr>
+</table>
+<p>This number is the same as the state number, or closure number. When the transition symbol is a terminal symbol, it is shifted to the next state, so the action symbol is s + the to number. When the transition symbol is a non-terminal symbol, it simply goes to the next state, so the action symbol is g + the to number.</p>
+<p>If the analysis position of the item is at the right end of the production rule and no state transition occurs, reduction will be performed for the "next symbols". The action symbol in this case is r + rule number. In particular, the reduction of r0 represents acceptance. The starting state is 0.</p>
+</section>
+
+<section>
+<h2>JavaScript</h2>
+<p>The Grammar and Converter objects are created using the information provided so far.</p>
+<div class="script">
+<pre>
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "[0-9]+",
+    ],
+
+    "dummies": [
+        "\\s+",
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Multi=2",
+        "#1#=3",
+        "#1#=0",
+        "Num=1",
+    ],
+
+    "table": [
+        [ "", "s6", "", "g1", "", "g2" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "r3", "", "r3", "", "g3", "" ],
+        [ "s4", "", "r1", "", "", "" ],
+        [ "", "s6", "", "", "", "g5" ],
+        [ "r2", "", "r2", "", "", "" ],
+        [ "r4", "", "r4", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Multi ::= Num ('+' Num)* ;
+    "Multi": function(tree) {
+    },
+
+    // Num ::= "[0-9]+" ;
+    "Num": function(tree) {
+    },
+
+}
+</pre>
+</div>
+<p>If "Ignore case" is checked, the flag of the Grammar is "i". Otherwise, it is an empty string. All terminals are lexical analysis elements expressed in regular expressions, and dummies are dummy elements. Although the rules are production rules after expansion, the parsing uses only the number of symbols in the rule definition, so the numbers of concatenated symbols are output. The table is a parsing table.</p>
+<p>The valid production rules that have entered are output to the Converter. Since only the function frame is created automatically, it is necessary to implement according to the language specification of the grammar. For example, you will write the following program.</p>
+<div class="script">
+<pre>
+// Syntax converter
+var Converter = {
+
+    // Multi ::= Num ('+' Num)* ;
+    "Multi": function(tree) {
+        tree.result = tree.children[0].result;
+        for (var i = 2; i < tree.children.length; i += 2) {
+            tree.result += tree.children[i].result;
+        }
+    },
+
+    // Num ::= "[0-9]+" ;
+    "Num": function(tree) {
+        tree.result = parseInt(tree.children[0].text, 10);
+    },
+
+}
+</pre>
+</div>
+<p>These programs can be parsed by HABA's own parser. Please check <a href="./sample.html">the sample page.</a></p>
+</section>
+
+</article>
+</body>
+
+</html>

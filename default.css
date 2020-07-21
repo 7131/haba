@@ -1,0 +1,133 @@
+@charset "utf-8";
+
+nav span {
+    margin-right: 1ex;
+}
+
+article {
+    margin-bottom: 10ex;
+}
+
+textarea {
+    width: 90%;
+    height: 20ex;
+}
+
+input[type="button"] {
+    width: 90%;
+    margin: 1ex 0ex;
+}
+
+input[type="checkbox"] {
+    margin-left: 0ex;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0ex;
+    padding: 0ex;
+}
+
+table {
+    border: 1px outset gray;
+    border-collapse: collapse;
+}
+
+table tr th {
+    border: 1px inset gray;
+    padding: 0ex 1ex;
+}
+
+table tr td {
+    border: 1px inset gray;
+    padding: 0ex 1ex;
+}
+
+.top tr td {
+    vertical-align: top;
+}
+
+pre {
+    line-height: 150%;
+    margin-left: 3ex;
+}
+
+.script pre {
+    margin: 0ex;
+    border: 1px outset gray;
+    padding: 1ex;
+}
+
+.table .row {
+    margin-top: 2ex;
+}
+
+.tree ul li ul {
+    margin: 0ex 0ex 1ex 4ex;
+}
+ 
+.tree ul li ul li {
+    position: relative;
+}
+ 
+.tree ul li ul li:before {
+    position: absolute;
+    content: "";
+    top: -0.2ex;
+    left: -2ex;
+    width: 1ex;
+    height: calc(100% + 1ex);
+    border-left: 1px solid gray;
+}
+ 
+.tree ul li ul li:last-child:before {
+    height: 1.5ex;
+}
+ 
+.tree ul li ul li:after {
+    position: absolute;
+    content: "";
+    top: 1.2ex;
+    left: -2ex;
+    width: 1.5ex;
+    border-top: 1px solid gray;
+}
+
+.error {
+    color: red;
+}
+
+.symbol {
+    text-align: center;
+}
+
+.number {
+    text-align: right;
+}
+
+@media (min-width: 768px) {
+
+    textarea {
+        width: 50ex;
+    }
+
+    input[type="button"] {
+        width: auto;
+    }
+
+    .table {
+        display: table;
+    }
+
+    .table .row {
+        display: table-row;
+    }
+
+    .table .row .cell {
+        display: table-cell;
+        padding: 0.5ex 2ex 0.5ex 0ex;
+        vertical-align: top;
+    }
+
+}
+

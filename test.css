@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+nav span {
+    margin-right: 1ex;
+}
+
+article {
+    margin-bottom: 10ex;
+}
+
+input[type="button"] {
+    margin-top: 2ex;
+    width: 90%;
+}
+
+table {
+    border: 1px outset gray;
+    border-collapse: collapse;
+}
+
+table tr th {
+    border: 1px inset gray;
+    padding: 0ex 1ex;
+}
+
+table tr td {
+    border: 1px inset gray;
+    padding: 0ex 1ex;
+    vertical-align: top;
+}
+
+pre {
+    margin: 1ex 0ex;
+}
+
+pre.hidden {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+.symbol {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+
+    input[type="button"] {
+        width: auto;
+    }
+
+}
+

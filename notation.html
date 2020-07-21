@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./notation.css">
+<title>HABA notation</title>
+</head>
+
+<body>
+<nav id="top">
+<span><a href="./index.html">analysis</a></span>
+<span>notation</span>
+<span><a href="./explanation.html">explanation</a></span>
+</nav>
+
+<article>
+<h1>HABA notation</h1>
+<div>
+<p>HABA handles context-free grammar. Grammar is generally expressed in terms of terminal symbols, non-terminal symbols, production rules, and a start symbol.</p>
+</div>
+
+<section>
+<h2>Production rules</h2>
+<p>A production rule has the following format:</p>
+<pre>
+name ::= definition ;
+</pre>
+<p>The rule name is one non-terminal symbol. A rule definition consists of zero or more terminal and non-terminal symbols.</p>
+<p>When there are multiple production rules, the rule name of the first rule is used as the start symbol. For example, if there is the following sequence of rules,</p>
+<pre>
+Plus ::= Num '+' Num ;
+Num ::= "[0-9]+" ;
+</pre>
+<p>the start symbol is Plus. Please note that the wrong start symbol will not produce the intended grammar.</p>
+<p>You can explicitly specify epsilon transitions because the rule definition can contain zero symbols.</p>
+<pre>
+Epsilon ::= ;
+</pre>
+<p>Production rules are free format. White spaces (spaces, tabs, and line breaks) are ignored. For example, the rule</p>
+<pre>
+Plus ::= Num '+' Num ;
+</pre>
+<p>can also be written as</p>
+<pre>
+Plus::=Num'+'Num;
+</pre>
+<p>or</p>
+<pre>
+Plus
+::= Num
+    '+' Num
+;
+</pre>
+<p>All produce the same production rule.</p>
+</section>
+
+<section>
+<h2>Terminal symbols</h2>
+<p>There are two ways to write it.</p>
+<table class="border">
+  <tr><th>type</th><th>how to write</th><th>example</th></tr>
+  <tr><td>fixed value</td><td>enclose in single quotes</td><td>'+'</td></tr>
+  <tr><td>regular expression</td><td>enclose in double quotes</td><td>"[0-9]+"</td></tr>
+</table>
+<p>You can use all JavaScript regular expressions for regular expression type. If you want to use a special character as it is, put \ before it and escape it. If you want to use the \ itself, put a \ in front of it and say \\. However, only the double quotes are "" instead of \".</p>
+<p>When writing a single quotation mark in a fixed value, overlap the single quotation mark to make ' '. There is no other special way to write a fixed value. When writing a double quotation mark in a fixed value, write only one ".</p>
+</section>
+
+<section>
+<h2>Non-terminal symbols</h2>
+<p>A non-terminal symbol is a string that begins with an alphabet or underscore, followed by alphabets, underscores, and numbers. The alphabet is case-sensitive.</p>
+<p>Non-terminal symbols begin with an uppercase letter on this page, but this is not required. Name, name, NAME, etc. are all valid non-terminal symbols.</p>
+</section>
+
+<section>
+<h2>Concatenation</h2>
+<p>If two or more symbols appear in sequence, write them consecutively.</p>
+<pre>
+Concatenation ::= Term1 Term2 ;
+</pre>
+<p>For example, the production rule that represents a character string in which a number, a plus sign, and another number appear in order is:</p>
+<pre>
+Plus ::= Num '+' Num ;
+</pre>
+<p>There must be at least one white space between non-terminal symbols and between the same type of terminal symbols.</p>
+</section>
+
+<section>
+<h2>Alternatives</h2>
+<p>If any of the two or more symbols appear, connect them with a vertical bar.</p>
+<pre>
+Alternatives ::= Term1 | Term2 ;
+</pre>
+<p>For example, the production rule that expresses one of the four arithmetic operators is as follows.</p>
+<pre>
+Operator ::= '+' | '-' | '*' | '/' ;
+</pre>
+<p>You can rewrite to multiple production rules with the same rule name as follows:</p>
+<pre>
+Alternatives ::= Term1 ;
+Alternatives ::= Term2 ;
+</pre>
+<p>Note that "you can rewrite" means that the accepted languages are the same, but the results of parsing are not exactly the same.</p>
+</section>
+
+<section>
+<h2>Repetition</h2>
+<p>You can use the following repeating symbols if the symbol is appeared, not appeared, or can appear any number of times.</p>
+<table class="border">
+  <tr><th>symbol</th><th>meaning</th></tr>
+  <tr><td class="symbol">?</td><td>0 times or 1 time</td></tr>
+  <tr><td class="symbol">*</td><td>0 or more times</td></tr>
+  <tr><td class="symbol">+</td><td>1 or more times</td></tr>
+</table>
+<p>For example, the production rule that a positive number may or may not be preceded by a plus sign is:</p>
+<pre>
+Positive ::= '+'? Absolute ;
+</pre>
+<p>And the production rule that a sentence consists of one or more words is:</p>
+<pre>
+Sentence ::= Word+ ;
+</pre>
+<p>Each repeating symbol can be rewritten as:</p>
+<pre>
+// Expr ::= Term? ;
+Expr ::= Term ;
+Expr ::= ;
+
+// Expr ::= Term* ;
+Expr ::= Expr Term ;
+Expr ::= ;
+
+// Expr ::= Term+ ;
+Expr ::= Expr Term ;
+Expr ::= Term ;
+</pre>
+</section>
+
+<section>
+<h2>Grouping</h2>
+<p>If you want to change the interpretation priority in the rule definition, enclose the symbols in parentheses. The order of priority when not grouping is as follows.</p>
+<table class="border">
+  <tr><th>priority</th><th>element</th><th>example</th></tr>
+  <tr><td class="symbol">1</td><td>Repetition</td><td>Term*</td></tr>
+  <tr><td class="symbol">2</td><td>Concatenation</td><td>Term1 Term2</td></tr>
+  <tr><td class="symbol">3</td><td>Alternatives</td><td>Term1 | Term2</td></tr>
+</table>
+<p>For example,</p>
+<pre>
+Expr ::= A | B C ;
+</pre>
+<p>represents "A or BC", and</p>
+<pre>
+Expr ::= (A | B) C ;
+</pre>
+<p>represents "A or B" followed by C, or "AC or BC". Another example,</p>
+<pre>
+Expr ::= D E+ ;
+</pre>
+<p>represents "DE, DEE, DEEE, ...", and</p>
+<pre>
+Expr ::= (D E)+ ;
+</pre>
+<p>represents "DE, DEDE, DEDEDE, ...".</p>
+<p>You can also separate the symbols as another production rule without using the parentheses.</p>
+<pre>
+// Expr ::= (A | B) C ;
+Expr ::= Term C ;
+Term ::= A | B ;
+
+// Expr ::= (D E)+ ;
+Expr ::= Term+ ;
+Term ::= D E ;
+</pre>
+</section>
+
+<section>
+<h2>Comments and dummy symbols</h2>
+<p>You can add a comment in the middle of the production rule.</p>
+<pre>
+// 1 line comment
+/* Multi-
+line
+comment */
+</pre>
+<p>Line comments are from // to the end of the line, block comments are from /* to */. Only one line comment can be specified per line, and it can not span multiple lines. On the other hand, a block comment can be written over multiple lines, or multiple block comments can be written in the middle of a line. However, you can not nest comments.</p>
+<p>If a production rule is defined, but the rule name is neither a start symbol nor appears in the definition of other rules, the rule is ignored before syntactic analysis. Since lexical analysis is done, however, the terminal symbols that appear in the rule will be ignored as dummy symbols. For example,</p>
+<pre>
+Space ::= "\s+" ;
+</pre>
+<p>If the rule name Space does not appear anywhere, one or more white spaces are ignored. In other words, adding this rule allows the grammar to be free format. Comments can be defined in the same way.</p>
+</section>
+
+<section id="specification">
+<h2>HABA definition of HABA</h2>
+<p>For reference, I describe the specifications of HABA grammar in the description method of HABA itself.</p>
+<pre>
+Gram ::= Rule+ ;
+Rule ::= Name '::=' Expr? ';' ;
+Name ::= "[a-zA-Z_][a-zA-Z_0-9]*" ;
+Expr ::= List ('|' List)* ;
+List ::= Term+ ;
+Term ::= Fact Rept? ;
+Fact ::= Fixd | Flex | Name | Quot ;
+Fixd ::= "'(''|[^'])+'" ;
+Flex ::= """(""""|[^""])+""" ;
+Quot ::= '(' Expr ')' ;
+Rept ::= '?' | '*' | '+' ;
+Spac ::= "\s+" ;
+Line ::= "//[^\n]*(\n|$)" ;
+Bloc ::= "/\*((?!\*/)[\s\S])*\*/" ;
+</pre>
+<p>Spac is a white space, Line is a line comment and Bloc is a block comment, all ignored before syntactic analysis. [\s\S] in the Bloc definition represents any single character, including a line break.</p>
+</section>
+
+</article>
+</body>
+
+</html>

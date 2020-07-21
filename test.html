@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./test.css">
+<script src="./grammar.js"></script>
+<script src="./parser.js"></script>
+<script src="./compiler.js"></script>
+<script src="./generator.js"></script>
+<script src="./test.js"></script>
+<title>HABA test</title>
+</head>
+
+<body>
+<nav id="top">
+<span><a href="./index.html">analysis</a></span>
+<span><a href="./notation.html">notation</a></span>
+<span><a href="./explanation.html">explanation</a></span>
+</nav>
+
+<article>
+<h1>HABA test</h1>
+
+<p>Press the "Execute" button below to execute the test line by line. The expected value is the generated JavaScript if the parsing is successful, or the error message if it fails.</p>
+<table id="patterns">
+  <tr><th>No.</th><th>HABA string</th><th>expected</th><th>result</th></tr>
+  <tr><td></td><td><pre>
+Plus ::= Num '+' Num ;
+Num ::= "[0-9]+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "[0-9]+",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Plus=3",
+        "Num=1",
+    ],
+
+    "table": [
+        [ "", "s5", "", "g1", "g2" ],
+        [ "", "", "r0", "", "" ],
+        [ "s3", "", "", "", "" ],
+        [ "", "s5", "", "", "g4" ],
+        [ "", "", "r1", "", "" ],
+        [ "r2", "", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Plus ::= Num '+' Num ;
+    "Plus": function(tree) {
+    },
+
+    // Num ::= "[0-9]+" ;
+    "Num": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Epsilon ::= ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Epsilon=0",
+    ],
+
+    "table": [
+        [ "r1", "g1" ],
+        [ "r0", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Epsilon ::= ;
+    "Epsilon": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>Plus::=Num'+'Num;Num::="[0-9]+";</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "[0-9]+",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Plus=3",
+        "Num=1",
+    ],
+
+    "table": [
+        [ "", "s5", "", "g1", "g2" ],
+        [ "", "", "r0", "", "" ],
+        [ "s3", "", "", "", "" ],
+        [ "", "s5", "", "", "g4" ],
+        [ "", "", "r1", "", "" ],
+        [ "r2", "", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Plus ::= Num '+' Num ;
+    "Plus": function(tree) {
+    },
+
+    // Num ::= "[0-9]+" ;
+    "Num": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Plus
+::= Num
+    '+' Num
+;       
+    Num ::=
+
+"[0-9]+"    ;
+    
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "[0-9]+",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Plus=3",
+        "Num=1",
+    ],
+
+    "table": [
+        [ "", "s5", "", "g1", "g2" ],
+        [ "", "", "r0", "", "" ],
+        [ "s3", "", "", "", "" ],
+        [ "", "s5", "", "", "g4" ],
+        [ "", "", "r1", "", "" ],
+        [ "r2", "", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Plus ::= Num '+' Num ;
+    "Plus": function(tree) {
+    },
+
+    // Num ::= "[0-9]+" ;
+    "Num": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Fixed ::= '[]\^$.|?*+()"''' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\[\\]\\\\\\^\\$\\.\\|\\?\\*\\+\\(\\)\"'",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Fixed=1",
+    ],
+
+    "table": [
+        [ "s2", "", "g1" ],
+        [ "", "r0", "" ],
+        [ "", "r1", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Fixed ::= '[]\^$.|?*+()"''' ;
+    "Fixed": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Regex ::= "\[\]\\\^\$\.\|\?\*\+\(\)""'" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\[\\]\\\\\\^\\$\\.\\|\\?\\*\\+\\(\\)\"'",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Regex=1",
+    ],
+
+    "table": [
+        [ "s2", "", "g1" ],
+        [ "", "r0", "" ],
+        [ "", "r1", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Regex ::= "\[\]\\\^\$\.\|\?\*\+\(\)""'" ;
+    "Regex": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Quote ::= "\"" ; ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+unknown character(s): " ; ;
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Quote ::= '\"' ; ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+no action defined: ;
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Start ::= A ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+no definition of non-terminal symbol: A
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Start ::= 'A' ;
+Space ::= B C ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+no definition of non-terminal symbol: B C
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= Term Fact ;
+Term ::= Fact ;
+Fact ::= Expr ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+There is no shift or reduction from the start symbol.
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+LR2 ::= Num? Num? ;
+Num ::= "[0-9]+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+There are collisions.
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Concatenation ::= name NAME ;
+name ::= "[a-z]+" ;
+NAME ::= "[A-Z]+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "[a-z]+",
+        "[A-Z]+",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Concatenation=2",
+        "name=1",
+        "NAME=1",
+    ],
+
+    "table": [
+        [ "s5", "", "", "g1", "g2", "" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "", "s4", "", "", "", "g3" ],
+        [ "", "", "r1", "", "", "" ],
+        [ "", "", "r3", "", "", "" ],
+        [ "", "r2", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Concatenation ::= name NAME ;
+    "Concatenation": function(tree) {
+    },
+
+    // name ::= "[a-z]+" ;
+    "name": function(tree) {
+    },
+
+    // NAME ::= "[A-Z]+" ;
+    "NAME": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Operator ::= '+' | '-' | '*' | '/' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "-",
+        "\\*",
+        "/",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Operator=1",
+        "#1#=1",
+        "#1#=1",
+        "#1#=1",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "s3", "s4", "s5", "s6", "", "g1", "g2" ],
+        [ "", "", "", "", "r0", "", "" ],
+        [ "", "", "", "", "r1", "", "" ],
+        [ "", "", "", "", "r2", "", "" ],
+        [ "", "", "", "", "r3", "", "" ],
+        [ "", "", "", "", "r4", "", "" ],
+        [ "", "", "", "", "r5", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Operator ::= '+' | '-' | '*' | '/' ;
+    "Operator": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Positive ::= '+'? Absolute ;
+Absolute ::= "[0-9]+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "[0-9]+",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Positive=2",
+        "#1#=1",
+        "#1#=0",
+        "Absolute=1",
+    ],
+
+    "table": [
+        [ "s5", "r3", "", "g1", "g2", "" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "", "s4", "", "", "", "g3" ],
+        [ "", "", "r1", "", "", "" ],
+        [ "", "", "r4", "", "", "" ],
+        [ "", "r2", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Positive ::= '+'? Absolute ;
+    "Positive": function(tree) {
+    },
+
+    // Absolute ::= "[0-9]+" ;
+    "Absolute": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Nest ::= 'x'? (','? 'y')? ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "x",
+        "y",
+        ",",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Nest=2",
+        "#1#=1",
+        "#1#=0",
+        "#3#=2",
+        "#3#=0",
+        "#2#=1",
+        "#2#=0",
+    ],
+
+    "table": [
+        [ "s7", "r3", "r3", "r3", "g1", "g2", "", "" ],
+        [ "", "", "", "r0", "", "", "", "" ],
+        [ "", "r7", "s6", "r5", "", "", "g3", "g4" ],
+        [ "", "", "", "r1", "", "", "", "" ],
+        [ "", "s5", "", "", "", "", "", "" ],
+        [ "", "", "", "r4", "", "", "", "" ],
+        [ "", "r6", "", "", "", "", "", "" ],
+        [ "", "r2", "r2", "r2", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Nest ::= 'x'? (','? 'y')? ;
+    "Nest": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'T'? ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=1",
+        "#1#=0",
+    ],
+
+    "table": [
+        [ "s3", "r3", "g1", "g2" ],
+        [ "", "r0", "", "" ],
+        [ "", "r1", "", "" ],
+        [ "", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'T'? ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'T' ;
+Expr ::= ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "Expr=0",
+    ],
+
+    "table": [
+        [ "s2", "r2", "g1" ],
+        [ "", "r0", "" ],
+        [ "", "r1", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'T' ;
+    // Expr ::= ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'T'* ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=2",
+        "#1#=0",
+    ],
+
+    "table": [
+        [ "r3", "r3", "g1", "g2" ],
+        [ "", "r0", "", "" ],
+        [ "s3", "r1", "", "" ],
+        [ "r2", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'T'* ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= Expr 'T' ;
+Expr ::= ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=2",
+        "Expr=0",
+    ],
+
+    "table": [
+        [ "r2", "r2", "g1" ],
+        [ "s2", "r0", "" ],
+        [ "r1", "r1", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= Expr 'T' ;
+    // Expr ::= ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'T'+ ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=2",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "s4", "", "g1", "g2" ],
+        [ "", "r0", "", "" ],
+        [ "s3", "r1", "", "" ],
+        [ "r2", "r2", "", "" ],
+        [ "r3", "r3", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'T'+ ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= Expr 'T' ;
+Expr ::= 'T' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "T",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=2",
+        "Expr=1",
+    ],
+
+    "table": [
+        [ "s3", "", "g1" ],
+        [ "s2", "r0", "" ],
+        [ "r1", "r1", "" ],
+        [ "r2", "r2", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= Expr 'T' ;
+    // Expr ::= 'T' ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'A' | 'B' 'C' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "A",
+        "B",
+        "C",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=1",
+        "#1#=2",
+    ],
+
+    "table": [
+        [ "s3", "s4", "", "", "g1", "g2" ],
+        [ "", "", "", "r0", "", "" ],
+        [ "", "", "", "r1", "", "" ],
+        [ "", "", "", "r2", "", "" ],
+        [ "", "", "s5", "", "", "" ],
+        [ "", "", "", "r3", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'A' | 'B' 'C' ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= ('A' | 'B') 'C' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "C",
+        "A",
+        "B",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=2",
+        "#1#=1",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "", "s4", "s5", "", "g1", "g2" ],
+        [ "", "", "", "r0", "", "" ],
+        [ "s3", "", "", "", "", "" ],
+        [ "", "", "", "r1", "", "" ],
+        [ "r2", "", "", "", "", "" ],
+        [ "r3", "", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= ('A' | 'B') 'C' ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= Term 'C' ;
+Term ::= 'A' | 'B' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "C",
+        "A",
+        "B",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=2",
+        "Term=1",
+        "#1#=1",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "", "s5", "s6", "", "g1", "g2", "g4" ],
+        [ "", "", "", "r0", "", "", "" ],
+        [ "s3", "", "", "", "", "", "" ],
+        [ "", "", "", "r1", "", "", "" ],
+        [ "r2", "", "", "", "", "", "" ],
+        [ "r3", "", "", "", "", "", "" ],
+        [ "r4", "", "", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= Term 'C' ;
+    "Expr": function(tree) {
+    },
+
+    // Term ::= 'A' | 'B' ;
+    "Term": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= 'D' 'E'+ ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "D",
+        "E",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=2",
+        "#1#=2",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "s2", "", "", "g1", "" ],
+        [ "", "", "r0", "", "" ],
+        [ "", "s5", "", "", "g3" ],
+        [ "", "s4", "r1", "", "" ],
+        [ "", "r2", "r2", "", "" ],
+        [ "", "r3", "r3", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= 'D' 'E'+ ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= ('D' 'E')+ ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "D",
+        "E",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=3",
+        "#1#=2",
+    ],
+
+    "table": [
+        [ "s5", "", "", "g1", "g2" ],
+        [ "", "", "r0", "", "" ],
+        [ "s3", "", "r1", "", "" ],
+        [ "", "s4", "", "", "" ],
+        [ "r2", "", "r2", "", "" ],
+        [ "", "s6", "", "", "" ],
+        [ "r3", "", "r3", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= ('D' 'E')+ ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+Expr ::= Term+ ;
+Term ::= 'D' 'E' ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "D",
+        "E",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#1#=2",
+        "#1#=1",
+        "Term=2",
+    ],
+
+    "table": [
+        [ "s4", "", "", "g1", "g2", "g6" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "s4", "", "r1", "", "", "g3" ],
+        [ "r2", "", "r2", "", "", "" ],
+        [ "", "s5", "", "", "", "" ],
+        [ "r4", "", "r4", "", "", "" ],
+        [ "r3", "", "r3", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= Term+ ;
+    "Expr": function(tree) {
+    },
+
+    // Term ::= 'D' 'E' ;
+    "Term": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// 1 line comment
+Expr ::= ('F' | 'G')* ;
+/* Multi-
+line
+comment */
+Space/*Multiple comments*/::=/*at one line*/"\s+";//also at the end of the line</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "F",
+        "G",
+    ],
+
+    "dummies": [
+        "\\s+",
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expr=1",
+        "#2#=2",
+        "#2#=0",
+        "#1#=1",
+        "#1#=1",
+    ],
+
+    "table": [
+        [ "r3", "r3", "r3", "g1", "g2", "" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "s4", "s5", "r1", "", "", "g3" ],
+        [ "r2", "r2", "r2", "", "", "" ],
+        [ "r4", "r4", "r4", "", "", "" ],
+        [ "r5", "r5", "r5", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expr ::= ('F' | 'G')* ;
+    "Expr": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// HABA grammar
+Gram ::= Rule+ ;
+Rule ::= Name '::=' Expr? ';' ;
+Name ::= "[a-zA-Z_][a-zA-Z_0-9]*" ;
+Expr ::= List ('|' List)* ;
+List ::= Term+ ;
+Term ::= Fact Rept? ;
+Fact ::= Fixd | Flex | Name | Quot ;
+Fixd ::= "'(''|[^'])+'" ;
+Flex ::= """(""""|[^""])+""" ;
+Quot ::= '(' Expr ')' ;
+Rept ::= '?' | '*' | '+' ;
+Spac ::= "\s+" ;
+Line ::= "//[^\n]*(\n|$)" ;
+Bloc ::= "/\*((?!\*/)[\s\S])*\*/" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "::=",
+        ";",
+        "\\|",
+        "\\(",
+        "\\)",
+        "\\?",
+        "\\*",
+        "\\+",
+        "[a-zA-Z_][a-zA-Z_0-9]*",
+        "'(''|[^'])+'",
+        "\"(\"\"|[^\"])+\"",
+    ],
+
+    "dummies": [
+        "\\s+",
+        "//[^\\n]*(\\n|$)",
+        "/\\*((?!\\*/)[\\s\\S])*\\*/",
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Gram=1",
+        "#1#=2",
+        "#1#=1",
+        "Rule=4",
+        "#2#=1",
+        "#2#=0",
+        "Name=1",
+        "Expr=2",
+        "#3#=3",
+        "#3#=0",
+        "List=1",
+        "#4#=2",
+        "#4#=1",
+        "Term=2",
+        "#5#=1",
+        "#5#=0",
+        "Fact=1",
+        "#6#=1",
+        "#6#=1",
+        "#6#=1",
+        "#6#=1",
+        "Fixd=1",
+        "Flex=1",
+        "Quot=3",
+        "Rept=1",
+        "#7#=1",
+        "#7#=1",
+        "#7#=1",
+    ],
+
+    "table": [
+        [ "", "", "", "", "", "", "", "", "s28", "", "", "", "g1", "g2", "g34", "", "g4", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "", "", "", "", "r0", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "", "s28", "", "", "r1", "", "", "g3", "", "g4", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "", "r2", "", "", "r2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "s5", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r6", "", "s30", "", "", "", "", "s28", "s24", "s26", "", "", "", "", "g6", "g27", "g8", "", "g9", "g13", "g33", "", "g15", "g22", "g23", "g25", "g29", "", "" ],
+        [ "", "s7", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "", "r4", "", "", "r4", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r5", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r10", "r10", "", "r10", "", "", "", "", "", "", "", "", "", "", "", "", "", "g10", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r8", "s11", "", "r8", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "s30", "", "", "", "", "s28", "s24", "s26", "", "", "", "", "", "g27", "", "", "g12", "g13", "g33", "", "g15", "g22", "g23", "g25", "g29", "", "" ],
+        [ "", "r9", "r9", "", "r9", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r11", "r11", "s30", "r11", "", "", "", "s28", "s24", "s26", "", "", "", "", "", "g27", "", "", "", "", "g14", "", "g15", "g22", "g23", "g25", "g29", "", "" ],
+        [ "", "r12", "r12", "r12", "r12", "", "", "", "r12", "r12", "r12", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r16", "r16", "r16", "r16", "s19", "s20", "s21", "r16", "r16", "r16", "", "", "", "", "", "", "", "", "", "", "", "g16", "", "", "", "", "", "g17", "g18" ],
+        [ "", "r14", "r14", "r14", "r14", "", "", "", "r14", "r14", "r14", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r15", "r15", "r15", "r15", "", "", "", "r15", "r15", "r15", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r25", "r25", "r25", "r25", "", "", "", "r25", "r25", "r25", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r26", "r26", "r26", "r26", "", "", "", "r26", "r26", "r26", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r27", "r27", "r27", "r27", "", "", "", "r27", "r27", "r27", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r28", "r28", "r28", "r28", "", "", "", "r28", "r28", "r28", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r17", "r17", "r17", "r17", "r17", "r17", "r17", "r17", "r17", "r17", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r18", "r18", "r18", "r18", "r18", "r18", "r18", "r18", "r18", "r18", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r22", "r22", "r22", "r22", "r22", "r22", "r22", "r22", "r22", "r22", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r19", "r19", "r19", "r19", "r19", "r19", "r19", "r19", "r19", "r19", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r23", "r23", "r23", "r23", "r23", "r23", "r23", "r23", "r23", "r23", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r20", "r20", "r20", "r20", "r20", "r20", "r20", "r20", "r20", "r20", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r7", "r7", "r7", "r7", "r7", "r7", "r7", "r7", "r7", "r7", "r7", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r21", "r21", "r21", "r21", "r21", "r21", "r21", "r21", "r21", "r21", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "s30", "", "", "", "", "s28", "s24", "s26", "", "", "", "", "", "g27", "g31", "", "g9", "g13", "g33", "", "g15", "g22", "g23", "g25", "g29", "", "" ],
+        [ "", "", "", "", "s32", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r24", "r24", "r24", "r24", "r24", "r24", "r24", "r24", "r24", "r24", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "r13", "r13", "r13", "r13", "", "", "", "r13", "r13", "r13", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "", "r3", "", "", "r3", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Gram ::= Rule+ ;
+    "Gram": function(tree) {
+    },
+
+    // Rule ::= Name '::=' Expr? ';' ;
+    "Rule": function(tree) {
+    },
+
+    // Name ::= "[a-zA-Z_][a-zA-Z_0-9]*" ;
+    "Name": function(tree) {
+    },
+
+    // Expr ::= List ('|' List)* ;
+    "Expr": function(tree) {
+    },
+
+    // List ::= Term+ ;
+    "List": function(tree) {
+    },
+
+    // Term ::= Fact Rept? ;
+    "Term": function(tree) {
+    },
+
+    // Fact ::= Fixd | Flex | Name | Quot ;
+    "Fact": function(tree) {
+    },
+
+    // Fixd ::= "'(''|[^'])+'" ;
+    "Fixd": function(tree) {
+    },
+
+    // Flex ::= """(""""|[^""])+""" ;
+    "Flex": function(tree) {
+    },
+
+    // Quot ::= '(' Expr ')' ;
+    "Quot": function(tree) {
+    },
+
+    // Rept ::= '?' | '*' | '+' ;
+    "Rept": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// LR(0)
+Sentence ::= Word Sentence ;
+Sentence ::= '.' ;
+Word ::= "[a-z]+" ;
+Space ::= "\s+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\.",
+        "[a-z]+",
+    ],
+
+    "dummies": [
+        "\\s+",
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Sentence=2",
+        "Sentence=1",
+        "Word=1",
+    ],
+
+    "table": [
+        [ "s5", "s4", "", "g1", "g2" ],
+        [ "", "", "r0", "", "" ],
+        [ "s5", "s4", "", "g3", "g2" ],
+        [ "", "", "r1", "", "" ],
+        [ "r3", "r3", "", "", "" ],
+        [ "", "", "r2", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Sentence ::= Word Sentence ;
+    // Sentence ::= '.' ;
+    "Sentence": function(tree) {
+    },
+
+    // Word ::= "[a-z]+" ;
+    "Word": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// SLR(1)
+Expression ::= ('+' | '-')? Term (('+' | '-') Term)* ;
+Term ::= Factor (('*' | '/') Factor)* ;
+Factor ::= Decimal | '(' Expression ')' ;
+Decimal ::= "([1-9][0-9]+|[0-9])(\.[0-9]+)?" ;
+Comment ::= "'(''|[^'])*'" ;
+Space ::= "\s+" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\+",
+        "-",
+        "\\*",
+        "/",
+        "\\(",
+        "\\)",
+        "([1-9][0-9]+|[0-9])(\\.[0-9]+)?",
+    ],
+
+    "dummies": [
+        "'(''|[^'])*'",
+        "\\s+",
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Expression=3",
+        "#2#=1",
+        "#2#=0",
+        "#1#=1",
+        "#1#=1",
+        "#4#=3",
+        "#4#=0",
+        "#3#=1",
+        "#3#=1",
+        "Term=2",
+        "#6#=3",
+        "#6#=0",
+        "#5#=1",
+        "#5#=1",
+        "Factor=1",
+        "#7#=1",
+        "#7#=3",
+        "Decimal=1",
+    ],
+
+    "table": [
+        [ "s18", "s19", "", "", "r3", "", "r3", "", "g1", "g2", "g17", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "", "", "r0", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "s14", "", "s13", "", "", "", "", "", "", "g3", "", "", "g7", "g11", "g12" ],
+        [ "r7", "r7", "", "", "", "r7", "", "r7", "", "", "", "g4", "", "", "", "", "", "", "" ],
+        [ "s22", "s23", "", "", "", "r1", "", "r1", "", "", "", "", "g5", "", "", "", "", "", "" ],
+        [ "", "", "", "", "s14", "", "s13", "", "", "", "", "", "", "g6", "", "", "g7", "g11", "g12" ],
+        [ "r6", "r6", "", "", "", "r6", "", "r6", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r12", "r12", "r12", "r12", "", "r12", "", "r12", "", "", "", "", "", "", "g8", "", "", "", "" ],
+        [ "r10", "r10", "s20", "s21", "", "r10", "", "r10", "", "", "", "", "", "", "", "g9", "", "", "" ],
+        [ "", "", "", "", "s14", "", "s13", "", "", "", "", "", "", "", "", "", "g10", "g11", "g12" ],
+        [ "r11", "r11", "r11", "r11", "", "r11", "", "r11", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r15", "r15", "r15", "r15", "", "r15", "", "r15", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r16", "r16", "r16", "r16", "", "r16", "", "r16", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r18", "r18", "r18", "r18", "", "r18", "", "r18", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "s18", "s19", "", "", "r3", "", "r3", "", "g15", "g2", "g17", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "", "s16", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "r17", "r17", "r17", "r17", "", "r17", "", "r17", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r2", "", "r2", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r4", "", "r4", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r5", "", "r5", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r13", "", "r13", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r14", "", "r14", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r8", "", "r8", "", "", "", "", "", "", "", "", "", "", "", "" ],
+        [ "", "", "", "", "r9", "", "r9", "", "", "", "", "", "", "", "", "", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Expression ::= ('+' | '-')? Term (('+' | '-') Term)* ;
+    "Expression": function(tree) {
+    },
+
+    // Term ::= Factor (('*' | '/') Factor)* ;
+    "Term": function(tree) {
+    },
+
+    // Factor ::= Decimal | '(' Expression ')' ;
+    "Factor": function(tree) {
+    },
+
+    // Decimal ::= "([1-9][0-9]+|[0-9])(\.[0-9]+)?" ;
+    "Decimal": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// LALR(1)
+Decimal ::= Integer '.' Integer ;
+Decimal ::= Number ;
+Integer ::= Number ;
+Number ::= "[1-9][0-9]+|[0-9]" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+// Grammar object
+var Grammar = {
+
+    "flag": "",
+
+    "terminals": [
+        "\\.",
+        "[1-9][0-9]+|[0-9]",
+    ],
+
+    "dummies": [
+    ],
+
+    "rules": [
+        "#0#=1",
+        "Decimal=3",
+        "Decimal=1",
+        "Integer=1",
+        "Number=1",
+    ],
+
+    "table": [
+        [ "", "s6", "", "g1", "g2", "g7" ],
+        [ "", "", "r0", "", "", "" ],
+        [ "s3", "", "", "", "", "" ],
+        [ "", "s6", "", "", "g4", "g5" ],
+        [ "", "", "r1", "", "", "" ],
+        [ "", "", "r3", "", "", "" ],
+        [ "r4", "", "r4", "", "", "" ],
+        [ "r3", "", "r2", "", "", "" ],
+    ],
+
+}
+
+// Syntax converter
+var Converter = {
+
+    // Decimal ::= Integer '.' Integer ;
+    // Decimal ::= Number ;
+    "Decimal": function(tree) {
+    },
+
+    // Integer ::= Number ;
+    "Integer": function(tree) {
+    },
+
+    // Number ::= "[1-9][0-9]+|[0-9]" ;
+    "Number": function(tree) {
+    },
+
+}
+</pre></td><td></td></tr>
+  <tr><td></td><td><pre>
+// LR(1)
+Money ::= '$' Dollar ;
+Money ::= '&euro;' Euro ;
+Dollar ::= Kilo ',' Number ;
+Dollar ::= Unit '.' Number ;
+Euro ::= Kilo '.' Number ;
+Euro ::= Unit ',' Number ;
+Kilo ::= Number ;
+Unit ::= Number ;
+Number ::= "[1-9][0-9]+|[0-9]" ;
+</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
+There are collisions.
+</pre></td><td></td></tr>
+</table>
+<input type="button" id="execute" value="Execute">
+
+</article>
+</body>
+
+</html>

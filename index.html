@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./default.css">
+<script src="./grammar.js"></script>
+<script src="./parser.js"></script>
+<script src="./compiler.js"></script>
+<script src="./generator.js"></script>
+<script src="./controller.js"></script>
+<title>House Arranged BNF Analyzer</title>
+</head>
+
+<body>
+<nav id="top">
+<span>analysis</span>
+<span><a href="./notation.html">notation</a></span>
+<span><a href="./explanation.html">explanation</a></span>
+</nav>
+
+<article>
+<h1>House Arranged BNF Analyzer</h1>
+
+<div class="table">
+  <div class="row">
+    <div class="cell"><label for="grammar">HABA string</label></div>
+    <div class="cell">
+      <div><textarea id="grammar"></textarea></div>
+      <div><input type="checkbox" id="ignore"><label for="ignore">Ignore case</label></div>
+      <div><input type="button" id="analyze" value="Analyze"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Result</div>
+    <div class="cell"><ul id="result"></ul></div>
+  </div>
+  <div class="row">
+    <div class="cell">Syntax tree</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-tree"><label for="view-tree">Display</label></div>
+        <div class="tree"><ul id="tree"></ul></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Lexical analysis elements</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-element"><label for="view-element">Display</label></div>
+        <div><table id="element"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Dummy elements</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-dummy"><label for="view-dummy">Display</label></div>
+        <div><table id="dummy"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Production rules</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-rule"><label for="view-rule">Display</label></div>
+        <div><table id="rule"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Closures</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-closure"><label for="view-closure">Display</label></div>
+        <div class="top"><table id="closure"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">State transitions</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-transition"><label for="view-transition">Display</label></div>
+        <div><table id="transition"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">Parsing table</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-table"><label for="view-table">Display</label></div>
+        <div><table id="table"></table></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cell">JavaScript</div>
+    <div class="cell">
+        <div><input type="checkbox" id="view-script"><label for="view-script">Display</label></div>
+        <div class="script"><div id="script"></div></div>
+    </div>
+  </div>
+</div>
+
+</article>
+</body>
+
+</html>

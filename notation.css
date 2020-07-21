@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+nav span {
+    margin-right: 1ex;
+}
+
+article {
+    margin-bottom: 10ex;
+}
+
+table.border {
+    border: 1px outset gray;
+    border-collapse: collapse;
+}
+
+table.border tr th {
+    border: 1px inset gray;
+    padding: 0.5ex 1ex;
+}
+
+table.border tr td {
+    border: 1px inset gray;
+    padding: 0.5ex 1ex;
+}
+
+pre {
+    line-height: 150%;
+    margin-left: 3ex;
+}
+
+.symbol {
+    text-align: center;
+}
+
