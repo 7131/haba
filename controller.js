@@ -1,5 +1,5 @@
 // Controller class
-var Controller = function() {
+const Controller = function() {
     // fields
     this._parser = new Parser(Grammar, Converter);
     this._compiler = new Compiler();
@@ -24,15 +24,15 @@ Controller.prototype = {
         this._transitionArea = document.getElementById("transition");
         this._tableArea = document.getElementById("table");
         this._scriptArea = document.getElementById("script");
-        var analyzeButton = document.getElementById("analyze");
-        var treeCheck = document.getElementById("view-tree");
-        var elementCheck = document.getElementById("view-element");
-        var dummyCheck = document.getElementById("view-dummy");
-        var ruleCheck = document.getElementById("view-rule");
-        var closureCheck = document.getElementById("view-closure");
-        var transitionCheck = document.getElementById("view-transition");
-        var tableCheck = document.getElementById("view-table");
-        var scriptCheck = document.getElementById("view-script");
+        const analyzeButton = document.getElementById("analyze");
+        const treeCheck = document.getElementById("view-tree");
+        const elementCheck = document.getElementById("view-element");
+        const dummyCheck = document.getElementById("view-dummy");
+        const ruleCheck = document.getElementById("view-rule");
+        const closureCheck = document.getElementById("view-closure");
+        const transitionCheck = document.getElementById("view-transition");
+        const tableCheck = document.getElementById("view-table");
+        const scriptCheck = document.getElementById("view-script");
 
         // associate checkboxes with display areas
         this._map = new Map();
@@ -57,12 +57,12 @@ Controller.prototype = {
     "_analyze": function(e) {
         // initialize
         this._clearAll();
-        var grammarArea = document.getElementById("grammar");
-        var ignoreCheck = document.getElementById("ignore");
+        const grammarArea = document.getElementById("grammar");
+        const ignoreCheck = document.getElementById("ignore");
         this._generator.ignoreCase = ignoreCheck.checked;
 
         // lexical and syntax analyze
-        var result = this._parser.tokenize(grammarArea.value);
+        let result = this._parser.tokenize(grammarArea.value);
         if (result.tokens == null) {
             this._setError("unknown character(s)", result.valid, result.invalid);
             return;
@@ -74,11 +74,11 @@ Controller.prototype = {
         }
 
         // compile
-        var message = this._compiler.execute(result.tree.rules);
+        const message = this._compiler.execute(result.tree.rules);
         if (message != "") {
             this._setError("compile error", "", message);
         } else {
-            var success = document.createElement("li");
+            const success = document.createElement("li");
             success.innerHTML = "Success";
             this._resultArea.appendChild(success);
         }
@@ -98,8 +98,8 @@ Controller.prototype = {
     // show or hide the result
     "_show": function(e) {
         // get the display area
-        var check = e.currentTarget;
-        var area = this._map.get(check);
+        const check = e.currentTarget;
+        const area = this._map.get(check);
         if (check.checked) {
             // show
             area.style.display = "";
@@ -112,12 +112,12 @@ Controller.prototype = {
     // copy to clipboard
     "_copy": function(e) {
         // create a range from the element
-        var text = e.currentTarget.nextSibling.firstChild;
-        var range = document.createRange();
+        const text = e.currentTarget.nextSibling.firstChild;
+        const range = document.createRange();
         range.selectNode(text);
 
         // select a range
-        var current = window.getSelection();
+        const current = window.getSelection();
         current.removeAllRanges();
         current.addRange(range);
 
@@ -139,7 +139,7 @@ Controller.prototype = {
         check.disabled = true;
 
         // display area
-        var area = this._map.get(check);
+        const area = this._map.get(check);
         area.innerHTML = "";
         area.style.display = "none";
     },
@@ -153,9 +153,9 @@ Controller.prototype = {
         }
 
         // write to the DOM elements
-        var head = document.createElement("li");
-        var ok = document.createElement("li");
-        var ng = document.createElement("li");
+        const head = document.createElement("li");
+        const ok = document.createElement("li");
+        const ng = document.createElement("li");
         head.innerHTML = title;
         head.className = "error";
         ok.innerHTML = valid;
@@ -169,9 +169,9 @@ Controller.prototype = {
 
     // create the syntax tree
     "_setTree": function(parent, tree) {
-        var text = tree.label;
+        let text = tree.label;
         if (tree.text != "") {
-            var fixes = /^'((''|[^'])+)'$/;
+            const fixes = /^'((''|[^'])+)'$/;
             if (fixes.test(text)) {
                 text = fixes.exec(text)[1];
             } else {
@@ -180,7 +180,7 @@ Controller.prototype = {
         }
 
         // list item
-        var item = document.createElement("li");
+        const item = document.createElement("li");
         item.innerHTML = text;
         parent.appendChild(item);
         if (tree.children.length == 0 || tree.text != "") {
@@ -188,9 +188,9 @@ Controller.prototype = {
         }
 
         // child node
-        var list = document.createElement("ul");
+        const list = document.createElement("ul");
         item.appendChild(list);
-        for (var i = 0; i < tree.children.length; i++) {
+        for (let i = 0; i < tree.children.length; i++) {
             this._setTree(list, tree.children[i]);
         }
     },
@@ -198,10 +198,10 @@ Controller.prototype = {
     // create lexical analysis elements
     "_setElement": function() {
         // create a table
-        var table = [];
-        for (var i = 0; i < this._compiler.terminals.length; i++) {
-            var symbol = this._compiler.terminals[i];
-            var type = "";
+        const table = [];
+        for (let i = 0; i < this._compiler.terminals.length; i++) {
+            const symbol = this._compiler.terminals[i];
+            let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
             } else if (symbol.charAt(0) == "\"") {
@@ -211,17 +211,17 @@ Controller.prototype = {
         }
 
         // write
-        var title = [ "type", "element" ];
+        const title = [ "type", "element" ];
         this._setTable(this._elementArea, table, title, 1);
     },
 
     // create dummy elements
     "_setDummy": function() {
         // create a table
-        var table = [];
-        for (var i = 0; i < this._compiler.dummies.length; i++) {
-            var symbol = this._compiler.dummies[i];
-            var type = "";
+        const table = [];
+        for (let i = 0; i < this._compiler.dummies.length; i++) {
+            const symbol = this._compiler.dummies[i];
+            let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
             } else if (symbol.charAt(0) == "\"") {
@@ -231,67 +231,67 @@ Controller.prototype = {
         }
 
         // write
-        var title = [ "type", "element" ];
+        const title = [ "type", "element" ];
         this._setTable(this._dummyArea, table, title, 1);
     },
 
     // create production rules
     "_setRule": function() {
         // create a table
-        var table = [];
-        for (var i = 0; i < this._compiler.rules.length; i++) {
-            var rule = this._compiler.rules[i];
+        const table = [];
+        for (let i = 0; i < this._compiler.rules.length; i++) {
+            const rule = this._compiler.rules[i];
             table.push([ rule.toString() ]);
         }
 
         // write
-        var title = [ "expanded rule" ];
+        const title = [ "expanded rule" ];
         this._setTable(this._ruleArea, table, title);
     },
 
     // create closures
     "_setClosures": function() {
-        var parent = this._closureArea;
+        const parent = this._closureArea;
         parent.innerHTML = "";
 
         // column titles
-        var head = document.createElement("tr");
+        const head = document.createElement("tr");
         parent.appendChild(head);
-        var title = [ "No.", "item", "next symbols" ];
-        for (var i = 0; i < title.length; i++) {
-            var th = document.createElement("th");
+        const title = [ "No.", "item", "next symbols" ];
+        for (let i = 0; i < title.length; i++) {
+            const th = document.createElement("th");
             th.innerHTML = title[i];
             head.appendChild(th);
         }
 
         // values
-        for (var i = 0; i < this._compiler.closures.length; i++) {
-            var row = document.createElement("tr");
+        for (let i = 0; i < this._compiler.closures.length; i++) {
+            let row = document.createElement("tr");
             parent.appendChild(row);
 
             // No.
-            var closure = this._compiler.closures[i];
-            var count = closure.items.length;
-            var num = document.createElement("td");
+            const closure = this._compiler.closures[i];
+            const count = closure.items.length;
+            const num = document.createElement("td");
             num.innerHTML = i;
             num.rowSpan = count;
             num.className = "number";
             row.appendChild(num);
 
             // item
-            var item = document.createElement("td");
+            let item = document.createElement("td");
             item.innerHTML = closure.items[0].getItem();
             row.appendChild(item);
 
             // next symbols
-            var next = document.createElement("td");
-            var text = "";
+            let next = document.createElement("td");
+            let text = "";
             closure.items[0].look.forEach(function(value) { text += value + " "; });
             next.innerHTML = text.trim();
             row.appendChild(next);
 
             // from the second time
-            for (var j = 1; j < count; j++) {
+            for (let j = 1; j < count; j++) {
                 row = document.createElement("tr");
                 parent.appendChild(row);
 
@@ -313,17 +313,17 @@ Controller.prototype = {
     // create transitions
     "_setTransition": function() {
         // create a table
-        var table = [];
-        for (var i = 0; i < this._compiler.transitions.length; i++) {
-            var trans = this._compiler.transitions[i];
-            var from = this._compiler.closures.indexOf(trans.from);
-            var to = this._compiler.closures.indexOf(trans.to);
+        const table = [];
+        for (let i = 0; i < this._compiler.transitions.length; i++) {
+            const trans = this._compiler.transitions[i];
+            const from = this._compiler.closures.indexOf(trans.from);
+            const to = this._compiler.closures.indexOf(trans.to);
             table.push([ from, trans.symbol, to ]);
         }
 
         // write
-        var title = [ "from", "symbol", "to" ];
-        var type = [ "number", "", "number" ];
+        const title = [ "from", "symbol", "to" ];
+        const type = [ "number", "", "number" ];
         this._setTable(this._transitionArea, table, title, 1, type);
     },
 
@@ -335,14 +335,14 @@ Controller.prototype = {
     // create the JavaScript program
     "_setScript": function(tree) {
         // add a copy button
-        var button = document.createElement("input");
+        const button = document.createElement("input");
         button.type = "button";
         button.value = "Copy";
         button.addEventListener("click", this._copy.bind(this), false);
         this._scriptArea.appendChild(button);
 
         // write
-        var code = document.createElement("pre");
+        const code = document.createElement("pre");
         code.innerHTML = this._generator.createScript(this._compiler, tree);
         this._scriptArea.appendChild(code);
    },
@@ -360,14 +360,14 @@ Controller.prototype = {
 
         // column titles
         if (Array.isArray(title)) {
-            var tr = document.createElement("tr");
+            const tr = document.createElement("tr");
             parent.appendChild(tr);
 
             // add the No. column
-            var th = document.createElement("th");
+            let th = document.createElement("th");
             th.innerHTML = "No.";
             tr.appendChild(th);
-            for (var j = 0; j < title.length; j++) {
+            for (let j = 0; j < title.length; j++) {
                 th = document.createElement("th");
                 th.innerHTML = title[j];
                 tr.appendChild(th);
@@ -375,17 +375,17 @@ Controller.prototype = {
         }
 
         // values
-        for (var i = 0; i < table.length; i++) {
-            var row = table[i];
-            var tr = document.createElement("tr");
+        for (let i = 0; i < table.length; i++) {
+            const row = table[i];
+            const tr = document.createElement("tr");
             parent.appendChild(tr);
 
             // add the No.
-            var td = document.createElement("td");
+            let td = document.createElement("td");
             td.innerHTML = i + start;
             td.className = "number";
             tr.appendChild(td);
-            for (var j = 0; j < row.length; j++) {
+            for (let j = 0; j < row.length; j++) {
                 td = document.createElement("td");
                 td.innerHTML = row[j];
                 if (type[j] != null) {

@@ -1,5 +1,5 @@
 // Controller class
-var Controller = function() {
+const Controller = function() {
     // fields
     this._parser = new Parser(Grammar, Converter);
 
@@ -14,7 +14,7 @@ Controller.prototype = {
     "_initialize": function() {
         // DOM elements
         this._resultArea = document.getElementById("result");
-        var executeButton = document.getElementById("execute");
+        const executeButton = document.getElementById("execute");
 
         // button events
         executeButton.addEventListener("click", this._execute.bind(this), false);
@@ -26,8 +26,8 @@ Controller.prototype = {
         this._resultArea.innerHTML = "";
 
         // lexical and syntax analyze
-        var inputArea = document.getElementById("input");
-        var result = this._parser.tokenize(inputArea.value);
+        const inputArea = document.getElementById("input");
+        let result = this._parser.tokenize(inputArea.value);
         if (result.tokens == null) {
             this._setError("unknown character(s)", result.valid, result.invalid);
             return;
@@ -39,7 +39,7 @@ Controller.prototype = {
         }
 
         // set the results
-        var success = document.createElement("li");
+        const success = document.createElement("li");
         success.innerHTML = result.tree.result;
         this._resultArea.appendChild(success);
     },
@@ -53,9 +53,9 @@ Controller.prototype = {
         }
 
         // write to the DOM elements
-        var head = document.createElement("li");
-        var ok = document.createElement("li");
-        var ng = document.createElement("li");
+        const head = document.createElement("li");
+        const ok = document.createElement("li");
+        const ng = document.createElement("li");
         head.innerHTML = title;
         head.className = "error";
         ok.innerHTML = valid;

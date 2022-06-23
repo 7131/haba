@@ -1,5 +1,5 @@
 // Column number constants
-var ColNum = {
+const ColNum = {
     "NUMBER": 0,
     "TARGET": 1,
     "EXPECT": 2,
@@ -7,7 +7,7 @@ var ColNum = {
 }
 
 // Controller class
-var Controller = function() {
+const Controller = function() {
     // fields
     this._parser = new Parser(Grammar, Converter);
     this._compiler = new Compiler();
@@ -23,14 +23,14 @@ Controller.prototype = {
     // initialize the private fields
     "_initialize": function() {
         this._rows = document.getElementById("patterns").rows;
-        for (var i = 1; i < this._rows.length; i++) {
+        for (let i = 1; i < this._rows.length; i++) {
             // No.
-            var number = this._rows[i].cells[ColNum.NUMBER];
+            const number = this._rows[i].cells[ColNum.NUMBER];
             number.innerText = i;
             number.className = "symbol";
 
             // expected values
-            var expects = this._rows[i].cells[ColNum.EXPECT].childNodes;
+            const expects = this._rows[i].cells[ColNum.EXPECT].childNodes;
             expects[0].id = "view-" + i;
             expects[0].addEventListener("click", this._show.bind(this), false);
             expects[1].htmlFor = expects[0].id;
@@ -38,15 +38,15 @@ Controller.prototype = {
         }
 
         // button events
-        var execute = document.getElementById("execute");
+        const execute = document.getElementById("execute");
         execute.addEventListener("click", this._start.bind(this), false);
     },
 
     // show or hide the result
     "_show": function(e) {
         // get the display area
-        var check = e.currentTarget;
-        var area = check.nextSibling.nextSibling;
+        const check = e.currentTarget;
+        const area = check.nextSibling.nextSibling;
         if (check.checked) {
             // show
             area.className = "";
@@ -63,7 +63,7 @@ Controller.prototype = {
         this._button.disabled = true;
 
         // initialize table
-        for (var i = 1; i < this._rows.length; i++) {
+        for (let i = 1; i < this._rows.length; i++) {
             this._rows[i].cells[ColNum.RESULT].innerHTML = "";
         }
 
@@ -75,8 +75,8 @@ Controller.prototype = {
     // execute a test
     "_execute": function() {
         // lexical analysis
-        var cell = this._rows[this._index].cells[ColNum.TARGET];
-        var result = this._parser.tokenize(cell.innerText);
+        const cell = this._rows[this._index].cells[ColNum.TARGET];
+        let result = this._parser.tokenize(cell.innerText);
         if (result.tokens == null) {
             this._showResult("unknown character(s): " + result.invalid, "Lexical analysis");
             return;
@@ -90,14 +90,14 @@ Controller.prototype = {
         }
 
         // compile
-        var message = this._compiler.execute(result.tree.rules);
+        const message = this._compiler.execute(result.tree.rules);
         if (message != "") {
             this._showResult(message, "Compile");
             return;
         }
 
         // generate the JavaScript program
-        var script = this._generator.createScript(this._compiler, result.tree);
+        const script = this._generator.createScript(this._compiler, result.tree);
         this._showResult(script, "JavaScript program");
     },
 
@@ -105,16 +105,16 @@ Controller.prototype = {
     "_showResult": function(actual, title) {
         // unify line breaks
         actual = actual.trim().replace(/\r?\n/g, "\n");
-        var element = document.getElementById("code-" + this._index);
-        var expect = element.innerText.trim().replace(/\r?\n/g, "\n");
+        const element = document.getElementById("code-" + this._index);
+        const expect = element.innerText.trim().replace(/\r?\n/g, "\n");
 
         // get the result string
-        var cell = this._rows[this._index].cells[ColNum.RESULT];
+        const cell = this._rows[this._index].cells[ColNum.RESULT];
         if (actual == expect) {
             cell.innerText = "OK";
             cell.className = "";
         } else {
-            var pre = document.createElement("pre");
+            const pre = document.createElement("pre");
             pre.innerText = title + " error\n\n" + actual;
             cell.appendChild(pre);
             cell.className = "error";

@@ -1,5 +1,5 @@
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -96,11 +96,11 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Gram ::= Rule+ ;
     "Gram": function(tree) {
-        for (var i = 0; i < tree.children.length; i++) {
+        for (let i = 0; i < tree.children.length; i++) {
             this._addSymbols(tree, tree.children[i].symbols);
             this._addRules(tree, tree.children[i].rules);
         }
@@ -109,7 +109,7 @@ var Converter = {
 
     // Rule ::= Name '::=' Expr? ';' ;
     "Rule": function(tree) {
-        var name = tree.children[0].symbols[0];
+        const name = tree.children[0].symbols[0];
         this._addSymbols(tree, name);
         if (3 < tree.children.length) {
             // with Expr
@@ -123,7 +123,7 @@ var Converter = {
 
     // Name ::= "[a-zA-Z_][a-zA-Z_0-9]*" ;
     "Name": function(tree) {
-        var symbol = tree.children[0].text;
+        const symbol = tree.children[0].text;
         tree.text = symbol;
         this._addSymbols(tree, symbol);
     },
@@ -136,11 +136,11 @@ var Converter = {
             this._addRules(tree, tree.children[0].rules);
         } else {
             // two elements or more
-            var name = this._createSymbol();
+            const name = this._createSymbol();
             this._addSymbols(tree, name);
 
             // expand alternate symbols
-            for (var i = 0; i < tree.children.length; i += 2) {
+            for (let i = 0; i < tree.children.length; i += 2) {
                 this._addNewRule(tree, name, tree.children[i].symbols);
                 this._addRules(tree, tree.children[i].rules);
             }
@@ -149,7 +149,7 @@ var Converter = {
 
     // List ::= Term+ ;
     "List": function(tree) {
-        for (var i = 0; i < tree.children.length; i++) {
+        for (let i = 0; i < tree.children.length; i++) {
             this._addSymbols(tree, tree.children[i].symbols);
             this._addRules(tree, tree.children[i].rules);
         }
@@ -165,11 +165,11 @@ var Converter = {
         }
 
         // with Rept
-        var name = this._createSymbol();
+        const name = this._createSymbol();
         this._addSymbols(tree, name);
 
         // expand repeat symbols
-        var definition = tree.children[0].symbols.concat();
+        const definition = tree.children[0].symbols.concat();
         definition.unshift(name);
         switch (tree.children[1].symbols[0]) {
             case "?":
@@ -198,14 +198,14 @@ var Converter = {
 
     // Fixd ::= "'(''|[^'])+'" ;
     "Fixd": function(tree) {
-        var symbol = tree.children[0].text;
+        const symbol = tree.children[0].text;
         tree.text = symbol;
         this._addSymbols(tree, symbol);
     },
 
     // Flex ::= """(""""|[^""])+""" ;
     "Flex": function(tree) {
-        var symbol = tree.children[0].text;
+        const symbol = tree.children[0].text;
         tree.text = symbol;
         this._addSymbols(tree, symbol);
     },
@@ -218,7 +218,7 @@ var Converter = {
 
     // Rept ::= '?' | '*' | '+' ;
     "Rept": function(tree) {
-        var symbol = tree.children[0].text;
+        const symbol = tree.children[0].text;
         tree.text = symbol;
         this._addSymbols(tree, symbol);
     },

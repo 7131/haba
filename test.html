@@ -31,7 +31,7 @@ Plus ::= Num '+' Num ;
 Num ::= "[0-9]+" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -61,7 +61,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Plus ::= Num '+' Num ;
     "Plus": function(tree) {
@@ -77,7 +77,7 @@ var Converter = {
 Epsilon ::= ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -100,7 +100,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Epsilon ::= ;
     "Epsilon": function(tree) {
@@ -110,7 +110,7 @@ var Converter = {
 </pre></td><td></td></tr>
   <tr><td></td><td><pre>Plus::=Num'+'Num;Num::="[0-9]+";</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -140,7 +140,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Plus ::= Num '+' Num ;
     "Plus": function(tree) {
@@ -163,7 +163,7 @@ Plus
     
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -193,7 +193,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Plus ::= Num '+' Num ;
     "Plus": function(tree) {
@@ -209,7 +209,7 @@ var Converter = {
 Fixed ::= '[]\^$.|?*+()"''' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -234,7 +234,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Fixed ::= '[]\^$.|?*+()"''' ;
     "Fixed": function(tree) {
@@ -246,7 +246,7 @@ var Converter = {
 Regex ::= "\[\]\\\^\$\.\|\?\*\+\(\)""'" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -271,7 +271,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Regex ::= "\[\]\\\^\$\.\|\?\*\+\(\)""'" ;
     "Regex": function(tree) {
@@ -319,7 +319,7 @@ name ::= "[a-z]+" ;
 NAME ::= "[A-Z]+" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -350,7 +350,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Concatenation ::= name NAME ;
     "Concatenation": function(tree) {
@@ -370,7 +370,7 @@ var Converter = {
 Operator ::= '+' | '-' | '*' | '/' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -406,7 +406,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Operator ::= '+' | '-' | '*' | '/' ;
     "Operator": function(tree) {
@@ -419,7 +419,7 @@ Positive ::= '+'? Absolute ;
 Absolute ::= "[0-9]+" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -451,7 +451,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Positive ::= '+'? Absolute ;
     "Positive": function(tree) {
@@ -467,7 +467,7 @@ var Converter = {
 Nest ::= 'x'? (','? 'y')? ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -505,7 +505,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Nest ::= 'x'? (','? 'y')? ;
     "Nest": function(tree) {
@@ -517,7 +517,7 @@ var Converter = {
 Expr ::= 'T'? ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -545,7 +545,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'T'? ;
     "Expr": function(tree) {
@@ -558,7 +558,7 @@ Expr ::= 'T' ;
 Expr ::= ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -584,7 +584,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'T' ;
     // Expr ::= ;
@@ -597,7 +597,7 @@ var Converter = {
 Expr ::= 'T'* ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -625,7 +625,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'T'* ;
     "Expr": function(tree) {
@@ -638,7 +638,7 @@ Expr ::= Expr 'T' ;
 Expr ::= ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -664,7 +664,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= Expr 'T' ;
     // Expr ::= ;
@@ -677,7 +677,7 @@ var Converter = {
 Expr ::= 'T'+ ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -706,7 +706,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'T'+ ;
     "Expr": function(tree) {
@@ -719,7 +719,7 @@ Expr ::= Expr 'T' ;
 Expr ::= 'T' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -746,7 +746,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= Expr 'T' ;
     // Expr ::= 'T' ;
@@ -759,7 +759,7 @@ var Converter = {
 Expr ::= 'A' | 'B' 'C' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -791,7 +791,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'A' | 'B' 'C' ;
     "Expr": function(tree) {
@@ -803,7 +803,7 @@ var Converter = {
 Expr ::= ('A' | 'B') 'C' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -835,7 +835,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= ('A' | 'B') 'C' ;
     "Expr": function(tree) {
@@ -848,7 +848,7 @@ Expr ::= Term 'C' ;
 Term ::= 'A' | 'B' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -882,7 +882,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= Term 'C' ;
     "Expr": function(tree) {
@@ -898,7 +898,7 @@ var Converter = {
 Expr ::= 'D' 'E'+ ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -929,7 +929,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= 'D' 'E'+ ;
     "Expr": function(tree) {
@@ -941,7 +941,7 @@ var Converter = {
 Expr ::= ('D' 'E')+ ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -973,7 +973,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= ('D' 'E')+ ;
     "Expr": function(tree) {
@@ -986,7 +986,7 @@ Expr ::= Term+ ;
 Term ::= 'D' 'E' ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1019,7 +1019,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= Term+ ;
     "Expr": function(tree) {
@@ -1039,7 +1039,7 @@ line
 comment */
 Space/*Multiple comments*/::=/*at one line*/"\s+";//also at the end of the line</pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1073,7 +1073,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expr ::= ('F' | 'G')* ;
     "Expr": function(tree) {
@@ -1099,7 +1099,7 @@ Line ::= "//[^\n]*(\n|$)" ;
 Bloc ::= "/\*((?!\*/)[\s\S])*\*/" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1196,7 +1196,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Gram ::= Rule+ ;
     "Gram": function(tree) {
@@ -1252,7 +1252,7 @@ Word ::= "[a-z]+" ;
 Space ::= "\s+" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1284,7 +1284,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Sentence ::= Word Sentence ;
     // Sentence ::= '.' ;
@@ -1307,7 +1307,7 @@ Comment ::= "'(''|[^'])*'" ;
 Space ::= "\s+" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1378,7 +1378,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Expression ::= ('+' | '-')? Term (('+' | '-') Term)* ;
     "Expression": function(tree) {
@@ -1406,7 +1406,7 @@ Integer ::= Number ;
 Number ::= "[1-9][0-9]+|[0-9]" ;
 </pre></td><td><input type="checkbox"><label>Display</label><pre class="hidden">
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -1440,7 +1440,7 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Decimal ::= Integer '.' Integer ;
     // Decimal ::= Number ;

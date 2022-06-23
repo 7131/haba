@@ -1,5 +1,5 @@
 // Grammar object
-var Grammar = {
+const Grammar = {
 
     "flag": "",
 
@@ -33,12 +33,12 @@ var Grammar = {
 }
 
 // Syntax converter
-var Converter = {
+const Converter = {
 
     // Multi ::= Num ('+' Num)* ;
     "Multi": function(tree) {
         tree.result = tree.children[0].result;
-        for (var i = 2; i < tree.children.length; i += 2) {
+        for (let i = 2; i < tree.children.length; i += 2) {
             tree.result += tree.children[i].result;
         }
     },
