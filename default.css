@@ -5,6 +5,7 @@ nav span {
 }
 
 article {
+    line-height: 1.8;
     margin-bottom: 10ex;
 }
 
@@ -48,7 +49,6 @@ table tr td {
 }
 
 pre {
-    line-height: 150%;
     margin-left: 3ex;
 }
 
@@ -106,6 +106,10 @@ pre {
 }
 
 @media (min-width: 768px) {
+
+    article {
+        line-height: 1.5;
+    }
 
     textarea {
         width: 50ex;

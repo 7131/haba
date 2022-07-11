@@ -5,6 +5,7 @@ nav span {
 }
 
 article {
+    line-height: 1.8;
     margin-bottom: 10ex;
 }
 
@@ -24,11 +25,18 @@ table.border tr td {
 }
 
 pre {
-    line-height: 150%;
     margin-left: 3ex;
 }
 
 .symbol {
     text-align: center;
+}
+
+@media (min-width: 768px) {
+
+    article {
+        line-height: 1.5;
+    }
+
 }
 
