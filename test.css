@@ -9,7 +9,7 @@ article {
     margin-bottom: 10ex;
 }
 
-input[type="button"] {
+button {
     margin-top: 2ex;
     width: 90%;
 }
@@ -52,7 +52,7 @@ pre.hidden {
         line-height: 1.5;
     }
 
-    input[type="button"] {
+    button {
         width: auto;
     }
 

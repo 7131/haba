@@ -14,9 +14,9 @@ textarea {
     height: 20ex;
 }
 
-input[type="button"] {
-    width: 90%;
+button {
     margin: 1ex 0ex;
+    width: 90%;
 }
 
 input[type="checkbox"] {
@@ -115,7 +115,7 @@ pre {
         width: 50ex;
     }
 
-    input[type="button"] {
+    button {
         width: auto;
     }
 
