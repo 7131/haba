@@ -10,13 +10,13 @@ article {
 }
 
 textarea {
-    width: 90%;
+    width: 90vw;
     height: 20ex;
 }
 
 button {
     margin: 1ex 0ex;
-    width: 90%;
+    width: 90vw;
 }
 
 input[type="checkbox"] {
