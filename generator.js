@@ -67,7 +67,7 @@ Generator.prototype = {
         }
 
         // create row list
-        const after = symbols.map(function(elem) { return "\"" + elem + "\","; });
+        const after = symbols.map(elem => "\"" + elem + "\",");
         return this._getArray(title, after);
     },
 
@@ -83,10 +83,10 @@ Generator.prototype = {
 
     // get the parsing table
     "_getTable": function(table) {
+        const select = elem => "\"" + elem + "\"";
         const lines = [];
         for (let i = 0; i < table.length; i++) {
-            const quote = table[i].map(function(elem) { return "\"" + elem + "\""; });
-            lines.push("[ " + quote.join(", ") + " ],");
+            lines.push("[ " + table[i].map(select).join(", ") + " ],");
         }
         return this._getArray("table", lines);
     },
@@ -128,7 +128,7 @@ Generator.prototype = {
         const lines = [];
         for (let i = 0; i < nonterms.length; i++) {
             const name = nonterms[i];
-            const rules = tree.children.filter(function(elem) { return elem.symbols[0] == name; });
+            const rules = tree.children.filter(elem => elem.symbols[0] == name);
             if (0 < rules.length) {
                 for (let j = 0; j < rules.length; j++) {
                     lines.push("// " + this._getDefinition(rules[j]));
@@ -148,7 +148,7 @@ Generator.prototype = {
         }
 
         // concatenation of child elements
-        const symbols = tree.children.map(function(elem) { return this._getDefinition(elem); }, this);
+        const symbols = tree.children.map(this._getDefinition, this);
         let delim = " ";
         if (tree.label == "Term" || tree.label == "Quot") {
             delim = "";

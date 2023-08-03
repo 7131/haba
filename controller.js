@@ -50,7 +50,7 @@ Controller.prototype = {
 
         // button events
         analyzeButton.addEventListener("click", this._analyze.bind(this), false);
-        this._map.forEach(function(value, key) { key.addEventListener("click", this._show.bind(this), false); }, this);
+        this._map.forEach((value, key) => key.addEventListener("click", this._show.bind(this), false));
     },
 
     // "Analyze" button process
@@ -92,7 +92,7 @@ Controller.prototype = {
         this._setTransition();
         this._setSyntax();
         this._setScript(result.tree);
-        this._map.forEach(function(value, key) { key.disabled = false; });
+        this._map.forEach((value, key) => key.disabled = false);
     },
 
     // show or hide the result
@@ -129,7 +129,7 @@ Controller.prototype = {
     // clear all results
     "_clearAll": function() {
         this._resultArea.innerHTML = "";
-        this._map.forEach(function(value, key) { this._clearResult(key); }, this);
+        this._map.forEach((value, key) => this._clearResult(key));
     },
 
     // clear a result
@@ -286,7 +286,7 @@ Controller.prototype = {
             // next symbols
             let next = document.createElement("td");
             let text = "";
-            closure.items[0].look.forEach(function(value) { text += value + " "; });
+            closure.items[0].look.forEach(elem => text += elem + " ");
             next.innerHTML = text.trim();
             row.appendChild(next);
 
@@ -303,7 +303,7 @@ Controller.prototype = {
                 // next symbols
                 next = document.createElement("td");
                 text = "";
-                closure.items[j].look.forEach(function(value) { text += value + " "; });
+                closure.items[j].look.forEach(elem => text += elem + " ");
                 next.innerHTML = text.trim();
                 row.appendChild(next);
             }

@@ -66,7 +66,7 @@ LrItem.prototype = {
 
     // add lookahead symbols
     "addLook": function(collection) {
-        collection.forEach(function(value) { this.look.add(value); }, this);
+        collection.forEach(elem => this.look.add(elem));
     },
 
     // get item string
@@ -101,7 +101,7 @@ const Closure = function(rules, represent) {
     this._creation = new Map();
     for (let i = 0; i < this.items.length; i++) {
         const key = this.items[i];
-        const value = this.items.filter(function(elem) { return elem.rule.symbol == key.next; });
+        const value = this.items.filter(elem => elem.rule.symbol == key.next);
         this._creation.set(key, value);
     }
 }
@@ -117,7 +117,7 @@ Closure.prototype = {
 
         // get next LR items
         const nexts = [];
-        const items = this.items.filter(function(elem) { return elem.next == symbol; });
+        const items = this.items.filter(elem => elem.next == symbol);
         for (let i = 0; i < items.length; i++) {
             const ahead = items[i].goAhead();
             if (ahead != null) {
@@ -148,7 +148,7 @@ Closure.prototype = {
             const current = this.items[i];
             const look = this._getNextLook(current, first);
             const items = this._creation.get(current);
-            items.forEach(function(value) { value.addLook(look); });
+            items.forEach(elem => elem.addLook(look));
         }
     },
 
@@ -168,7 +168,7 @@ Closure.prototype = {
     // set LR items
     "_setItems": function(current) {
         // whether it is the same as an existing item
-        if (this.items.some(function(elem) { return elem.equals(current); })) {
+        if (this.items.some(elem => elem.equals(current))) {
             return;
         }
 
@@ -193,6 +193,7 @@ Closure.prototype = {
         }
 
         // get next next symbols
+        const act = elem => follow.add(elem);
         let index = current.position + 1;
         while (index < current.rule.definition.length) {
             const next = current.rule.definition[index];
@@ -204,7 +205,7 @@ Closure.prototype = {
 
             // non-terminal symbol
             const symbols = first.get(next);
-            symbols.forEach(function(value) { follow.add(value); });
+            symbols.forEach(act);
             if (!symbols.has("&epsilon;")) {
                 // when not including epsilon transition
                 return follow;
@@ -216,7 +217,7 @@ Closure.prototype = {
         }
 
         // reach the end of production rule
-        current.look.forEach(function(value) { follow.add(value); });
+        current.look.forEach(act);
         return follow;
     },
 
@@ -237,7 +238,7 @@ Transition.prototype = {
     // create transition item relationships
     "_createRelation": function() {
         const relation = new Map();
-        const items = this.from.items.filter(function(elem) { return elem.next == this.symbol; }, this);
+        const items = this.from.items.filter(elem => elem.next == this.symbol);
         for (let i = 0; i < items.length; i++) {
             // before transition
             const prev = items[i];
@@ -262,9 +263,9 @@ Transition.prototype = {
 const SymbolSet = function(rules) {
     // non-terminal symbols
     const first = new Map();
-    rules.forEach(function(value) { first.set(value.symbol, new Set()); });
-    const nrs = rules.filter(function(elem) { return 0 < elem.definition.length && first.has(elem.definition[0]); });
-    const trs = rules.filter(function(elem) { return nrs.indexOf(elem) < 0; });
+    rules.forEach(elem => first.set(elem.symbol, new Set()));
+    const nrs = rules.filter(elem => 0 < elem.definition.length && first.has(elem.definition[0]));
+    const trs = rules.filter(elem => nrs.indexOf(elem) < 0);
 
     // FIRST set whose definition symbol starts with a terminal symbol
     for (let i = 0; i < trs.length; i++) {
@@ -283,14 +284,14 @@ const SymbolSet = function(rules) {
     // FIRST set whose definition symbol starts with a non-terminal symbol
     let before = 0;
     let after = 0;
-    first.forEach(function(value) { after += value.size; });
+    first.forEach(elem => after += elem.size);
     while (before < after) {
         for (let i = 0; i < nrs.length; i++) {
             this._addFirsts(first, nrs[i]);
         }
         before = after;
         after = 0;
-        first.forEach(function(value) { after += value.size; });
+        first.forEach(elem => after += elem.size);
     }
     this.first = first;
 }
@@ -313,7 +314,7 @@ SymbolSet.prototype = {
 
             // non-terminal symbol
             const other = first.get(symbol);
-            other.forEach(function(value) { self.add(value); });
+            other.forEach(elem => self.add(elem));
             if (!other.has("&epsilon;")) {
                 // when not including epsilon transition
                 return;
@@ -378,10 +379,10 @@ Compiler.prototype = {
         all.push("#0#");
 
         // get only rules where non-terminal symbol appears in definition
-        this.rules = rules.filter(function(elem) { return 0 <= all.indexOf(elem.symbol); });
+        this.rules = rules.filter(elem => 0 <= all.indexOf(elem.symbol));
 
         // returns the remaining invalid production rules
-        return rules.filter(function(elem) { return all.indexOf(elem.symbol) < 0; });
+        return rules.filter(elem => all.indexOf(elem.symbol) < 0);
     },
 
     // get all definition symbols
@@ -400,16 +401,17 @@ Compiler.prototype = {
         }
 
         // non-terminal symbols
-        let nonterms = this.rules.map(function(elem) { return elem.symbol; });
+        let nonterms = this.rules.map(elem => elem.symbol);
         nonterms = nonterms.filter(this._distinctArray);
         this.nonterminals = nonterms;
 
         // terminal symbols
         const used = this._getRuleSymbols(this.rules);
-        const terms = used.filter(function(elem) { return nonterms.indexOf(elem) < 0; });
-        const fix = terms.filter(function(elem) { return elem.charAt(0) == "'"; });
-        const flex = terms.filter(function(elem) { return elem.charAt(0) == "\""; });
-        const unknown = terms.filter(function(elem) { return elem.charAt(0) != "'" && elem.charAt(0) != "\""; });
+        const terms = used.filter(elem => nonterms.indexOf(elem) < 0);
+        const fix = terms.filter(elem => elem.charAt(0) == "'");
+        const flex = terms.filter(elem => elem.charAt(0) == "\"");
+        const find = elem => elem.charAt(0) != "'" && elem.charAt(0) != "\"";
+        const unknown = terms.filter(find);
         if (0 < unknown.length) {
             return "no definition of non-terminal symbol: " + unknown.join(" ");
         }
@@ -419,7 +421,7 @@ Compiler.prototype = {
 
         // definition symbols not used
         const dummies = this._getRuleSymbols(rest);
-        const unused = dummies.filter(function(elem) { return elem.charAt(0) != "'" && elem.charAt(0) != "\""; });
+        const unused = dummies.filter(find);
         if (0 < unused.length) {
             return "no definition of non-terminal symbol: " + unused.join(" ");
         }
@@ -430,13 +432,13 @@ Compiler.prototype = {
     // create closures
     "_createClosures": function(start, exists) {
         // whether it is the same as an existing closure
-        if (this.closures.some(function(elem) { return elem.equals(start); })) {
+        if (this.closures.some(elem => elem.equals(start))) {
             return;
         }
         this.closures.push(start);
 
         // get next symbols
-        const nexts = start.items.map(function(elem) { return elem.next; });
+        const nexts = start.items.map(elem => elem.next);
         const symbols = nexts.filter(this._distinctArray);
 
         // create a state transition
@@ -493,7 +495,7 @@ Compiler.prototype = {
             for (let i = 0; i < this.transitions.length; i++) {
                 const trans = this.transitions[i];
                 collections.clear();
-                trans.relation.forEach(function(value, key) { collections.set(value, key.look); });
+                trans.relation.forEach((value, key) => collections.set(value, key.look));
                 trans.to.addLookSet(collections, symbols.first);
             }
 
@@ -523,7 +525,7 @@ Compiler.prototype = {
         if (0 < error.size) {
             return "There are collisions.";
         }
-        const action = this.table[0].filter(function(elem) { return elem.charAt(0) == "s" || elem.charAt(0) == "r"; });
+        const action = this.table[0].filter(elem => elem.charAt(0) == "s" || elem.charAt(0) == "r");
         if (action.length == 0) {
             return "There is no shift or reduction from the start symbol.";
         }
@@ -534,11 +536,11 @@ Compiler.prototype = {
     "_setReduce": function(error) {
         for (let i = 0; i < this.closures.length; i++) {
             // closure number is line number
-            const reduce = this.closures[i].items.filter(function(elem) { return elem.next == ""; });
+            const reduce = this.closures[i].items.filter(elem => elem.next == "");
             for (let j = 0; j < reduce.length; j++) {
                 const item = reduce[j];
                 const look = [];
-                item.look.forEach(function(value) { look.push(value); });
+                item.look.forEach(elem => look.push(elem));
                 for (let k = 0; k < look.length; k++) {
                     const symbol = look[k];
                     const index = this.symbols.indexOf(symbol);
