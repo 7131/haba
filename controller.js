@@ -335,9 +335,8 @@ Controller.prototype = {
     // create the JavaScript program
     "_setScript": function(tree) {
         // add a copy button
-        const button = document.createElement("input");
-        button.type = "button";
-        button.value = "Copy";
+        const button = document.createElement("button");
+        button.innerText = "Copy";
         button.addEventListener("click", this._copy.bind(this), false);
         this._scriptArea.appendChild(button);
 
