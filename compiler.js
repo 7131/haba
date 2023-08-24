@@ -66,7 +66,7 @@ LrItem.prototype = {
 
     // add lookahead symbols
     "addLook": function(collection) {
-        collection.forEach(elem => this.look.add(elem));
+        collection.forEach(this.look.add, this.look);
     },
 
     // get item string
@@ -193,7 +193,6 @@ Closure.prototype = {
         }
 
         // get next next symbols
-        const act = elem => follow.add(elem);
         let index = current.position + 1;
         while (index < current.rule.definition.length) {
             const next = current.rule.definition[index];
@@ -205,7 +204,7 @@ Closure.prototype = {
 
             // non-terminal symbol
             const symbols = first.get(next);
-            symbols.forEach(act);
+            symbols.forEach(follow.add, follow);
             if (!symbols.has("&epsilon;")) {
                 // when not including epsilon transition
                 return follow;
@@ -217,7 +216,7 @@ Closure.prototype = {
         }
 
         // reach the end of production rule
-        current.look.forEach(act);
+        current.look.forEach(follow.add, follow);
         return follow;
     },
 
@@ -314,7 +313,7 @@ SymbolSet.prototype = {
 
             // non-terminal symbol
             const other = first.get(symbol);
-            other.forEach(elem => self.add(elem));
+            other.forEach(self.add, self);
             if (!other.has("&epsilon;")) {
                 // when not including epsilon transition
                 return;
@@ -539,8 +538,7 @@ Compiler.prototype = {
             const reduce = this.closures[i].items.filter(elem => elem.next == "");
             for (let j = 0; j < reduce.length; j++) {
                 const item = reduce[j];
-                const look = [];
-                item.look.forEach(elem => look.push(elem));
+                const look = Array.from(item.look);
                 for (let k = 0; k < look.length; k++) {
                     const symbol = look[k];
                     const index = this.symbols.indexOf(symbol);
