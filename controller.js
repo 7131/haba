@@ -190,8 +190,8 @@ Controller.prototype = {
         // child node
         const list = document.createElement("ul");
         item.appendChild(list);
-        for (let i = 0; i < tree.children.length; i++) {
-            this._setTree(list, tree.children[i]);
+        for (const child of tree.children) {
+            this._setTree(list, child);
         }
     },
 
@@ -199,8 +199,7 @@ Controller.prototype = {
     "_setElement": function() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.terminals.length; i++) {
-            const symbol = this._compiler.terminals[i];
+        for (const symbol of this._compiler.terminals) {
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
@@ -219,8 +218,7 @@ Controller.prototype = {
     "_setDummy": function() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.dummies.length; i++) {
-            const symbol = this._compiler.dummies[i];
+        for (const symbol of this._compiler.dummies) {
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
@@ -239,8 +237,7 @@ Controller.prototype = {
     "_setRule": function() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.rules.length; i++) {
-            const rule = this._compiler.rules[i];
+        for (const rule of this._compiler.rules) {
             table.push([ rule.toString() ]);
         }
 
@@ -258,9 +255,9 @@ Controller.prototype = {
         const head = document.createElement("tr");
         parent.appendChild(head);
         const title = [ "No.", "item", "next symbols" ];
-        for (let i = 0; i < title.length; i++) {
+        for (const label of title) {
             const th = document.createElement("th");
-            th.innerHTML = title[i];
+            th.innerHTML = label;
             head.appendChild(th);
         }
 
@@ -314,8 +311,7 @@ Controller.prototype = {
     "_setTransition": function() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.transitions.length; i++) {
-            const trans = this._compiler.transitions[i];
+        for (const trans of this._compiler.transitions) {
             const from = this._compiler.closures.indexOf(trans.from);
             const to = this._compiler.closures.indexOf(trans.to);
             table.push([ from, trans.symbol, to ]);
@@ -366,9 +362,9 @@ Controller.prototype = {
             let th = document.createElement("th");
             th.innerHTML = "No.";
             tr.appendChild(th);
-            for (let j = 0; j < title.length; j++) {
+            for (const label of title) {
                 th = document.createElement("th");
-                th.innerHTML = title[j];
+                th.innerHTML = label;
                 tr.appendChild(th);
             }
         }

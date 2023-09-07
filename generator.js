@@ -50,8 +50,7 @@ Generator.prototype = {
         const symbols = [];
         const fixes = /^'((''|[^'])+)'$/;
         const regex = /^"((""|[^"])+)"$/;
-        for (let i = 0; i < collection.length; i++) {
-            let text = collection[i];
+        for (let text of collection) {
             if (fixes.test(text)) {
                 // fixed string
                 const inside = fixes.exec(text)[1];
@@ -74,8 +73,7 @@ Generator.prototype = {
     // get a list of production rules
     "_getRules": function(rules) {
         const lines = [];
-        for (let i = 0; i < rules.length; i++) {
-            const rule = rules[i];
+        for (const rule of rules) {
             lines.push("\"" + rule.symbol + "=" + rule.definition.length + "\",");
         }
         return this._getArray("rules", lines);
@@ -85,8 +83,8 @@ Generator.prototype = {
     "_getTable": function(table) {
         const select = elem => "\"" + elem + "\"";
         const lines = [];
-        for (let i = 0; i < table.length; i++) {
-            lines.push("[ " + table[i].map(select).join(", ") + " ],");
+        for (const row of table) {
+            lines.push("[ " + row.map(select).join(", ") + " ],");
         }
         return this._getArray("table", lines);
     },
@@ -111,9 +109,8 @@ Generator.prototype = {
     // get block
     "_getBlock": function(collection) {
         const lines = [];
-        for (let i = 0; i < collection.length; i++) {
+        for (const text of collection) {
             // indent
-            const text = collection[i];
             if (text.trim() == "") {
                 lines.push("");
             } else {
@@ -126,12 +123,11 @@ Generator.prototype = {
     // get syntax converters
     "_getConverters": function(nonterms, tree) {
         const lines = [];
-        for (let i = 0; i < nonterms.length; i++) {
-            const name = nonterms[i];
+        for (const name of nonterms) {
             const rules = tree.children.filter(elem => elem.symbols[0] == name);
             if (0 < rules.length) {
-                for (let j = 0; j < rules.length; j++) {
-                    lines.push("// " + this._getDefinition(rules[j]));
+                for (const rule of rules) {
+                    lines.push("// " + this._getDefinition(rule));
                 }
                 lines.push("\"" + name + "\": function(tree) {");
                 lines.push("},");

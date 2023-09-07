@@ -93,14 +93,13 @@ const Closure = function(rules, represent) {
 
     // properties
     this.items = [];
-    for (let i = 0; i < this.represent.length; i++) {
-        this._setItems(this.represent[i]);
+    for (const item of this.represent) {
+        this._setItems(item);
     }
 
     // get the next items for each item
     this._creation = new Map();
-    for (let i = 0; i < this.items.length; i++) {
-        const key = this.items[i];
+    for (const key of this.items) {
         const value = this.items.filter(elem => elem.rule.symbol == key.next);
         this._creation.set(key, value);
     }
@@ -117,9 +116,8 @@ Closure.prototype = {
 
         // get next LR items
         const nexts = [];
-        const items = this.items.filter(elem => elem.next == symbol);
-        for (let i = 0; i < items.length; i++) {
-            const ahead = items[i].goAhead();
+        for (const item of this.items.filter(elem => elem.next == symbol)) {
+            const ahead = item.goAhead();
             if (ahead != null) {
                 nexts.push(ahead);
             }
@@ -135,8 +133,7 @@ Closure.prototype = {
     // add lookahead set
     "addLookSet": function(collections, first) {
         // set lookahead set for representative items
-        for (let i = 0; i < this.represent.length; i++) {
-            const item = this.represent[i];
+        for (const item of this.represent) {
             if (!collections.has(item)) {
                 return;
             }
@@ -144,8 +141,7 @@ Closure.prototype = {
         }
 
         // propagate to derived items
-        for (let i = 0; i < this.items.length; i++) {
-            const current = this.items[i];
+        for (const current of this.items) {
             const look = this._getNextLook(current, first);
             const items = this._creation.get(current);
             items.forEach(elem => elem.addLook(look));
@@ -176,8 +172,7 @@ Closure.prototype = {
         this.items.push(current);
 
         // production rule starting with the following symbol
-        for (let i = 0; i < this._rules.length; i++) {
-            const rule = this._rules[i];
+        for (const rule of this._rules) {
             if (rule.symbol == current.next) {
                 this._setItems(new LrItem(rule, 0));
             }
@@ -238,18 +233,17 @@ Transition.prototype = {
     "_createRelation": function() {
         const relation = new Map();
         const items = this.from.items.filter(elem => elem.next == this.symbol);
-        for (let i = 0; i < items.length; i++) {
+        for (const prev of items) {
             // before transition
-            const prev = items[i];
             let next = null;
-            let j = 0;
-            while (next == null && j < this.to.items.length) {
-                const candidate = this.to.items[j];
+            let i = 0;
+            while (next == null && i < this.to.items.length) {
+                const candidate = this.to.items[i];
                 if (candidate.rule == prev.rule && candidate.position == prev.position + 1) {
                     // after transition
                     next = candidate;
                 }
-                j++;
+                i++;
             }
             relation.set(prev, next);
         }
@@ -267,8 +261,7 @@ const SymbolSet = function(rules) {
     const trs = rules.filter(elem => nrs.indexOf(elem) < 0);
 
     // FIRST set whose definition symbol starts with a terminal symbol
-    for (let i = 0; i < trs.length; i++) {
-        const rule = trs[i];
+    for (const rule of trs) {
         let term = "&epsilon;";
         if (0 < rule.definition.length) {
             // terminal symbol
@@ -285,8 +278,8 @@ const SymbolSet = function(rules) {
     let after = 0;
     first.forEach(elem => after += elem.size);
     while (before < after) {
-        for (let i = 0; i < nrs.length; i++) {
-            this._addFirsts(first, nrs[i]);
+        for (const rule of nrs) {
+            this._addFirsts(first, rule);
         }
         before = after;
         after = 0;
@@ -387,8 +380,8 @@ Compiler.prototype = {
     // get all definition symbols
     "_getRuleSymbols": function(rules) {
         const symbols = [];
-        for (let i = 0; i < rules.length; i++) {
-            Array.prototype.push.apply(symbols, rules[i].definition);
+        for (const rule of rules) {
+            Array.prototype.push.apply(symbols, rule.definition);
         }
         return symbols.filter(this._distinctArray);
     },
@@ -441,8 +434,7 @@ Compiler.prototype = {
         const symbols = nexts.filter(this._distinctArray);
 
         // create a state transition
-        for (let i = 0; i < symbols.length; i++) {
-            const symbol = symbols[i];
+        for (const symbol of symbols) {
             let ahead = start.goAhead(symbol);
             if (ahead != null) {
                 // whether the closure already exists
@@ -476,8 +468,8 @@ Compiler.prototype = {
 
         // get all items
         const all = [];
-        for (let i = 0; i < this.closures.length; i++) {
-            Array.prototype.push.apply(all, this.closures[i].items);
+        for (const closure of this.closures) {
+            Array.prototype.push.apply(all, closure.items);
         }
 
         // add a lookahead set to the first closure
@@ -491,8 +483,7 @@ Compiler.prototype = {
         let before = 0;
         let after = all.reduce(this._sumLookSize, 0);
         while (before < after) {
-            for (let i = 0; i < this.transitions.length; i++) {
-                const trans = this.transitions[i];
+            for (const trans of this.transitions) {
                 collections.clear();
                 trans.relation.forEach((value, key) => collections.set(value, key.look));
                 trans.to.addLookSet(collections, symbols.first);
@@ -536,11 +527,8 @@ Compiler.prototype = {
         for (let i = 0; i < this.closures.length; i++) {
             // closure number is line number
             const reduce = this.closures[i].items.filter(elem => elem.next == "");
-            for (let j = 0; j < reduce.length; j++) {
-                const item = reduce[j];
-                const look = Array.from(item.look);
-                for (let k = 0; k < look.length; k++) {
-                    const symbol = look[k];
+            for (const item of reduce) {
+                for (const symbol of item.look) {
                     const index = this.symbols.indexOf(symbol);
                     const action = "r" + this.rules.indexOf(item.rule);
                     if (this.table[i][index] == "") {
@@ -562,8 +550,7 @@ Compiler.prototype = {
 
     // set shifts and transitions
     "_setShift": function(error) {
-        for (let i = 0; i < this.transitions.length; i++) {
-            const trans = this.transitions[i];
+        for (const trans of this.transitions) {
             const from = this.closures.indexOf(trans.from);
             const index = this.symbols.indexOf(trans.symbol);
             let action = this.closures.indexOf(trans.to);

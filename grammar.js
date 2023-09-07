@@ -100,9 +100,9 @@ const Converter = {
 
     // Gram ::= Rule+ ;
     "Gram": function(tree) {
-        for (let i = 0; i < tree.children.length; i++) {
-            this._addSymbols(tree, tree.children[i].symbols);
-            this._addRules(tree, tree.children[i].rules);
+        for (const child of tree.children) {
+            this._addSymbols(tree, child.symbols);
+            this._addRules(tree, child.rules);
         }
         this._number = 0;
     },
@@ -149,9 +149,9 @@ const Converter = {
 
     // List ::= Term+ ;
     "List": function(tree) {
-        for (let i = 0; i < tree.children.length; i++) {
-            this._addSymbols(tree, tree.children[i].symbols);
-            this._addRules(tree, tree.children[i].rules);
+        for (const child of tree.children) {
+            this._addSymbols(tree, child.symbols);
+            this._addRules(tree, child.rules);
         }
     },
 
