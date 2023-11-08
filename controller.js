@@ -111,19 +111,7 @@ Controller.prototype = {
 
     // copy to clipboard
     "_copy": function(e) {
-        // create a range from the element
-        const text = e.currentTarget.nextSibling.firstChild;
-        const range = document.createRange();
-        range.selectNode(text);
-
-        // select a range
-        const current = window.getSelection();
-        current.removeAllRanges();
-        current.addRange(range);
-
-        // copy
-        document.execCommand("copy");
-        current.removeAllRanges();
+        window.navigator.clipboard.writeText(e.currentTarget.nextSibling.textContent);
     },
 
     // clear all results
