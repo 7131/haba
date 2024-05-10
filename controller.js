@@ -6,14 +6,14 @@ const Controller = function() {
     this._generator = new Generator();
 
     // events
-    window.addEventListener("load", this._initialize.bind(this), false);
+    window.addEventListener("load", this._initialize.bind(this));
 }
 
 // Controller prototype
 Controller.prototype = {
 
     // initialize the private fields
-    "_initialize": function() {
+    "_initialize": function(e) {
         // DOM elements
         this._resultArea = document.getElementById("result");
         this._treeArea = document.getElementById("tree");
@@ -49,8 +49,8 @@ Controller.prototype = {
         this._clearAll();
 
         // button events
-        analyzeButton.addEventListener("click", this._analyze.bind(this), false);
-        this._map.forEach((value, key) => key.addEventListener("click", this._show.bind(this), false));
+        analyzeButton.addEventListener("click", this._analyze.bind(this));
+        this._map.forEach((value, key) => key.addEventListener("click", this._show.bind(this)));
     },
 
     // "Analyze" button process
@@ -321,7 +321,7 @@ Controller.prototype = {
         // add a copy button
         const button = document.createElement("button");
         button.innerText = "Copy";
-        button.addEventListener("click", this._copy.bind(this), false);
+        button.addEventListener("click", this._copy.bind(this));
         this._scriptArea.appendChild(button);
 
         // write

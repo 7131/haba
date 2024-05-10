@@ -14,14 +14,14 @@ const Controller = function() {
     this._generator = new Generator();
 
     // events
-    window.addEventListener("load", this._initialize.bind(this), false);
+    window.addEventListener("load", this._initialize.bind(this));
 }
 
 // Controller prototype
 Controller.prototype = {
 
     // initialize the private fields
-    "_initialize": function() {
+    "_initialize": function(e) {
         this._rows = document.getElementById("patterns").rows;
         for (let i = 1; i < this._rows.length; i++) {
             // No.
@@ -32,7 +32,7 @@ Controller.prototype = {
             // expected values
             const expects = this._rows[i].cells[ColNum.EXPECT].childNodes;
             expects[0].id = "view-" + i;
-            expects[0].addEventListener("click", this._show.bind(this), false);
+            expects[0].addEventListener("click", this._show.bind(this));
             expects[1].htmlFor = expects[0].id;
             expects[2].id = "code-" + i;
         }
@@ -49,7 +49,7 @@ Controller.prototype = {
 
         // button events
         const execute = document.getElementById("execute");
-        execute.addEventListener("click", this._start.bind(this), false);
+        execute.addEventListener("click", this._start.bind(this));
     },
 
     // show or hide the result

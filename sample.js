@@ -4,20 +4,20 @@ const Controller = function() {
     this._parser = new Parser(Grammar, Converter);
 
     // events
-    window.addEventListener("load", this._initialize.bind(this), false);
+    window.addEventListener("load", this._initialize.bind(this));
 }
 
 // Controller prototype
 Controller.prototype = {
 
     // initialize the private fields
-    "_initialize": function() {
+    "_initialize": function(e) {
         // DOM elements
         this._resultArea = document.getElementById("result");
         const executeButton = document.getElementById("execute");
 
         // button events
-        executeButton.addEventListener("click", this._execute.bind(this), false);
+        executeButton.addEventListener("click", this._execute.bind(this));
     },
 
     // "Execute" button process
