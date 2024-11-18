@@ -1,48 +1,43 @@
 # House Arranged BNF Analyzer
 
+https://7131.github.io/haba/
+
 This is a LALR(1) parser.
 You can analyze BNF-like grammars and get syntax trees, parsing tables, and JavaScript programs based on them.
-The generated JavaScript program can be parsed by parser.js located here.
-Please refer to sample.html and sample.js for how to use it.
 
-# File list
+The generated program has a Grammar object and a Converter object.
+The Grammar object contains terminal symbols, production rules, parsing table, etc.
+The Converter object defines only frames of functions with the same name as the non-terminal symbols.
+So you must implement the contents of the functions.
 
-<dl>
-  <dt>index.html</dt>
-    <dd>This is the main page for HABA.</dd>
-  <dt>default.css</dt>
-    <dd>The style sheet for the main page.</dd>
-  <dt>grammar.js</dt>
-    <dd>The grammar object and the syntax converter.</dd>
-  <dt>parser.js</dt>
-    <dd>Classes for parser, token, syntax tree, and state stack.</dd>
-  <dt>compiler.js</dt>
-    <dd>Classes for compiler, production rule, LR item, closure, state transition, and symbol set.</dd>
-  <dt>generator.js</dt>
-    <dd>This is a generator that generates a JavaScript program from the syntax tree and processing results.</dd>
-  <dt>controller.js</dt>
-    <dd>This is a controller that receives the input of the main page and outputs the analysis result.</dd>
-  <dt>notation.html</dt>
-    <dd>This page explains how to write HABA.</dd>
-  <dt>notation.css</dt>
-    <dd>The style sheet for the notation page.</dd>
-  <dt>explanation.html</dt>
-    <dd>This page explains the details of HABA analysis.</dd>
-  <dt>sample.html</dt>
-    <dd>This is a sample page of HABA grammar.</dd>
-  <dt>sample.js</dt>
-    <dd>This is a controller that receives the input of the sample page and outputs the result.</dd>
-  <dt>multi.js</dt>
-    <dd>This is a sample grammar that accepts multiple additions.</dd>
-  <dt>test.html</dt>
-    <dd>This is a page for testing HABA.</dd>
-  <dt>test.css</dt>
-    <dd>The style sheet for the test page.</dd>
-  <dt>test.js</dt>
-    <dd>This is a controller that receives the input of the test page and outputs the test result to the table.</dd>
-</dl>
+# How to use the generated program
 
-# Why another new grammar?
+First, save the program to a file (e.g., mygrammar.js).
+To use from HTML, load the saved file and HABA's own parser (parser.js).
+
+```HTML
+<script src="./mygrammar.js"></script>
+<script src="./parser.js"></script>
+```
+
+The generated objects are passed as arguments to the constructor of the Parser object in parser.js.
+
+```JavaScript
+const parser = new Parser(Grammar, Converter);
+```
+
+You can now perform lexical and syntactic analysis.
+
+```JavaScript
+const result = parser.tokenize("...");
+const outcome = parser.parse(result.tokens);
+```
+
+Passing the input string to the tokenize() method returns a token array, and passing the token array to the parse() method returns a syntax tree.
+You can process the syntax tree according to your grammar.
+See also sample.html and sample.js (and multi.js) for an example of actual use.
+
+# Why another new BNF-like grammar?
 
 The grammar which extended BNF is used here.
 It is neither ABNF nor EBNF.
