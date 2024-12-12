@@ -62,19 +62,19 @@ Controller.prototype = {
         this._generator.ignoreCase = ignoreCheck.checked;
 
         // lexical and syntax analyze
-        let result = this._parser.tokenize(grammarArea.value);
+        const result = this._parser.tokenize(grammarArea.value);
         if (result.tokens == null) {
             this._setError("unknown character(s)", result.valid, result.invalid);
             return;
         }
-        result = this._parser.parse(result.tokens);
-        if (result.tree == null) {
-            this._setError("syntax error", result.valid, result.invalid);
+        const outcome = this._parser.parse(result.tokens);
+        if (outcome.tree == null) {
+            this._setError("syntax error", outcome.valid, outcome.invalid);
             return;
         }
 
         // compile
-        const message = this._compiler.execute(result.tree.rules);
+        const message = this._compiler.execute(outcome.tree.rules);
         if (message != "") {
             this._setError("compile error", "", message);
         } else {
@@ -84,14 +84,14 @@ Controller.prototype = {
         }
 
         // set the results
-        this._setTree(this._treeArea, result.tree);
+        this._setTree(this._treeArea, outcome.tree);
         this._setElement();
         this._setDummy();
         this._setRule();
         this._setClosures();
         this._setTransition();
         this._setSyntax();
-        this._setScript(result.tree);
+        this._setScript(outcome.tree);
         this._map.forEach((value, key) => key.disabled = false);
     },
 
@@ -251,7 +251,7 @@ Controller.prototype = {
 
         // values
         for (let i = 0; i < this._compiler.closures.length; i++) {
-            let row = document.createElement("tr");
+            const row = document.createElement("tr");
             parent.appendChild(row);
 
             // No.
@@ -264,12 +264,12 @@ Controller.prototype = {
             row.appendChild(num);
 
             // item
-            let item = document.createElement("td");
+            const item = document.createElement("td");
             item.innerHTML = closure.items[0].getItem();
             row.appendChild(item);
 
             // next symbols
-            let next = document.createElement("td");
+            const next = document.createElement("td");
             let text = "";
             closure.items[0].look.forEach(elem => text += elem + " ");
             next.innerHTML = text.trim();
@@ -277,20 +277,20 @@ Controller.prototype = {
 
             // from the second time
             for (let j = 1; j < count; j++) {
-                row = document.createElement("tr");
-                parent.appendChild(row);
+                const tr = document.createElement("tr");
+                parent.appendChild(tr);
 
                 // item
-                item = document.createElement("td");
-                item.innerHTML = closure.items[j].getItem();
-                row.appendChild(item);
+                const td = document.createElement("td");
+                td.innerHTML = closure.items[j].getItem();
+                tr.appendChild(td);
 
                 // next symbols
-                next = document.createElement("td");
-                text = "";
-                closure.items[j].look.forEach(elem => text += elem + " ");
-                next.innerHTML = text.trim();
-                row.appendChild(next);
+                const ahead = document.createElement("td");
+                let symbol = "";
+                closure.items[j].look.forEach(elem => symbol += elem + " ");
+                ahead.innerHTML = symbol.trim();
+                tr.appendChild(ahead);
             }
         }
     },
@@ -347,11 +347,11 @@ Controller.prototype = {
             parent.appendChild(tr);
 
             // add the No. column
-            let th = document.createElement("th");
-            th.innerHTML = "No.";
-            tr.appendChild(th);
+            const num = document.createElement("th");
+            num.innerHTML = "No.";
+            tr.appendChild(num);
             for (const label of title) {
-                th = document.createElement("th");
+                const th = document.createElement("th");
                 th.innerHTML = label;
                 tr.appendChild(th);
             }
@@ -364,12 +364,12 @@ Controller.prototype = {
             parent.appendChild(tr);
 
             // add the No.
-            let td = document.createElement("td");
-            td.innerHTML = i + start;
-            td.className = "number";
-            tr.appendChild(td);
+            const num = document.createElement("td");
+            num.innerHTML = i + start;
+            num.className = "number";
+            tr.appendChild(num);
             for (let j = 0; j < row.length; j++) {
-                td = document.createElement("td");
+                const td = document.createElement("td");
                 td.innerHTML = row[j];
                 if (type[j] != null) {
                     td.className = type[j];

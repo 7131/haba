@@ -87,28 +87,28 @@ Controller.prototype = {
     "_execute": function() {
         // lexical analysis
         const cell = this._rows[this._index].cells[ColNum.TARGET];
-        let result = this._parser.tokenize(cell.innerText);
+        const result = this._parser.tokenize(cell.innerText);
         if (result.tokens == null) {
             this._showResult("unknown character(s): " + result.invalid, "Lexical analysis");
             return;
         }
 
         // syntactic analysis
-        result = this._parser.parse(result.tokens);
-        if (result.tree == null) {
-            this._showResult("no action defined: " + result.invalid, "Syntactic analysis");
+        const outcome = this._parser.parse(result.tokens);
+        if (outcome.tree == null) {
+            this._showResult("no action defined: " + outcome.invalid, "Syntactic analysis");
             return;
         }
 
         // compile
-        const message = this._compiler.execute(result.tree.rules);
+        const message = this._compiler.execute(outcome.tree.rules);
         if (message != "") {
             this._showResult(message, "Compile");
             return;
         }
 
         // generate the JavaScript program
-        const script = this._generator.createScript(this._compiler, result.tree);
+        const script = this._generator.createScript(this._compiler, outcome.tree);
         this._showResult(script, "JavaScript program");
     },
 
@@ -140,7 +140,7 @@ Controller.prototype = {
         }
 
         // finished
-        let last = this._rows[this._rows.length - 1];
+        const last = this._rows[this._rows.length - 1];
         if (this._errors.length == 0) {
             last.cells[ColNum.RESULT].innerText = "All OK";
         } else {

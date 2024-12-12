@@ -393,8 +393,7 @@ Compiler.prototype = {
         }
 
         // non-terminal symbols
-        let nonterms = this.rules.map(elem => elem.symbol);
-        nonterms = nonterms.filter(this._distinctArray);
+        const nonterms = this.rules.map(elem => elem.symbol).filter(this._distinctArray);
         this.nonterminals = nonterms;
 
         // terminal symbols

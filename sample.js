@@ -27,20 +27,20 @@ Controller.prototype = {
 
         // lexical and syntax analyze
         const inputArea = document.getElementById("input");
-        let result = this._parser.tokenize(inputArea.value);
+        const result = this._parser.tokenize(inputArea.value);
         if (result.tokens == null) {
             this._setError("unknown character(s)", result.valid, result.invalid);
             return;
         }
-        result = this._parser.parse(result.tokens);
-        if (result.tree == null) {
-            this._setError("syntax error", result.valid, result.invalid);
+        const outcome = this._parser.parse(result.tokens);
+        if (outcome.tree == null) {
+            this._setError("syntax error", outcome.valid, outcome.invalid);
             return;
         }
 
         // set the results
         const success = document.createElement("li");
-        success.innerHTML = result.tree.result;
+        success.innerHTML = outcome.tree.result;
         this._resultArea.appendChild(success);
     },
 

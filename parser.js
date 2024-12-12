@@ -171,7 +171,7 @@ Parser.prototype = {
             const label = next.label;
 
             // execute an action
-            let action = this._table[stack.peekState()][label];
+            const action = this._table[stack.peekState()][label];
             if (!action) {
                 break;
             }
@@ -207,11 +207,11 @@ Parser.prototype = {
                 }
 
                 // transit
-                action = this._table[stack.peekState()][node.label];
-                if (!action) {
+                const goto = this._table[stack.peekState()][node.label];
+                if (!goto) {
                     break;
                 }
-                stack.push(node, action.number);
+                stack.push(node, goto.number);
             }
         }
 
