@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./default.css">
+<title>HABA parser</title>
+</head>
+
+<body>
+<nav id="top">
+<span><a href="./index.html">analysis</a></span>
+<span><a href="./notation.html">notation</a></span>
+<span><a href="./explanation.html">explanation</a></span>
+</nav>
+
+<article>
+<h1>HABA parser</h1>
+<p>The parser used to parse HABA grammars can also parse the grammar it outputs. Rather, it outputs JavaScript programs that can be parsed by itself.</p>
+
+<section>
+<h2>How to use</h2>
+<p>The parser is contained in a single file, <a href="./parser.js" download="parser.js">parser.js</a>, which can be downloaded and installed on your computer or server. To call it from HTML, write the following line in the &lt;head&gt; block to load the file.</p>
+<pre><code>&lt;script src="./parser.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>You can also load your own grammar program (e.g. <a href="./multi.js" download="multi.js">multi.js</a>) in the same way.</p>
+<pre><code>&lt;script src="./multi.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>The grammar program requires a Grammar object and a Converter object.</p>
+<p>You can then parse the strings by passing them to the Parser object with the &lt;script&gt; tag or in an external JavaScript file. For example, a program that performs lexical and syntactic analysis of an input string would look like this:</p>
+<pre><code>&lt;script&gt;
+const parser = new Parser(Grammar, Converter);
+const result = parser.tokenize(input);
+const outcome = parser.parse(result.tokens);
+&lt;/script&gt;
+</code></pre>
+</section>
+
+<section>
+<h2>Objects for parsing</h2>
+<p>When parser.js is loaded, the following objects are defined in the global namespace. Parser and Tree objects are used externally; all others are used internally only.</p>
+<dl>
+  <dt>Parser</dt>
+  <dd>This object performs lexical and syntactic analysis.</dd>
+  <dt>StateStack</dt>
+  <dd>This object is a stack that holds the state and parse tree simultaneously.</dd>
+  <dt>Token</dt>
+  <dd>This object holds the token after lexical analysis.</dd>
+  <dt>Tree</dt>
+  <dd>This object holds the parse tree after syntactic analysis.</dd>
+</dl>
+</section>
+
+<section>
+<h2>Parser</h2>
+<p>The constructor creates a new Parser object.</p>
+<pre><code>new Parser(grammar, converter)
+</code></pre>
+<dl>
+  <dt>grammar</dt>
+  <dd>A grammar object; requires flag, terminals, dummies, rules, and table properties.</dd>
+  <dd>Normally, the Grammar object output by HABA is used as is.</dd>
+  <dt>converter</dt>
+  <dd>A syntax converer; requires methods with the same name as the non-terminal symbol that appears in the grammar.</dd>
+  <dd>Normally, the Converter object output by HABA is processed and used.</dd>
+</dl>
+
+<h3>Parser.prototype.parse()</h3>
+<p>This is an instance method that performs syntactic analysis.</p>
+<pre><code>parse(tokens)
+</code></pre>
+<dl>
+  <dt>tokens</dt>
+  <dd>An array of tokens.</dd>
+  <dd>Normally, the tokens property of the return value of tokenize() is passed as is.</dd>
+</dl>
+<p>Returns an object with the following properties.</p>
+<dl>
+  <dt>invalid</dt>
+  <dd>This property exists when parsing fails, and contains the token string after the point of failure.</dd>
+  <dt>tree</dt>
+  <dd>If parsing succeeds, the resulting parse tree is stored, otherwise null is stored.</dd>
+  <dt>valid</dt>
+  <dd>This property exists when parsing fails, and contains the token string from the beginning to the successful portion.</dd>
+</dl>
+</section>
+
+<h3>Parser.prototype.tokenize()</h3>
+<p>This is an instance method that performs lexical analysis.</p>
+<pre><code>tokenize(text)
+</code></pre>
+<dl>
+  <dt>text</dt>
+  <dd>Input string to be analyzed.</dd>
+</dl>
+<p>Returns an object with the following properties.</p>
+<dl>
+  <dt>invalid</dt>
+  <dd>This property exists when tokenization fails, and contains the input string after the point of failure.</dd>
+  <dt>tokens</dt>
+  <dd>If tokenization succeeds, the resulting list of tokens is stored, otherwise null is stored.</dd>
+  <dt>valid</dt>
+  <dd>This property exists when tokenization fails, and contains the token string from the beginning to the successful portion.</dd>
+</dl>
+
+<section>
+<h2>Tree</h2>
+<p>Syntax tree. This is not created anew, but is the result of a call to the parse() method.</p>
+
+<h3>Tree.prototype.children</h3>
+<p>An array of the direct children of this element. All child elements are Tree objects.</p>
+
+<h3>Tree.prototype.label</h3>
+<p>A terminal or non-terminal symbol that is defined by grammar.</p>
+
+<h3>Tree.prototype.text</h3>
+<p>If the label property is a terminal symbol, its input string is stored, otherwise it is an empty string.</p>
+
+<h3>Other properties</h3>
+<p>Depending on the implementation of the Converter object, new properties are added to the Tree object or existing properties are modified. For the Num method contained in the Converter object of the addition grammar shown in the <a href="./explanation.html">explanation</a>,</p>
+<div class="script">
+<pre>
+// Num ::= "[0-9]+" ;
+"Num": function(tree) {
+},
+</pre>
+</div>
+<p>the argument tree is as follows:</p>
+<pre>
+tree = {
+    children: [
+        0: tree = {
+            children: [],
+            label: "'[0-9]+'",
+            text: "1"
+        }
+    ],
+    label: "Num",
+    text: ""
+}
+</pre>
+<p>Since the parent tree represents the non-terminal symbol Num, its label property is "Num" and its text property is an empty string. Its children property is the definition part of the Num rule, which in this case contains only the terminal symbol "[0-9]+". The value "1" for the text property is the string that was actually entered.</p>
+<p>The addition process requires only the text "1", which is converted to the number 1 and added as the result property of the parent tree.</p>
+<div class="script">
+<pre>
+// Num ::= "[0-9]+" ;
+"Num": function(tree) {
+    tree.result = parseInt(tree.children[0].text, 10);
+},
+</pre>
+</div>
+<p>Next, the Multi method,</p>
+<div class="script">
+<pre>
+// Multi ::= Num ('+' Num)* ;
+"Multi": function(tree) {
+},
+</pre>
+</div>
+<p>the argument tree is as follows:</p>
+<pre>
+tree = {
+    children: [
+        0: tree = {
+            children: [...],
+            label: "Num",
+            result: 1,
+            text: ""
+        },
+        1: tree = {
+            children: [],
+            label: "'+'",
+            text: "+"
+        },
+        2: tree = {
+            children: [...],
+            label: "Num",
+            result: 2,
+            text: ""
+        }
+    ],
+    label: "Multi",
+    text: ""
+}
+</pre>
+<p>Since the method of the child element Num is called first, its tree already has the result property.</p>
+<p>Here we calculate 1 + 2. Addition can continue as 1 + 2 + 3, in which case the number of elements in the children increases. Thus, adding all the values of the 0th, 2nd, 4th, ... of the child elements are all added together to obtain the overall result.</p>
+<div class="script">
+<pre>
+// Multi ::= Num ('+' Num)* ;
+"Multi": function(tree) {
+    tree.result = tree.children[0].result;
+    for (let i = 2; i < tree.children.length; i += 2) {
+        tree.result += tree.children[i].result;
+    }
+},
+</pre>
+</div>
+<p>The result is now stored in outcome.tree.result in the return value of the parse() method.</p>
+</section>
+
+</article>
+</body>
+
+</html>

@@ -17,7 +17,6 @@
 
 <article>
 <h1>HABA explanation</h1>
-<div>
 <p>HABA is a LALR(1) parser. When you press "Analyze" button, the lexical analysis and the syntactic analysis will be performed on the input string to create a syntax tree. It is converted into production rules, terminal symbols are extracted, and lexical analysis elements and dummy elements are obtained. Closures, state transitions, and parsing tables are also created from the production rules, and finally the grammar is output as a JavaScript program.</p>
 <p>This page uses the following addition grammar as an input string as a sample.</p>
 <pre class="rule">
@@ -26,7 +25,6 @@ Num ::= "[0-9]+" ;
 Space ::= "\s+" ;
 </pre>
 <p>"Ignore case" is not set here as it only affects the final JavaScript output.</p>
-</div>
 
 <section>
 <h2>Result and syntax tree</h2>
@@ -110,7 +108,7 @@ Space ::= "\s+" ;
 <h2>Lexical analysis elements and dummy elements</h2>
 <p>The terminal symbols are extracted from the syntax tree and listed.</p>
 <table>
-  <tr><th>No.</th><th>type</th><th>element</th></tr>
+  <tr><th>priority</th><th>type</th><th>element</th></tr>
   <tr><td class="number">1</td><td>Fixed</td><td>'+'</td></tr>
   <tr><td class="number">2</td><td>RegExp</td><td>"[0-9]+"</td></tr>
 </table>
@@ -128,7 +126,7 @@ IfState ::= 'if' Expr 'then' Expr ;
 <h2>Production rules</h2>
 <p>Production rules are extracted from the syntax tree, expanded and listed.</p>
 <table>
-  <tr><th>No.</th><th>expanded rule</th></tr>
+  <tr><th>number</th><th>expanded rule</th></tr>
   <tr><td class="number">0</td><td>#0# ::= Multi ;</td></tr>
   <tr><td class="number">1</td><td>Multi ::= Num #1# ;</td></tr>
   <tr><td class="number">2</td><td>#1# ::= #1# '+' Num ;</td></tr>
@@ -165,7 +163,7 @@ Space ::= "\s+" ;
 <h2>Closures and state transitions</h2>
 <p>First, we create an LR(0) closures and its state transitions by a closure operation from the production rules. After that, all LR(0) items will be converted to LR(1) items by adding "next symbols" in order, and listed as a closure.</p>
 <table class="top">
-  <tr><th>No.</th><th>item</th><th>next symbols</th></tr>
+  <tr><th>number</th><th>item</th><th>next symbols</th></tr>
   <tr><td rowspan="3" class="number">0</td><td>#0# ::= &bull; Multi</td><td>$</td></tr>
   <tr><td>Multi ::= &bull; Num #1#</td><td>$</td></tr>
   <tr><td>Num ::= &bull; "[0-9]+"</td><td>'+' $</td></tr>
@@ -183,23 +181,23 @@ Space ::= "\s+" ;
 <p>&bull; is the analysis position. Although $ is a terminal symbol that represents the end of a sentence, it also can not be entered, so it does not overlap with other terminal symbols.</p>
 <p>The state transitions are as follows.</p>
 <table>
-  <tr><th>No.</th><th>from</th><th>symbol</th><th>to</th></tr>
-  <tr><td class="number">1</td><td class="number">0</td><td>Multi</td><td class="number">1</td></tr>
-  <tr><td class="number">2</td><td class="number">0</td><td>Num</td><td class="number">2</td></tr>
-  <tr><td class="number">3</td><td class="number">2</td><td>#1#</td><td class="number">3</td></tr>
-  <tr><td class="number">4</td><td class="number">3</td><td>'+'</td><td class="number">4</td></tr>
-  <tr><td class="number">5</td><td class="number">4</td><td>Num</td><td class="number">5</td></tr>
-  <tr><td class="number">6</td><td class="number">4</td><td>"[0-9]+"</td><td class="number">6</td></tr>
-  <tr><td class="number">7</td><td class="number">0</td><td>"[0-9]+"</td><td class="number">6</td></tr>
+  <tr><th>from</th><th>symbol</th><th>to</th></tr>
+  <tr><td class="number">0</td><td>Multi</td><td class="number">1</td></tr>
+  <tr><td class="number">0</td><td>Num</td><td class="number">2</td></tr>
+  <tr><td class="number">2</td><td>#1#</td><td class="number">3</td></tr>
+  <tr><td class="number">3</td><td>'+'</td><td class="number">4</td></tr>
+  <tr><td class="number">4</td><td>Num</td><td class="number">5</td></tr>
+  <tr><td class="number">4</td><td>"[0-9]+"</td><td class="number">6</td></tr>
+  <tr><td class="number">0</td><td>"[0-9]+"</td><td class="number">6</td></tr>
 </table>
-<p>The from and to numbers are closure numbers. The state transition number has no meaning. In this example, there are 7 closures and 7 state transitions, which are the same number, but generally different numbers. Symbols can be terminal or non-terminal.</p>
+<p>The from and to numbers are closure numbers. Symbols can be terminal or non-terminal.</p>
 </section>
 
 <section>
 <h2>Parsing table</h2>
 <p>A parsing table is created based on closures and state transitions.</p>
 <table>
-  <tr><th>No.</th><th>'+'</th><th>"[0-9]+"</th><th>$</th><th>Multi</th><th>#1#</th><th>Num</th></tr>
+  <tr><th>number</th><th>'+'</th><th>"[0-9]+"</th><th>$</th><th>Multi</th><th>#1#</th><th>Num</th></tr>
   <tr><td class="number">0</td><td></td><td>s6</td><td></td><td>g1</td><td></td><td>g2</td></tr>
   <tr><td class="number">1</td><td></td><td></td><td>r0</td><td></td><td></td><td></td></tr>
   <tr><td class="number">2</td><td>r3</td><td></td><td>r3</td><td></td><td>g3</td><td></td></tr>
@@ -208,7 +206,7 @@ Space ::= "\s+" ;
   <tr><td class="number">5</td><td>r2</td><td></td><td>r2</td><td></td><td></td><td></td></tr>
   <tr><td class="number">6</td><td>r4</td><td></td><td>r4</td><td></td><td></td><td></td></tr>
 </table>
-<p>This number is the same as the state number, or closure number. When the transition symbol is a terminal symbol, it is shifted to the next state, so the action symbol is s + the to number. When the transition symbol is a non-terminal symbol, it simply goes to the next state, so the action symbol is g + the to number.</p>
+<p>This number is the state number, or closure number. When the transition symbol is a terminal symbol, it is shifted to the next state, so the action symbol is s + the to number. When the transition symbol is a non-terminal symbol, it simply goes to the next state, so the action symbol is g + the to number.</p>
 <p>If the analysis position of the item is at the right end of the production rule and no state transition occurs, reduction will be performed for the "next symbols". The action symbol in this case is r + rule number. In particular, the reduction of r0 represents acceptance. The starting state is 0.</p>
 </section>
 
@@ -288,7 +286,7 @@ const Converter = {
 }
 </pre>
 </div>
-<p>These programs can be parsed by HABA's own parser. Please check <a href="./sample.html">the sample page.</a></p>
+<p>These programs can be parsed by HABA's own <a href="./parser.html">parser</a>. Please check <a href="./sample.html">the sample page.</a></p>
 </section>
 
 </article>

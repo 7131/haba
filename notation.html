@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" type="text/css" href="./notation.css">
+<link rel="stylesheet" type="text/css" href="./default.css">
 <title>HABA notation</title>
 </head>
 
@@ -17,9 +17,7 @@
 
 <article>
 <h1>HABA notation</h1>
-<div>
 <p>HABA handles context-free grammar. Grammar is generally expressed in terms of terminal symbols, non-terminal symbols, production rules, and a start symbol.</p>
-</div>
 
 <section>
 <h2>Production rules</h2>
@@ -27,7 +25,7 @@
 <pre>
 name ::= definition ;
 </pre>
-<p>The rule name is one non-terminal symbol. A rule definition consists of zero or more terminal and non-terminal symbols.</p>
+<p>The rule name is one non-terminal symbol. The rule definition consists of zero or more terminal and non-terminal symbols.</p>
 <p>When there are multiple production rules, the rule name of the first rule is used as the start symbol. For example, if there is the following sequence of rules,</p>
 <pre>
 Plus ::= Num '+' Num ;
@@ -143,9 +141,9 @@ Expr ::= Term ;
 <p>If you want to change the interpretation priority in the rule definition, enclose the symbols in parentheses. The order of priority when not grouping is as follows.</p>
 <table class="border">
   <tr><th>priority</th><th>element</th><th>example</th></tr>
-  <tr><td class="symbol">1</td><td>Repetition</td><td>Term*</td></tr>
-  <tr><td class="symbol">2</td><td>Concatenation</td><td>Term1 Term2</td></tr>
-  <tr><td class="symbol">3</td><td>Alternatives</td><td>Term1 | Term2</td></tr>
+  <tr><td class="number">1</td><td>Repetition</td><td>Term*</td></tr>
+  <tr><td class="number">2</td><td>Concatenation</td><td>Term1 Term2</td></tr>
+  <tr><td class="number">3</td><td>Alternatives</td><td>Term1 | Term2</td></tr>
 </table>
 <p>For example,</p>
 <pre>

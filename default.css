@@ -44,18 +44,37 @@ table tr td {
     padding: 0ex 1ex;
 }
 
+table.border tr th {
+    padding: 0.5ex 1ex;
+}
+
+table.border tr td {
+    padding: 0.5ex 1ex;
+}
+
 .top tr td {
     vertical-align: top;
 }
 
 pre {
-    margin-left: 3ex;
+    padding: 2ex;
+    background-color: whitesmoke;
+    font-size: large;
 }
 
 .script pre {
-    margin: 0ex;
     border: 1px outset gray;
     padding: 1ex;
+    background-color: transparent;
+    font-size: medium;
+}
+
+dl dt {
+    margin-top: 2ex;
+}
+
+dl dd {
+    margin-left: 3ex;
 }
 
 .table .row {

@@ -187,38 +187,42 @@ Controller.prototype = {
     "_setElement": function() {
         // create a table
         const table = [];
-        for (const symbol of this._compiler.terminals) {
+        for (let i = 0; i < this._compiler.terminals.length; i++) {
+            const symbol = this._compiler.terminals[i];
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
             } else if (symbol.charAt(0) == "\"") {
                 type = "RegExp";
             }
-            table.push([ type, symbol ]);
+            table.push([ i + 1, type, symbol ]);
         }
 
         // write
-        const title = [ "type", "element" ];
-        this._setTable(this._elementArea, table, title, 1);
+        const title = [ "priority", "type", "element" ];
+        const type = [ "number", "", "" ];
+        this._setTable(this._elementArea, table, title, type);
     },
 
     // create dummy elements
     "_setDummy": function() {
         // create a table
         const table = [];
-        for (const symbol of this._compiler.dummies) {
+        for (let i = 0; i < this._compiler.dummies.length; i++) {
+            const symbol = this._compiler.dummies[i];
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
             } else if (symbol.charAt(0) == "\"") {
                 type = "RegExp";
             }
-            table.push([ type, symbol ]);
+            table.push([ i + 1, type, symbol ]);
         }
 
         // write
-        const title = [ "type", "element" ];
-        this._setTable(this._dummyArea, table, title, 1);
+        const title = [ "priority", "type", "element" ];
+        const type = [ "number", "", "" ];
+        this._setTable(this._dummyArea, table, title, type);
     },
 
     // create production rules
@@ -242,7 +246,7 @@ Controller.prototype = {
         // column titles
         const head = document.createElement("tr");
         parent.appendChild(head);
-        const title = [ "No.", "item", "next symbols" ];
+        const title = [ "number", "item", "next symbols" ];
         for (const label of title) {
             const th = document.createElement("th");
             th.innerHTML = label;
@@ -254,7 +258,7 @@ Controller.prototype = {
             const row = document.createElement("tr");
             parent.appendChild(row);
 
-            // No.
+            // number
             const closure = this._compiler.closures[i];
             const count = closure.items.length;
             const num = document.createElement("td");
@@ -308,7 +312,7 @@ Controller.prototype = {
         // write
         const title = [ "from", "symbol", "to" ];
         const type = [ "number", "", "number" ];
-        this._setTable(this._transitionArea, table, title, 1, type);
+        this._setTable(this._transitionArea, table, title, type);
     },
 
     // create the parsing table
@@ -331,13 +335,12 @@ Controller.prototype = {
    },
 
     // create a table
-    "_setTable": function(parent, table, title, start, type) {
+    "_setTable": function(parent, table, title, type) {
         // set default values
-        if (isNaN(start)) {
-            start = 0;
-        }
-        if (!Array.isArray(type)) {
-            type = [];
+        const auto = !Array.isArray(type);
+        if (auto) {
+            type = new Array(title.length).fill("");
+            title.unshift("number");
         }
         parent.innerHTML = "";
 
@@ -345,11 +348,6 @@ Controller.prototype = {
         if (Array.isArray(title)) {
             const tr = document.createElement("tr");
             parent.appendChild(tr);
-
-            // add the No. column
-            const num = document.createElement("th");
-            num.innerHTML = "No.";
-            tr.appendChild(num);
             for (const label of title) {
                 const th = document.createElement("th");
                 th.innerHTML = label;
@@ -362,16 +360,17 @@ Controller.prototype = {
             const row = table[i];
             const tr = document.createElement("tr");
             parent.appendChild(tr);
-
-            // add the No.
-            const num = document.createElement("td");
-            num.innerHTML = i + start;
-            num.className = "number";
-            tr.appendChild(num);
+            if (auto) {
+                // add the number
+                const td = document.createElement("td");
+                td.innerHTML = i;
+                td.className = "number";
+                tr.appendChild(td);
+            }
             for (let j = 0; j < row.length; j++) {
                 const td = document.createElement("td");
                 td.innerHTML = row[j];
-                if (type[j] != null) {
+                if (type[j] != "") {
                     td.className = type[j];
                 }
                 tr.appendChild(td);
