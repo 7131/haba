@@ -57,10 +57,10 @@ Controller.prototype = {
         const ok = document.createElement("li");
         const ng = document.createElement("li");
         head.innerHTML = title;
-        head.className = "error";
+        head.classList.add("error");
         ok.innerHTML = valid;
         ng.innerHTML = invalid;
-        ng.className = "error";
+        ng.classList.add("error");
         this._resultArea.appendChild(head);
         this._resultArea.appendChild(ok);
         this._resultArea.appendChild(ng);

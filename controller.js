@@ -145,10 +145,10 @@ Controller.prototype = {
         const ok = document.createElement("li");
         const ng = document.createElement("li");
         head.innerHTML = title;
-        head.className = "error";
+        head.classList.add("error");
         ok.innerHTML = valid;
         ng.innerHTML = invalid;
-        ng.className = "error";
+        ng.classList.add("error");
         this._resultArea.appendChild(head);
         this._resultArea.appendChild(ok);
         this._resultArea.appendChild(ng);
@@ -264,7 +264,7 @@ Controller.prototype = {
             const num = document.createElement("td");
             num.innerHTML = i;
             num.rowSpan = count;
-            num.className = "number";
+            num.classList.add("number");
             row.appendChild(num);
 
             // item
@@ -364,14 +364,14 @@ Controller.prototype = {
                 // add the number
                 const td = document.createElement("td");
                 td.innerHTML = i;
-                td.className = "number";
+                td.classList.add("number");
                 tr.appendChild(td);
             }
             for (let j = 0; j < row.length; j++) {
                 const td = document.createElement("td");
                 td.innerHTML = row[j];
                 if (type[j] != "") {
-                    td.className = type[j];
+                    td.classList.add(type[j]);
                 }
                 tr.appendChild(td);
             }

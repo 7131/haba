@@ -27,7 +27,7 @@ Controller.prototype = {
             // No.
             const number = this._rows[i].cells[ColNum.NUMBER];
             number.innerText = i;
-            number.className = "symbol";
+            number.classList.add("symbol");
 
             // expected values
             const expects = this._rows[i].cells[ColNum.EXPECT].childNodes;
@@ -59,10 +59,10 @@ Controller.prototype = {
         const area = check.nextSibling.nextSibling;
         if (check.checked) {
             // show
-            area.className = "";
+            area.classList.remove("hidden");
         } else {
             // hide
-            area.className = "hidden";
+            area.classList.add("hidden");
         }
     },
 
@@ -123,12 +123,12 @@ Controller.prototype = {
         const cell = this._rows[this._index].cells[ColNum.RESULT];
         if (actual == expect) {
             cell.innerText = "OK";
-            cell.className = "";
+            cell.classList.remove("error");
         } else {
             const pre = document.createElement("pre");
             pre.innerText = title + " error\n\n" + actual;
             cell.appendChild(pre);
-            cell.className = "error";
+            cell.classList.add("error");
             this._errors.push(this._index);
         }
 
@@ -143,9 +143,10 @@ Controller.prototype = {
         const last = this._rows[this._rows.length - 1];
         if (this._errors.length == 0) {
             last.cells[ColNum.RESULT].innerText = "All OK";
+            last.cells[ColNum.RESULT].classList.remove("error");
         } else {
             last.cells[ColNum.RESULT].innerText = "NG : " + this._errors.join();
-            last.cells[ColNum.RESULT].className = "error";
+            last.cells[ColNum.RESULT].classList.add("error");
         }
         this._button.disabled = false;
     },
