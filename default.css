@@ -112,6 +112,10 @@ dl dd {
     border-top: 1px solid gray;
 }
 
+.hidden {
+    display: none;
+}
+
 .error {
     color: red;
 }

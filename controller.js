@@ -102,10 +102,10 @@ Controller.prototype = {
         const area = this._map.get(check);
         if (check.checked) {
             // show
-            area.style.display = "";
+            area.classList.remove("hidden");
         } else {
             // hide
-            area.style.display = "none";
+            area.classList.add("hidden");
         }
     },
 
@@ -117,19 +117,15 @@ Controller.prototype = {
     // clear all results
     "_clearAll": function() {
         this._resultArea.innerHTML = "";
-        this._map.forEach((value, key) => this._clearResult(key));
-    },
+        for (const [check, area] of this._map) {
+            // checkbox
+            check.checked = false;
+            check.disabled = true;
 
-    // clear a result
-    "_clearResult": function(check) {
-        // checkbox
-        check.checked = false;
-        check.disabled = true;
-
-        // display area
-        const area = this._map.get(check);
-        area.innerHTML = "";
-        area.style.display = "none";
+            // display area
+            area.innerHTML = "";
+            area.classList.add("hidden");
+        }
     },
 
     // write the error string
@@ -152,7 +148,6 @@ Controller.prototype = {
         this._resultArea.appendChild(head);
         this._resultArea.appendChild(ok);
         this._resultArea.appendChild(ng);
-        this._resultArea.style.display = "";
     },
 
     // create the syntax tree
