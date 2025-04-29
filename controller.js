@@ -173,9 +173,7 @@ Controller.prototype = {
         // child node
         const list = document.createElement("ul");
         item.appendChild(list);
-        for (const child of tree.children) {
-            this._setTree(list, child);
-        }
+        tree.children.forEach(elem => this._setTree(list, elem));
     },
 
     // create lexical analysis elements
@@ -224,9 +222,7 @@ Controller.prototype = {
     "_setRule": function() {
         // create a table
         const table = [];
-        for (const rule of this._compiler.rules) {
-            table.push([ rule.toString() ]);
-        }
+        this._compiler.rules.forEach(elem => table.push([ elem.toString() ]));
 
         // write
         const title = [ "expanded rule" ];

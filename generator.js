@@ -73,19 +73,14 @@ Generator.prototype = {
     // get a list of production rules
     "_getRules": function(rules) {
         const lines = [];
-        for (const rule of rules) {
-            lines.push("\"" + rule.symbol + "=" + rule.definition.length + "\",");
-        }
+        rules.forEach(elem => lines.push("\"" + elem.symbol + "=" + elem.definition.length + "\","));
         return this._getArray("rules", lines);
     },
 
     // get the parsing table
     "_getTable": function(table) {
-        const select = elem => "\"" + elem + "\"";
         const lines = [];
-        for (const row of table) {
-            lines.push("[ " + row.map(select).join(", ") + " ],");
-        }
+        table.forEach(row => lines.push("[ " + row.map(elem => "\"" + elem + "\"").join(", ") + " ],"));
         return this._getArray("table", lines);
     },
 
@@ -126,9 +121,7 @@ Generator.prototype = {
         for (const name of nonterms) {
             const rules = tree.children.filter(elem => elem.symbols[0] == name);
             if (0 < rules.length) {
-                for (const rule of rules) {
-                    lines.push("// " + this._getDefinition(rule));
-                }
+                rules.forEach(elem => lines.push("// " + this._getDefinition(elem)));
                 lines.push("\"" + name + "\": function(tree) {");
                 lines.push("},");
                 lines.push("");

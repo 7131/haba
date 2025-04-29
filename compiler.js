@@ -93,9 +93,7 @@ const Closure = function(rules, represent) {
 
     // properties
     this.items = [];
-    for (const item of this.represent) {
-        this._setItems(item);
-    }
+    this.represent.forEach(this._setItems, this);
 
     // get the next items for each item
     this._creation = new Map();
@@ -172,10 +170,8 @@ Closure.prototype = {
         this.items.push(current);
 
         // production rule starting with the following symbol
-        for (const rule of this._rules) {
-            if (rule.symbol == current.next) {
-                this._setItems(new LrItem(rule, 0));
-            }
+        for (const rule of this._rules.filter(elem => elem.symbol == current.next)) {
+            this._setItems(new LrItem(rule, 0));
         }
     },
 
@@ -278,9 +274,7 @@ const SymbolSet = function(rules) {
     let after = 0;
     first.forEach(elem => after += elem.size);
     while (before < after) {
-        for (const rule of nrs) {
-            this._addFirsts(first, rule);
-        }
+        nrs.forEach(elem => this._addFirsts(first, elem));
         before = after;
         after = 0;
         first.forEach(elem => after += elem.size);
@@ -380,9 +374,7 @@ Compiler.prototype = {
     // get all definition symbols
     "_getRuleSymbols": function(rules) {
         const symbols = [];
-        for (const rule of rules) {
-            Array.prototype.push.apply(symbols, rule.definition);
-        }
+        rules.forEach(elem => Array.prototype.push.apply(symbols, elem.definition));
         return symbols.filter(this._distinctArray);
     },
 
@@ -467,9 +459,7 @@ Compiler.prototype = {
 
         // get all items
         const all = [];
-        for (const closure of this.closures) {
-            Array.prototype.push.apply(all, closure.items);
-        }
+        this.closures.forEach(elem => Array.prototype.push.apply(all, elem.items));
 
         // add a lookahead set to the first closure
         const collections = new Map();
