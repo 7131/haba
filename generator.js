@@ -16,20 +16,20 @@ Generator.prototype = {
         const tableBlock = this._getTable(compiler.table);
 
         // grammar
-        const lines = [];
-        Array.prototype.push.apply(lines, [ "// Grammar object", "const Grammar = {", "" ]);
-        Array.prototype.push.apply(lines, this._getBlock(flagBlock));
-        Array.prototype.push.apply(lines, this._getBlock(termBlock));
-        Array.prototype.push.apply(lines, this._getBlock(dummyBlock));
-        Array.prototype.push.apply(lines, this._getBlock(ruleBlock));
-        Array.prototype.push.apply(lines, this._getBlock(tableBlock));
-        Array.prototype.push.apply(lines, [ "}", "" ]);
+        let lines = [];
+        lines = lines.concat([ "// Grammar object", "const Grammar = {", "" ]);
+        lines = lines.concat(this._getBlock(flagBlock));
+        lines = lines.concat(this._getBlock(termBlock));
+        lines = lines.concat(this._getBlock(dummyBlock));
+        lines = lines.concat(this._getBlock(ruleBlock));
+        lines = lines.concat(this._getBlock(tableBlock));
+        lines = lines.concat([ "}", "" ]);
 
         // converter
         const converters = this._getConverters(compiler.nonterminals, tree);
-        Array.prototype.push.apply(lines, [ "// Syntax converter", "const Converter = {", "" ]);
-        Array.prototype.push.apply(lines, this._getBlock(converters));
-        Array.prototype.push.apply(lines, [ "}", "", "" ]);
+        lines = lines.concat([ "// Syntax converter", "const Converter = {", "" ]);
+        lines = lines.concat(this._getBlock(converters));
+        lines = lines.concat([ "}", "", "" ]);
         return lines.join("\n");
     },
 
@@ -87,7 +87,7 @@ Generator.prototype = {
     // get array elements
     "_getArray": function(title, collection) {
         // title
-        const lines = [];
+        let lines = [];
         if (title == "") {
             lines.push("[");
         } else {
@@ -95,7 +95,7 @@ Generator.prototype = {
         }
 
         // block
-        Array.prototype.push.apply(lines, this._getBlock(collection));
+        lines = lines.concat(this._getBlock(collection));
         lines.push("],");
         lines.push("");
         return lines;

@@ -244,7 +244,7 @@ const Converter = {
 
         // add symbol(s) to the tree
         if (Array.isArray(symbols)) {
-            Array.prototype.push.apply(tree.symbols, symbols);
+            tree.symbols = tree.symbols.concat(symbols);
         } else {
             tree.symbols.push(symbols);
         }
@@ -262,7 +262,7 @@ const Converter = {
 
         // add rule(s) to the tree
         if (Array.isArray(rules)) {
-            Array.prototype.push.apply(tree.rules, rules);
+            tree.rules = tree.rules.concat(rules);
         } else {
             tree.rules.push(rules);
         }

@@ -11,7 +11,7 @@ const Rule = function(symbol, definition) {
     this.definition = [];
     if (definition != null) {
         if (Array.isArray(definition)) {
-            Array.prototype.push.apply(this.definition, definition);
+            this.definition = this.definition.concat(definition);
         } else {
             this.definition.push(definition);
         }
@@ -43,10 +43,10 @@ const LrItem = function(rule, position) {
     this.look = new Set();
 
     // LR(0) item
-    const symbols = [ rule.symbol, "::=" ];
-    Array.prototype.push.apply(symbols, rule.definition.slice(0, this.position));
+    let symbols = [ rule.symbol, "::=" ];
+    symbols = symbols.concat(rule.definition.slice(0, this.position));
     symbols.push("&bull;");
-    Array.prototype.push.apply(symbols, rule.definition.slice(this.position));
+    symbols = symbols.concat(rule.definition.slice(this.position));
     this._lr0 = symbols.join(" ");
 }
 
@@ -373,8 +373,7 @@ Compiler.prototype = {
 
     // get all definition symbols
     "_getRuleSymbols": function(rules) {
-        const symbols = [];
-        rules.forEach(elem => Array.prototype.push.apply(symbols, elem.definition));
+        const symbols = rules.reduce((acc, cur) => acc.concat(cur.definition), []);
         return symbols.filter(this._distinctArray);
     },
 
@@ -456,10 +455,7 @@ Compiler.prototype = {
     // set the lookahead set
     "_setLookAhead": function() {
         const symbols = new SymbolSet(this.rules);
-
-        // get all items
-        const all = [];
-        this.closures.forEach(elem => Array.prototype.push.apply(all, elem.items));
+        const all = this.closures.reduce((acc, cur) => acc.concat(cur.items), []);
 
         // add a lookahead set to the first closure
         const collections = new Map();
