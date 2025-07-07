@@ -270,14 +270,13 @@ const SymbolSet = function(rules) {
     }
 
     // FIRST set whose definition symbol starts with a non-terminal symbol
+    const sum = (acc, cur) => acc + cur.size;
     let before = 0;
-    let after = 0;
-    first.forEach(elem => after += elem.size);
+    let after = first.values().reduce(sum, 0);
     while (before < after) {
         nrs.forEach(elem => this._addFirsts(first, elem));
         before = after;
-        after = 0;
-        first.forEach(elem => after += elem.size);
+        after = first.values().reduce(sum, 0);
     }
     this.first = first;
 }
@@ -465,8 +464,9 @@ Compiler.prototype = {
         this.closures[0].addLookSet(collections, symbols.first);
 
         // handle all state transitions
+        const sum = (acc, cur) => acc + cur.look.size;
         let before = 0;
-        let after = all.reduce(this._sumLookSize, 0);
+        let after = all.reduce(sum, 0);
         while (before < after) {
             for (const trans of this.transitions) {
                 collections.clear();
@@ -476,20 +476,14 @@ Compiler.prototype = {
 
             // whether the lookahead set has been added
             before = after;
-            after = all.reduce(this._sumLookSize, 0);
+            after = all.reduce(sum, 0);
         }
     },
 
     // create the parsing table
     "_createTable": function() {
-        // create an empty table
-        const row = [];
-        for (let i = 0; i < this.symbols.length; i++) {
-            row.push("");
-        }
-        for (let i = 0; i < this.closures.length; i++) {
-            this.table.push(row.concat());
-        }
+        const row = new Array(this.symbols.length).fill("");
+        this.table = new Array(this.closures.length).fill().map(elem => row.concat());
 
         // set the action
         const error = new Map();
@@ -562,11 +556,6 @@ Compiler.prototype = {
     // remove duplicate elements in array
     "_distinctArray": function(elem, idx, arr) {
         return arr.indexOf(elem) == idx;
-    },
-
-    // sum of the number of lookahead symbols
-    "_sumLookSize": function(acc, cur) {
-        return acc + cur.look.size;
     },
 
 }

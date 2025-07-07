@@ -72,15 +72,13 @@ Generator.prototype = {
 
     // get a list of production rules
     "_getRules": function(rules) {
-        const lines = [];
-        rules.forEach(elem => lines.push("\"" + elem.symbol + "=" + elem.definition.length + "\","));
+        const lines = rules.map(elem => `"${elem.symbol}=${elem.definition.length}",`);
         return this._getArray("rules", lines);
     },
 
     // get the parsing table
     "_getTable": function(table) {
-        const lines = [];
-        table.forEach(row => lines.push("[ " + row.map(elem => "\"" + elem + "\"").join(", ") + " ],"));
+        const lines = table.map(row => `[ ${row.map(elem => `"${elem}"`).join(", ")} ],`);
         return this._getArray("table", lines);
     },
 
@@ -117,12 +115,12 @@ Generator.prototype = {
 
     // get syntax converters
     "_getConverters": function(nonterms, tree) {
-        const lines = [];
+        let lines = [];
         for (const name of nonterms) {
             const rules = tree.children.filter(elem => elem.symbols[0] == name);
             if (0 < rules.length) {
-                rules.forEach(elem => lines.push("// " + this._getDefinition(elem)));
-                lines.push("\"" + name + "\": function(tree) {");
+                lines = lines.concat(rules.map(elem => `// ${this._getDefinition(elem)}`));
+                lines.push(`"${name}": function(tree) {`);
                 lines.push("},");
                 lines.push("");
             }

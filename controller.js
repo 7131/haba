@@ -220,11 +220,7 @@ Controller.prototype = {
 
     // create production rules
     "_setRule": function() {
-        // create a table
-        const table = [];
-        this._compiler.rules.forEach(elem => table.push([ elem.toString() ]));
-
-        // write
+        const table = this._compiler.rules.map(elem => [ elem.toString() ]);
         const title = [ "expanded rule" ];
         this._setTable(this._ruleArea, table, title);
     },
@@ -265,9 +261,7 @@ Controller.prototype = {
 
             // next symbols
             const next = document.createElement("td");
-            let text = "";
-            closure.items[0].look.forEach(elem => text += elem + " ");
-            next.innerHTML = text.trim();
+            next.innerHTML = Array.from(closure.items[0].look).join(" ");
             row.appendChild(next);
 
             // from the second time
@@ -282,9 +276,7 @@ Controller.prototype = {
 
                 // next symbols
                 const ahead = document.createElement("td");
-                let symbol = "";
-                closure.items[j].look.forEach(elem => symbol += elem + " ");
-                ahead.innerHTML = symbol.trim();
+                ahead.innerHTML = Array.from(closure.items[j].look).join(" ");
                 tr.appendChild(ahead);
             }
         }
