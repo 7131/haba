@@ -31,10 +31,10 @@ Controller.prototype = {
 
             // expected values
             const expects = this._rows[i].cells[ColNum.EXPECT].childNodes;
-            expects[0].id = "view-" + i;
+            expects[0].id = `view-${i}`;
             expects[0].addEventListener("click", this._show.bind(this));
             expects[1].htmlFor = expects[0].id;
-            expects[2].id = "code-" + i;
+            expects[2].id = `code-${i}`;
         }
 
         // get the last row
@@ -89,14 +89,14 @@ Controller.prototype = {
         const cell = this._rows[this._index].cells[ColNum.TARGET];
         const result = this._parser.tokenize(cell.innerText);
         if (result.tokens == null) {
-            this._showResult("unknown character(s): " + result.invalid, "Lexical analysis");
+            this._showResult(`unknown character(s): ${result.invalid}`, "Lexical analysis");
             return;
         }
 
         // syntactic analysis
         const outcome = this._parser.parse(result.tokens);
         if (outcome.tree == null) {
-            this._showResult("no action defined: " + outcome.invalid, "Syntactic analysis");
+            this._showResult(`no action defined: ${outcome.invalid}`, "Syntactic analysis");
             return;
         }
 
@@ -116,7 +116,7 @@ Controller.prototype = {
     "_showResult": function(actual, title) {
         // unify line breaks
         actual = actual.trim().replace(/\r?\n/g, "\n");
-        const element = document.getElementById("code-" + this._index);
+        const element = document.getElementById(`code-${this._index}`);
         const expect = element.innerText.trim().replace(/\r?\n/g, "\n");
 
         // get the result string
@@ -126,7 +126,7 @@ Controller.prototype = {
             cell.classList.remove("error");
         } else {
             const pre = document.createElement("pre");
-            pre.innerText = title + " error\n\n" + actual;
+            pre.innerText = `${title} error\n\n${actual}`;
             cell.appendChild(pre);
             cell.classList.add("error");
             this._errors.push(this._index);
@@ -145,7 +145,7 @@ Controller.prototype = {
             last.cells[ColNum.RESULT].innerText = "All OK";
             last.cells[ColNum.RESULT].classList.remove("error");
         } else {
-            last.cells[ColNum.RESULT].innerText = "NG : " + this._errors.join();
+            last.cells[ColNum.RESULT].innerText = `NG: ${this._errors.join()}`;
             last.cells[ColNum.RESULT].classList.add("error");
         }
         this._button.disabled = false;

@@ -229,7 +229,7 @@ const Converter = {
     // create a new non-terminal symbol
     "_createSymbol": function() {
         this._number++;
-        return "#" + this._number + "#";
+        return `#${this._number}#`;
     },
 
     // add symbols

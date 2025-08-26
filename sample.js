@@ -48,8 +48,8 @@ Controller.prototype = {
     "_setError": function(title, valid, invalid) {
         // does the valid text exist?
         if (0 < valid.length) {
-            valid = "OK: " + valid;
-            invalid = "NG: " + invalid;
+            valid = `OK: ${valid}`;
+            invalid = `NG: ${invalid}`;
         }
 
         // write to the DOM elements

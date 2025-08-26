@@ -141,8 +141,7 @@ Closure.prototype = {
         // propagate to derived items
         for (const current of this.items) {
             const look = this._getNextLook(current, first);
-            const items = this._creation.get(current);
-            items.forEach(elem => elem.addLook(look));
+            this._creation.get(current).forEach(elem => elem.addLook(look));
         }
     },
 
@@ -260,13 +259,9 @@ const SymbolSet = function(rules) {
     for (const rule of trs) {
         let term = "&epsilon;";
         if (0 < rule.definition.length) {
-            // terminal symbol
             term = rule.definition[0];
         }
-
-        // add a symbol
-        const symbols = first.get(rule.symbol);
-        symbols.add(term);
+        first.get(rule.symbol).add(term);
     }
 
     // FIRST set whose definition symbol starts with a non-terminal symbol
@@ -394,7 +389,7 @@ Compiler.prototype = {
         const find = elem => elem.charAt(0) != "'" && elem.charAt(0) != "\"";
         const unknown = terms.filter(find);
         if (0 < unknown.length) {
-            return "no definition of non-terminal symbol: " + unknown.join(" ");
+            return `no definition of non-terminal symbol: ${unknown.join(" ")}`;
         }
         this.terminals = fix.concat(flex);
         this.symbols = this.terminals.concat(nonterms);
@@ -404,7 +399,7 @@ Compiler.prototype = {
         const dummies = this._getRuleSymbols(rest);
         const unused = dummies.filter(find);
         if (0 < unused.length) {
-            return "no definition of non-terminal symbol: " + unused.join(" ");
+            return `no definition of non-terminal symbol: ${unused.join(" ")}`;
         }
         this.dummies = dummies;
         return "";
@@ -509,18 +504,17 @@ Compiler.prototype = {
             for (const item of reduce) {
                 for (const symbol of item.look) {
                     const index = this.symbols.indexOf(symbol);
-                    const action = "r" + this.rules.indexOf(item.rule);
+                    const action = `r${this.rules.indexOf(item.rule)}`;
                     if (this.table[i][index] == "") {
                         // reduce or accept
                         this.table[i][index] = action;
                     } else {
                         // collision
-                        this.table[i][index] += "/" + action;
+                        this.table[i][index] += `/${action}`;
                         if (!error.has(i)) {
                             error.set(i, []);
                         }
-                        const list = error.get(i);
-                        list.push(symbol);
+                        error.get(i).push(symbol);
                     }
                 }
             }
@@ -534,21 +528,20 @@ Compiler.prototype = {
             const index = this.symbols.indexOf(trans.symbol);
             let action = this.closures.indexOf(trans.to);
             if (this.nonterminals.indexOf(trans.symbol) < 0) {
-                action = "s" + action;
+                action = `s${action}`;
             } else {
-                action = "g" + action;
+                action = `g${action}`;
             }
             if (this.table[from][index] == "") {
                 // shift or transition
                 this.table[from][index] = action;
             } else {
                 // collision
-                this.table[from][index] += "/" + action;
+                this.table[from][index] += `/${action}`;
                 if (!error.has(from)) {
                     error.set(from, []);
                 }
-                const list = error.get(from);
-                list.push(trans.symbol);
+                error.get(from).push(trans.symbol);
             }
         }
     },

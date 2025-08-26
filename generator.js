@@ -40,7 +40,7 @@ Generator.prototype = {
             flag = "i";
         }
         const lines = [];
-        lines.push("\"flag\": \"" + flag + "\",");
+        lines.push(`"flag": "${flag}",`);
         lines.push("");
         return lines;
     },
@@ -66,7 +66,7 @@ Generator.prototype = {
         }
 
         // create row list
-        const after = symbols.map(elem => "\"" + elem + "\",");
+        const after = symbols.map(elem => `"${elem}",`);
         return this._getArray(title, after);
     },
 
@@ -89,7 +89,7 @@ Generator.prototype = {
         if (title == "") {
             lines.push("[");
         } else {
-            lines.push("\"" + title + "\": [");
+            lines.push(`"${title}": [`);
         }
 
         // block
@@ -107,7 +107,7 @@ Generator.prototype = {
             if (text.trim() == "") {
                 lines.push("");
             } else {
-                lines.push("    " + text);
+                lines.push(`    ${text}`);
             }
         }
         return lines;
