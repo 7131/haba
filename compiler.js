@@ -367,7 +367,7 @@ Compiler.prototype = {
 
     // get all definition symbols
     "_getRuleSymbols": function(rules) {
-        const symbols = rules.reduce((acc, cur) => acc.concat(cur.definition), []);
+        const symbols = rules.map(elem => elem.definition).flat();
         return symbols.filter(this._distinctArray);
     },
 
@@ -449,7 +449,7 @@ Compiler.prototype = {
     // set the lookahead set
     "_setLookAhead": function() {
         const symbols = new SymbolSet(this.rules);
-        const all = this.closures.reduce((acc, cur) => acc.concat(cur.items), []);
+        const all = this.closures.map(elem => elem.items).flat();
 
         // add a lookahead set to the first closure
         const collections = new Map();
@@ -547,8 +547,8 @@ Compiler.prototype = {
     },
 
     // remove duplicate elements in array
-    "_distinctArray": function(elem, idx, arr) {
-        return arr.indexOf(elem) == idx;
+    "_distinctArray": function(val, idx, arr) {
+        return arr.indexOf(val) == idx;
     },
 
 }
