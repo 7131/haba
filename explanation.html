@@ -15,9 +15,12 @@
 <span>explanation</span>
 </nav>
 
-<article>
+<header>
 <h1>HABA explanation</h1>
 <p>HABA is a LALR(1) parser. When you press "Analyze" button, the lexical analysis and the syntactic analysis will be performed on the input string to create a syntax tree. It is converted into production rules, terminal symbols are extracted, and lexical analysis elements and dummy elements are obtained. Closures, state transitions, and parsing tables are also created from the production rules, and finally the grammar is output as a JavaScript program.</p>
+</header>
+
+<main>
 <p>This page uses the following addition grammar as an input string as a sample.</p>
 <pre class="rule">
 Multi ::= Num ('+' Num)* ;
@@ -289,7 +292,7 @@ const Converter = {
 <p>These programs can be parsed by HABA's own <a href="./parser.html">parser</a>. Please check <a href="./sample.html">the sample page.</a></p>
 </section>
 
-</article>
+</main>
 </body>
 
 </html>
