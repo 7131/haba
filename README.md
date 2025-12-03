@@ -1,6 +1,7 @@
 # House Arranged BNF Analyzer
 
-https://7131.github.io/haba/
+English site: https://7131.github.io/haba/<br>
+Japanese site: https://app.7131.jp/haba/
 
 This is a LALR(1) parser.
 You can analyze BNF-like grammars and get syntax trees, parsing tables, and JavaScript programs based on them.
