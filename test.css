@@ -1,12 +1,18 @@
 @charset "utf-8";
 
-nav span {
-    margin-right: 1ex;
-}
-
 body {
     line-height: 1.8;
     margin-bottom: 10ex;
+}
+
+nav ul {
+    padding-left: 0ex;
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 2ex;
 }
 
 button {
@@ -21,12 +27,12 @@ table {
 
 table tr th {
     border: 1px inset gray;
-    padding: 0ex 1ex;
+    padding: 0.5ex 1ex;
 }
 
 table tr td {
     border: 1px inset gray;
-    padding: 0ex 1ex;
+    padding: 0.5ex 1ex;
     vertical-align: top;
 }
 

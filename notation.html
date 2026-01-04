@@ -9,10 +9,12 @@
 </head>
 
 <body>
-<nav id="top">
-<span><a href="./index.html">analysis</a></span>
-<span>notation</span>
-<span><a href="./explanation.html">explanation</a></span>
+<nav>
+<ul>
+  <li><a href="./index.html">analysis</a></li>
+  <li>notation</li>
+  <li><a href="./explanation.html">explanation</a></li>
+</ul>
 </nav>
 
 <header>
@@ -59,7 +61,7 @@ Plus
 <section>
 <h2>Terminal symbols</h2>
 <p>There are two ways to write it.</p>
-<table class="border">
+<table>
   <tr><th>type</th><th>how to write</th><th>example</th></tr>
   <tr><td>fixed value</td><td>enclose in single quotes</td><td>'+'</td></tr>
   <tr><td>regular expression</td><td>enclose in double quotes</td><td>"[0-9]+"</td></tr>
@@ -108,7 +110,7 @@ Alternatives ::= Term2 ;
 <section>
 <h2>Repetition</h2>
 <p>You can use the following repeating symbols if the symbol is appeared, not appeared, or can appear any number of times.</p>
-<table class="border">
+<table>
   <tr><th>symbol</th><th>meaning</th></tr>
   <tr><td class="symbol">?</td><td>0 times or 1 time</td></tr>
   <tr><td class="symbol">*</td><td>0 or more times</td></tr>
@@ -141,7 +143,7 @@ Expr ::= Term ;
 <section>
 <h2>Grouping</h2>
 <p>If you want to change the interpretation priority in the rule definition, enclose the symbols in parentheses. The order of priority when not grouping is as follows.</p>
-<table class="border">
+<table>
   <tr><th>priority</th><th>element</th><th>example</th></tr>
   <tr><td class="number">1</td><td>Repetition</td><td>Term*</td></tr>
   <tr><td class="number">2</td><td>Concatenation</td><td>Term1 Term2</td></tr>

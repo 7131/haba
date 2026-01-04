@@ -1,12 +1,18 @@
 @charset "utf-8";
 
-nav span {
-    margin-right: 1ex;
-}
-
 body {
     line-height: 1.8;
     margin-bottom: 10ex;
+}
+
+nav ul {
+    padding-left: 0ex;
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 2ex;
 }
 
 textarea {
@@ -23,10 +29,10 @@ input[type="checkbox"] {
     margin-left: 0ex;
 }
 
-ul {
-    list-style-type: none;
+ul#result {
     margin: 0ex;
     padding: 0ex;
+    list-style: none;
 }
 
 table {
@@ -36,23 +42,15 @@ table {
 
 table tr th {
     border: 1px inset gray;
-    padding: 0ex 1ex;
+    padding: 0.5ex 1ex;
 }
 
 table tr td {
     border: 1px inset gray;
-    padding: 0ex 1ex;
-}
-
-table.border tr th {
     padding: 0.5ex 1ex;
 }
 
-table.border tr td {
-    padding: 0.5ex 1ex;
-}
-
-.top tr td {
+table.top tr td {
     vertical-align: top;
 }
 
@@ -79,6 +77,12 @@ dl dd {
 
 .table .row {
     margin-top: 2ex;
+}
+
+.tree ul {
+    margin: 0ex;
+    padding: 0ex;
+    list-style: none;
 }
 
 .tree ul li ul {
