@@ -26,7 +26,7 @@ Controller.prototype = {
         for (let i = 1; i < this._rows.length; i++) {
             // No.
             const number = this._rows[i].cells[ColNum.NUMBER];
-            number.innerText = i;
+            number.textContent = i;
             number.classList.add("symbol");
 
             // expected values
@@ -39,13 +39,13 @@ Controller.prototype = {
 
         // get the last row
         let last = this._rows[this._rows.length - 1];
-        if (last.cells[ColNum.TARGET].innerText != "") {
+        if (last.cells[ColNum.TARGET].textContent != "") {
             last = last.parentNode.appendChild(last.cloneNode(true));
         }
-        last.cells[ColNum.NUMBER].innerText = "total";
-        last.cells[ColNum.TARGET].innerText = "";
-        last.cells[ColNum.EXPECT].innerText = "";
-        last.cells[ColNum.RESULT].innerText = "";
+        last.cells[ColNum.NUMBER].textContent = "total";
+        last.cells[ColNum.TARGET].textContent = "";
+        last.cells[ColNum.EXPECT].textContent = "";
+        last.cells[ColNum.RESULT].textContent = "";
 
         // button events
         const execute = document.getElementById("execute");
@@ -74,7 +74,7 @@ Controller.prototype = {
 
         // initialize table
         for (let i = 1; i < this._rows.length; i++) {
-            this._rows[i].cells[ColNum.RESULT].innerHTML = "";
+            this._rows[i].cells[ColNum.RESULT].textContent = "";
         }
         this._errors = [];
 
@@ -87,7 +87,7 @@ Controller.prototype = {
     "_execute": function() {
         // lexical analysis
         const cell = this._rows[this._index].cells[ColNum.TARGET];
-        const result = this._parser.tokenize(cell.innerText);
+        const result = this._parser.tokenize(cell.textContent);
         if (result.tokens == null) {
             this._showResult(`unknown character(s): ${result.invalid}`, "Lexical analysis");
             return;
@@ -117,16 +117,16 @@ Controller.prototype = {
         // unify line breaks
         actual = actual.trim().replace(/\r?\n/g, "\n");
         const element = document.getElementById(`code-${this._index}`);
-        const expect = element.innerText.trim().replace(/\r?\n/g, "\n");
+        const expect = element.textContent.trim().replace(/\r?\n/g, "\n");
 
         // get the result string
         const cell = this._rows[this._index].cells[ColNum.RESULT];
         if (actual == expect) {
-            cell.innerText = "OK";
+            cell.textContent = "OK";
             cell.classList.remove("error");
         } else {
             const pre = document.createElement("pre");
-            pre.innerText = `${title} error\n\n${actual}`;
+            pre.textContent = `${title} error\n\n${actual}`;
             cell.appendChild(pre);
             cell.classList.add("error");
             this._errors.push(this._index);
@@ -134,7 +134,7 @@ Controller.prototype = {
 
         // execute the next test
         this._index++;
-        if (this._index < this._rows.length && this._rows[this._index].cells[ColNum.TARGET].innerText != "") {
+        if (this._index < this._rows.length && this._rows[this._index].cells[ColNum.TARGET].textContent != "") {
             setTimeout(this._execute.bind(this), 10);
             return;
         }
@@ -142,10 +142,10 @@ Controller.prototype = {
         // finished
         const last = this._rows[this._rows.length - 1];
         if (this._errors.length == 0) {
-            last.cells[ColNum.RESULT].innerText = "All OK";
+            last.cells[ColNum.RESULT].textContent = "All OK";
             last.cells[ColNum.RESULT].classList.remove("error");
         } else {
-            last.cells[ColNum.RESULT].innerText = `NG: ${this._errors.join()}`;
+            last.cells[ColNum.RESULT].textContent = `NG: ${this._errors.join()}`;
             last.cells[ColNum.RESULT].classList.add("error");
         }
         this._button.disabled = false;

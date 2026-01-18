@@ -79,7 +79,7 @@ Controller.prototype = {
             this._setError("compile error", "", message);
         } else {
             const success = document.createElement("li");
-            success.innerHTML = "Success";
+            success.textContent = "Success";
             this._resultArea.appendChild(success);
         }
 
@@ -116,14 +116,14 @@ Controller.prototype = {
 
     // clear all results
     "_clearAll": function() {
-        this._resultArea.innerHTML = "";
+        this._resultArea.textContent = "";
         for (const [check, area] of this._map) {
             // checkbox
             check.checked = false;
             check.disabled = true;
 
             // display area
-            area.innerHTML = "";
+            area.textContent = "";
             area.classList.add("hidden");
         }
     },
@@ -140,10 +140,10 @@ Controller.prototype = {
         const head = document.createElement("li");
         const ok = document.createElement("li");
         const ng = document.createElement("li");
-        head.innerHTML = title;
+        head.textContent = title;
         head.classList.add("error");
-        ok.innerHTML = valid;
-        ng.innerHTML = invalid;
+        ok.textContent = valid;
+        ng.textContent = invalid;
         ng.classList.add("error");
         this._resultArea.appendChild(head);
         this._resultArea.appendChild(ok);
@@ -164,7 +164,7 @@ Controller.prototype = {
 
         // list item
         const item = document.createElement("li");
-        item.innerHTML = text;
+        item.textContent = text;
         parent.appendChild(item);
         if (tree.children.length == 0 || tree.text != "") {
             return;
@@ -228,7 +228,7 @@ Controller.prototype = {
     // create closures
     "_setClosures": function() {
         const parent = this._closureArea;
-        parent.innerHTML = "";
+        parent.textContent = "";
 
         // column titles
         const head = document.createElement("tr");
@@ -236,7 +236,7 @@ Controller.prototype = {
         const title = [ "number", "item", "next symbols" ];
         for (const label of title) {
             const th = document.createElement("th");
-            th.innerHTML = label;
+            th.textContent = label;
             head.appendChild(th);
         }
 
@@ -249,7 +249,7 @@ Controller.prototype = {
             const closure = this._compiler.closures[i];
             const count = closure.items.length;
             const num = document.createElement("td");
-            num.innerHTML = i;
+            num.textContent = i;
             num.rowSpan = count;
             num.classList.add("number");
             row.appendChild(num);
@@ -261,7 +261,7 @@ Controller.prototype = {
 
             // next symbols
             const next = document.createElement("td");
-            next.innerHTML = Array.from(closure.items[0].look).join(" ");
+            next.textContent = Array.from(closure.items[0].look).join(" ");
             row.appendChild(next);
 
             // from the second time
@@ -276,7 +276,7 @@ Controller.prototype = {
 
                 // next symbols
                 const ahead = document.createElement("td");
-                ahead.innerHTML = Array.from(closure.items[j].look).join(" ");
+                ahead.textContent = Array.from(closure.items[j].look).join(" ");
                 tr.appendChild(ahead);
             }
         }
@@ -307,13 +307,13 @@ Controller.prototype = {
     "_setScript": function(tree) {
         // add a copy button
         const button = document.createElement("button");
-        button.innerText = "Copy";
+        button.textContent = "Copy";
         button.addEventListener("click", this._copy.bind(this));
         this._scriptArea.appendChild(button);
 
         // write
         const code = document.createElement("pre");
-        code.innerHTML = this._generator.createScript(this._compiler, tree);
+        code.textContent = this._generator.createScript(this._compiler, tree);
         this._scriptArea.appendChild(code);
    },
 
@@ -325,7 +325,7 @@ Controller.prototype = {
             type = new Array(title.length).fill("");
             title.unshift("number");
         }
-        parent.innerHTML = "";
+        parent.textContent = "";
 
         // column titles
         if (Array.isArray(title)) {
@@ -333,7 +333,7 @@ Controller.prototype = {
             parent.appendChild(tr);
             for (const label of title) {
                 const th = document.createElement("th");
-                th.innerHTML = label;
+                th.textContent = label;
                 tr.appendChild(th);
             }
         }
@@ -346,13 +346,13 @@ Controller.prototype = {
             if (auto) {
                 // add the number
                 const td = document.createElement("td");
-                td.innerHTML = i;
+                td.textContent = i;
                 td.classList.add("number");
                 tr.appendChild(td);
             }
             for (let j = 0; j < row.length; j++) {
                 const td = document.createElement("td");
-                td.innerHTML = row[j];
+                td.textContent = row[j];
                 if (type[j] != "") {
                     td.classList.add(type[j]);
                 }

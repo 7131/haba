@@ -43,10 +43,9 @@ const LrItem = function(rule, position) {
     this.look = new Set();
 
     // LR(0) item
-    let symbols = [ rule.symbol, "::=" ];
-    symbols = symbols.concat(rule.definition.slice(0, this.position));
-    symbols.push("&bull;");
-    symbols = symbols.concat(rule.definition.slice(this.position));
+    const before = this._escape(rule.definition.slice(0, this.position));
+    const after = this._escape(rule.definition.slice(this.position));
+    const symbols = [ rule.symbol, "::=" ].concat(before, [ "&bull;" ], after);
     this._lr0 = symbols.join(" ");
 }
 
@@ -77,6 +76,11 @@ LrItem.prototype = {
     // whether another instance is equal to this instance
     "equals": function(other) {
         return other.getItem() == this.getItem();
+    },
+
+    // escape special characters
+    "_escape": function(symbols) {
+        return symbols.map(elem => elem.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
     },
 
 }

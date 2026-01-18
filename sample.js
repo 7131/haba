@@ -23,7 +23,7 @@ Controller.prototype = {
     // "Execute" button process
     "_execute": function(e) {
         // initialize
-        this._resultArea.innerHTML = "";
+        this._resultArea.textContent = "";
 
         // lexical and syntax analyze
         const inputArea = document.getElementById("input");
@@ -40,7 +40,7 @@ Controller.prototype = {
 
         // set the results
         const success = document.createElement("li");
-        success.innerHTML = outcome.tree.result;
+        success.textContent = outcome.tree.result;
         this._resultArea.appendChild(success);
     },
 
@@ -56,10 +56,10 @@ Controller.prototype = {
         const head = document.createElement("li");
         const ok = document.createElement("li");
         const ng = document.createElement("li");
-        head.innerHTML = title;
+        head.textContent = title;
         head.classList.add("error");
-        ok.innerHTML = valid;
-        ng.innerHTML = invalid;
+        ok.textContent = valid;
+        ng.textContent = invalid;
         ng.classList.add("error");
         this._resultArea.appendChild(head);
         this._resultArea.appendChild(ok);
