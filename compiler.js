@@ -43,9 +43,9 @@ const LrItem = function(rule, position) {
     this.look = new Set();
 
     // LR(0) item
-    const before = this._escape(rule.definition.slice(0, this.position));
-    const after = this._escape(rule.definition.slice(this.position));
-    const symbols = [ rule.symbol, "::=" ].concat(before, [ "&bull;" ], after);
+    const before = rule.definition.slice(0, this.position);
+    const after = rule.definition.slice(this.position);
+    const symbols = [ rule.symbol, "::=" ].concat(before, [ "\u2022" ], after);
     this._lr0 = symbols.join(" ");
 }
 
@@ -76,11 +76,6 @@ LrItem.prototype = {
     // whether another instance is equal to this instance
     "equals": function(other) {
         return other.getItem() == this.getItem();
-    },
-
-    // escape special characters
-    "_escape": function(symbols) {
-        return symbols.map(elem => elem.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
     },
 
 }
@@ -199,13 +194,13 @@ Closure.prototype = {
             // non-terminal symbol
             const symbols = first.get(next);
             symbols.forEach(follow.add, follow);
-            if (!symbols.has("&epsilon;")) {
+            if (!symbols.has("#epsilon#")) {
                 // when not including epsilon transition
                 return follow;
             }
 
             // remove epsilon
-            follow.delete("&epsilon;");
+            follow.delete("#epsilon#");
             index++;
         }
 
@@ -261,7 +256,7 @@ const SymbolSet = function(rules) {
 
     // FIRST set whose definition symbol starts with a terminal symbol
     for (const rule of trs) {
-        let term = "&epsilon;";
+        let term = "#epsilon#";
         if (0 < rule.definition.length) {
             term = rule.definition[0];
         }
@@ -299,7 +294,7 @@ SymbolSet.prototype = {
             // non-terminal symbol
             const other = first.get(symbol);
             other.forEach(self.add, self);
-            if (!other.has("&epsilon;")) {
+            if (!other.has("#epsilon#")) {
                 // when not including epsilon transition
                 return;
             }

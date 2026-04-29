@@ -256,7 +256,7 @@ Controller.prototype = {
 
             // item
             const item = document.createElement("td");
-            item.innerHTML = closure.items[0].getItem();
+            item.textContent = closure.items[0].getItem();
             row.appendChild(item);
 
             // next symbols
@@ -271,7 +271,7 @@ Controller.prototype = {
 
                 // item
                 const td = document.createElement("td");
-                td.innerHTML = closure.items[j].getItem();
+                td.textContent = closure.items[j].getItem();
                 tr.appendChild(td);
 
                 // next symbols
