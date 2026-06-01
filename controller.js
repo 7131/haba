@@ -1,29 +1,36 @@
 // Controller class
-const Controller = function() {
-    // fields
-    this._parser = new Parser(Grammar, Converter);
-    this._compiler = new Compiler();
-    this._generator = new Generator();
+class Controller {
+    #resultArea;
+    #treeArea;
+    #elementArea;
+    #dummyArea;
+    #ruleArea;
+    #closureArea;
+    #transitionArea;
+    #tableArea;
+    #scriptArea;
+    #parser = new Parser(Grammar, Converter);
+    #compiler = new Compiler();
+    #generator = new Generator();
+    #map = new Map();
 
-    // events
-    window.addEventListener("load", this._initialize.bind(this));
-}
-
-// Controller prototype
-Controller.prototype = {
+    // constructor
+    constructor() {
+        window.addEventListener("load", this.#initialize.bind(this));
+    }
 
     // initialize the private fields
-    "_initialize": function(e) {
+    #initialize(e) {
         // DOM elements
-        this._resultArea = document.getElementById("result");
-        this._treeArea = document.getElementById("tree");
-        this._elementArea = document.getElementById("element");
-        this._dummyArea = document.getElementById("dummy");
-        this._ruleArea = document.getElementById("rule");
-        this._closureArea = document.getElementById("closure");
-        this._transitionArea = document.getElementById("transition");
-        this._tableArea = document.getElementById("table");
-        this._scriptArea = document.getElementById("script");
+        this.#resultArea = document.getElementById("result");
+        this.#treeArea = document.getElementById("tree");
+        this.#elementArea = document.getElementById("element");
+        this.#dummyArea = document.getElementById("dummy");
+        this.#ruleArea = document.getElementById("rule");
+        this.#closureArea = document.getElementById("closure");
+        this.#transitionArea = document.getElementById("transition");
+        this.#tableArea = document.getElementById("table");
+        this.#scriptArea = document.getElementById("script");
         const analyzeButton = document.getElementById("analyze");
         const treeCheck = document.getElementById("view-tree");
         const elementCheck = document.getElementById("view-element");
@@ -35,71 +42,70 @@ Controller.prototype = {
         const scriptCheck = document.getElementById("view-script");
 
         // associate checkboxes with display areas
-        this._map = new Map();
-        this._map.set(treeCheck, this._treeArea);
-        this._map.set(elementCheck, this._elementArea);
-        this._map.set(dummyCheck, this._dummyArea);
-        this._map.set(ruleCheck, this._ruleArea);
-        this._map.set(closureCheck, this._closureArea);
-        this._map.set(transitionCheck, this._transitionArea);
-        this._map.set(tableCheck, this._tableArea);
-        this._map.set(scriptCheck, this._scriptArea);
+        this.#map.set(treeCheck, this.#treeArea);
+        this.#map.set(elementCheck, this.#elementArea);
+        this.#map.set(dummyCheck, this.#dummyArea);
+        this.#map.set(ruleCheck, this.#ruleArea);
+        this.#map.set(closureCheck, this.#closureArea);
+        this.#map.set(transitionCheck, this.#transitionArea);
+        this.#map.set(tableCheck, this.#tableArea);
+        this.#map.set(scriptCheck, this.#scriptArea);
 
         // clear display
-        this._clearAll();
+        this.#clearAll();
 
         // button events
-        analyzeButton.addEventListener("click", this._analyze.bind(this));
-        this._map.forEach((value, key) => key.addEventListener("click", this._show.bind(this)));
-    },
+        analyzeButton.addEventListener("click", this.#analyze.bind(this));
+        this.#map.forEach((value, key) => key.addEventListener("click", this.#show.bind(this)));
+    }
 
     // "Analyze" button process
-    "_analyze": function(e) {
+    #analyze(e) {
         // initialize
-        this._clearAll();
+        this.#clearAll();
         const grammarArea = document.getElementById("grammar");
         const ignoreCheck = document.getElementById("ignore");
-        this._generator.ignoreCase = ignoreCheck.checked;
+        this.#generator.ignoreCase = ignoreCheck.checked;
 
         // lexical and syntax analyze
-        const result = this._parser.tokenize(grammarArea.value);
+        const result = this.#parser.tokenize(grammarArea.value);
         if (result.tokens == null) {
-            this._setError("unknown character(s)", result.valid, result.invalid);
+            this.#setError("unknown character(s)", result.valid, result.invalid);
             return;
         }
-        const outcome = this._parser.parse(result.tokens);
+        const outcome = this.#parser.parse(result.tokens);
         if (outcome.tree == null) {
-            this._setError("syntax error", outcome.valid, outcome.invalid);
+            this.#setError("syntax error", outcome.valid, outcome.invalid);
             return;
         }
 
         // compile
-        const message = this._compiler.execute(outcome.tree.rules);
+        const message = this.#compiler.execute(outcome.tree.rules);
         if (message != "") {
-            this._setError("compile error", "", message);
+            this.#setError("compile error", "", message);
         } else {
             const success = document.createElement("li");
             success.textContent = "Success";
-            this._resultArea.appendChild(success);
+            this.#resultArea.appendChild(success);
         }
 
         // set the results
-        this._setTree(this._treeArea, outcome.tree);
-        this._setElement();
-        this._setDummy();
-        this._setRule();
-        this._setClosures();
-        this._setTransition();
-        this._setSyntax();
-        this._setScript(outcome.tree);
-        this._map.forEach((value, key) => key.disabled = false);
-    },
+        this.#setTree(this.#treeArea, outcome.tree);
+        this.#setElement();
+        this.#setDummy();
+        this.#setRule();
+        this.#setClosures();
+        this.#setTransition();
+        this.#setSyntax();
+        this.#setScript(outcome.tree);
+        this.#map.forEach((value, key) => key.disabled = false);
+    }
 
     // show or hide the result
-    "_show": function(e) {
+    #show(e) {
         // get the display area
         const check = e.currentTarget;
-        const area = this._map.get(check);
+        const area = this.#map.get(check);
         if (check.checked) {
             // show
             area.classList.remove("hidden");
@@ -107,17 +113,17 @@ Controller.prototype = {
             // hide
             area.classList.add("hidden");
         }
-    },
+    }
 
     // copy to clipboard
-    "_copy": function(e) {
+    #copy(e) {
         window.navigator.clipboard.writeText(e.currentTarget.nextSibling.textContent);
-    },
+    }
 
     // clear all results
-    "_clearAll": function() {
-        this._resultArea.textContent = "";
-        for (const [check, area] of this._map) {
+    #clearAll() {
+        this.#resultArea.textContent = "";
+        for (const [ check, area ] of this.#map) {
             // checkbox
             check.checked = false;
             check.disabled = true;
@@ -126,10 +132,10 @@ Controller.prototype = {
             area.textContent = "";
             area.classList.add("hidden");
         }
-    },
+    }
 
     // write the error string
-    "_setError": function(title, valid, invalid) {
+    #setError(title, valid, invalid) {
         // does the valid text exist?
         if (0 < valid.length) {
             valid = `OK: ${valid}`;
@@ -145,13 +151,13 @@ Controller.prototype = {
         ok.textContent = valid;
         ng.textContent = invalid;
         ng.classList.add("error");
-        this._resultArea.appendChild(head);
-        this._resultArea.appendChild(ok);
-        this._resultArea.appendChild(ng);
-    },
+        this.#resultArea.appendChild(head);
+        this.#resultArea.appendChild(ok);
+        this.#resultArea.appendChild(ng);
+    }
 
     // create the syntax tree
-    "_setTree": function(parent, tree) {
+    #setTree(parent, tree) {
         let text = tree.label;
         if (tree.text != "") {
             const fixes = /^'((''|[^'])+)'$/;
@@ -173,15 +179,15 @@ Controller.prototype = {
         // child node
         const list = document.createElement("ul");
         item.appendChild(list);
-        tree.children.forEach(elem => this._setTree(list, elem));
-    },
+        tree.children.forEach(elem => this.#setTree(list, elem));
+    }
 
     // create lexical analysis elements
-    "_setElement": function() {
+    #setElement() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.terminals.length; i++) {
-            const symbol = this._compiler.terminals[i];
+        for (let i = 0; i < this.#compiler.terminals.length; i++) {
+            const symbol = this.#compiler.terminals[i];
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
@@ -194,15 +200,15 @@ Controller.prototype = {
         // write
         const title = [ "priority", "type", "element" ];
         const type = [ "number", "", "" ];
-        this._setTable(this._elementArea, table, title, type);
-    },
+        this.#setTable(this.#elementArea, table, title, type);
+    }
 
     // create dummy elements
-    "_setDummy": function() {
+    #setDummy() {
         // create a table
         const table = [];
-        for (let i = 0; i < this._compiler.dummies.length; i++) {
-            const symbol = this._compiler.dummies[i];
+        for (let i = 0; i < this.#compiler.dummies.length; i++) {
+            const symbol = this.#compiler.dummies[i];
             let type = "";
             if (symbol.charAt(0) == "'") {
                 type = "Fixed";
@@ -215,19 +221,19 @@ Controller.prototype = {
         // write
         const title = [ "priority", "type", "element" ];
         const type = [ "number", "", "" ];
-        this._setTable(this._dummyArea, table, title, type);
-    },
+        this.#setTable(this.#dummyArea, table, title, type);
+    }
 
     // create production rules
-    "_setRule": function() {
-        const table = this._compiler.rules.map(elem => [ elem.toString() ]);
+    #setRule() {
+        const table = this.#compiler.rules.map(elem => [ elem.toString() ]);
         const title = [ "expanded rule" ];
-        this._setTable(this._ruleArea, table, title);
-    },
+        this.#setTable(this.#ruleArea, table, title);
+    }
 
     // create closures
-    "_setClosures": function() {
-        const parent = this._closureArea;
+    #setClosures() {
+        const parent = this.#closureArea;
         parent.textContent = "";
 
         // column titles
@@ -241,12 +247,12 @@ Controller.prototype = {
         }
 
         // values
-        for (let i = 0; i < this._compiler.closures.length; i++) {
+        for (let i = 0; i < this.#compiler.closures.length; i++) {
             const row = document.createElement("tr");
             parent.appendChild(row);
 
             // number
-            const closure = this._compiler.closures[i];
+            const closure = this.#compiler.closures[i];
             const count = closure.items.length;
             const num = document.createElement("td");
             num.textContent = i;
@@ -280,45 +286,45 @@ Controller.prototype = {
                 tr.appendChild(ahead);
             }
         }
-    },
+    }
 
     // create transitions
-    "_setTransition": function() {
+    #setTransition() {
         // create a table
         const table = [];
-        for (const trans of this._compiler.transitions) {
-            const from = this._compiler.closures.indexOf(trans.from);
-            const to = this._compiler.closures.indexOf(trans.to);
+        for (const trans of this.#compiler.transitions) {
+            const from = this.#compiler.closures.indexOf(trans.from);
+            const to = this.#compiler.closures.indexOf(trans.to);
             table.push([ from, trans.symbol, to ]);
         }
 
         // write
         const title = [ "from", "symbol", "to" ];
         const type = [ "number", "", "number" ];
-        this._setTable(this._transitionArea, table, title, type);
-    },
+        this.#setTable(this.#transitionArea, table, title, type);
+    }
 
     // create the parsing table
-    "_setSyntax": function() {
-        this._setTable(this._tableArea, this._compiler.table, this._compiler.symbols);
-    },
+    #setSyntax() {
+        this.#setTable(this.#tableArea, this.#compiler.table, this.#compiler.symbols);
+    }
 
     // create the JavaScript program
-    "_setScript": function(tree) {
+    #setScript(tree) {
         // add a copy button
         const button = document.createElement("button");
         button.textContent = "Copy";
-        button.addEventListener("click", this._copy.bind(this));
-        this._scriptArea.appendChild(button);
+        button.addEventListener("click", this.#copy.bind(this));
+        this.#scriptArea.appendChild(button);
 
         // write
         const code = document.createElement("pre");
-        code.textContent = this._generator.createScript(this._compiler, tree);
-        this._scriptArea.appendChild(code);
-   },
+        code.textContent = this.#generator.createScript(this.#compiler, tree);
+        this.#scriptArea.appendChild(code);
+    }
 
     // create a table
-    "_setTable": function(parent, table, title, type) {
+    #setTable(parent, table, title, type) {
         // set default values
         const auto = !Array.isArray(type);
         if (auto) {
@@ -359,7 +365,7 @@ Controller.prototype = {
                 tr.appendChild(td);
             }
         }
-    },
+    }
 
 }
 

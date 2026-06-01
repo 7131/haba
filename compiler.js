@@ -1,59 +1,60 @@
 // Production rule class
-const Rule = function(symbol, definition) {
-    // non-terminal symbol
-    if (symbol == null) {
-        this.symbol = "";
-    } else {
-        this.symbol = symbol;
-    }
+class Rule {
 
-    // definition symbols
-    this.definition = [];
-    if (definition != null) {
-        if (Array.isArray(definition)) {
-            this.definition = this.definition.concat(definition);
+    // constructor
+    constructor(symbol, definition) {
+        // non-terminal symbol
+        if (symbol == null) {
+            this.symbol = "";
         } else {
-            this.definition.push(definition);
+            this.symbol = symbol;
+        }
+
+        // definition symbols
+        this.definition = [];
+        if (definition != null) {
+            if (Array.isArray(definition)) {
+                this.definition = this.definition.concat(definition);
+            } else {
+                this.definition.push(definition);
+            }
         }
     }
-}
-
-// Production rule prototype
-Rule.prototype = {
 
     // convert to string
-    "toString": function() {
+    toString() {
         const symbols = [ this.symbol, "::=" ].concat(this.definition);
         symbols.push(";");
         return symbols.join(" ");
-    },
+    }
 
 }
 
 // LR item class
-const LrItem = function(rule, position) {
-    // properties
-    this.rule = rule;
-    this.position = Math.max(0, Math.min(position, rule.definition.length));
-    if (this.position < rule.definition.length) {
-        this.next = rule.definition[this.position];
-    } else {
-        this.next = "";
+class LrItem {
+    #lr0;
+
+    // constructor
+    constructor(rule, position) {
+        // properties
+        this.rule = rule;
+        this.position = Math.max(0, Math.min(position, rule.definition.length));
+        if (this.position < rule.definition.length) {
+            this.next = rule.definition[this.position];
+        } else {
+            this.next = "";
+        }
+        this.look = new Set();
+
+        // LR(0) item
+        const before = rule.definition.slice(0, this.position);
+        const after = rule.definition.slice(this.position);
+        const symbols = [ rule.symbol, "::=" ].concat(before, [ "\u2022" ], after);
+        this.#lr0 = symbols.join(" ");
     }
-    this.look = new Set();
-
-    // LR(0) item
-    const before = rule.definition.slice(0, this.position);
-    const after = rule.definition.slice(this.position);
-    const symbols = [ rule.symbol, "::=" ].concat(before, [ "\u2022" ], after);
-    this._lr0 = symbols.join(" ");
-}
-
-// LR item prototype
-LrItem.prototype = {
 
     // go to the next position
-    "goAhead": function() {
+    goAhead() {
         // confirm current position
         if (this.rule.length <= this.position) {
             return null;
@@ -61,52 +62,53 @@ LrItem.prototype = {
 
         // create next LR item
         return new LrItem(this.rule, this.position + 1);
-    },
+    }
 
     // add lookahead symbols
-    "addLook": function(collection) {
+    addLook(collection) {
         collection.forEach(this.look.add, this.look);
-    },
+    }
 
     // get item string
-    "getItem": function() {
-        return this._lr0;
-    },
+    getItem() {
+        return this.#lr0;
+    }
 
     // whether another instance is equal to this instance
-    "equals": function(other) {
+    equals(other) {
         return other.getItem() == this.getItem();
-    },
+    }
 
 }
 
 // Closure class
-const Closure = function(rules, represent) {
-    // fields
-    this._rules = rules;
-    if (Array.isArray(represent)) {
-        this.represent = represent;
-    } else {
-        this.represent = [ represent ];
+class Closure {
+    #rules;
+    #creation = new Map();
+
+    // constructor
+    constructor(rules, represent) {
+        // fields
+        this.#rules = rules;
+        if (Array.isArray(represent)) {
+            this.represent = represent;
+        } else {
+            this.represent = [ represent ];
+        }
+
+        // properties
+        this.items = [];
+        this.represent.forEach(this.#setItems, this);
+
+        // get the next items for each item
+        for (const key of this.items) {
+            const value = this.items.filter(elem => elem.rule.symbol == key.next);
+            this.#creation.set(key, value);
+        }
     }
-
-    // properties
-    this.items = [];
-    this.represent.forEach(this._setItems, this);
-
-    // get the next items for each item
-    this._creation = new Map();
-    for (const key of this.items) {
-        const value = this.items.filter(elem => elem.rule.symbol == key.next);
-        this._creation.set(key, value);
-    }
-}
-
-// Closure prototype
-Closure.prototype = {
 
     // go to the next position
-    "goAhead": function(symbol) {
+    goAhead(symbol) {
         if (symbol == "") {
             return null;
         }
@@ -124,11 +126,11 @@ Closure.prototype = {
         }
 
         // create next closure
-        return new Closure(this._rules, nexts);
-    },
+        return new Closure(this.#rules, nexts);
+    }
 
     // add lookahead set
-    "addLookSet": function(collections, first) {
+    addLookSet(collections, first) {
         // set lookahead set for representative items
         for (const item of this.represent) {
             if (!collections.has(item)) {
@@ -139,13 +141,13 @@ Closure.prototype = {
 
         // propagate to derived items
         for (const current of this.items) {
-            const look = this._getNextLook(current, first);
-            this._creation.get(current).forEach(elem => elem.addLook(look));
+            const look = this.#getNextLook(current, first);
+            this.#creation.get(current).forEach(elem => elem.addLook(look));
         }
-    },
+    }
 
     // whether another instance is equal to this instance
-    "equals": function(other) {
+    equals(other) {
         if (other.items.length != this.items.length) {
             return false;
         }
@@ -155,10 +157,10 @@ Closure.prototype = {
             }
         }
         return true;
-    },
+    }
 
     // set LR items
-    "_setItems": function(current) {
+    #setItems(current) {
         // whether it is the same as an existing item
         if (this.items.some(elem => elem.equals(current))) {
             return;
@@ -168,13 +170,13 @@ Closure.prototype = {
         this.items.push(current);
 
         // production rule starting with the following symbol
-        for (const rule of this._rules.filter(elem => elem.symbol == current.next)) {
-            this._setItems(new LrItem(rule, 0));
+        for (const rule of this.#rules.filter(elem => elem.symbol == current.next)) {
+            this.#setItems(new LrItem(rule, 0));
         }
-    },
+    }
 
     // get the next lookahead set
-    "_getNextLook": function(current, first) {
+    #getNextLook(current, first) {
         // is the next symbol non-terminal?
         const follow = new Set();
         if (!first.has(current.next)) {
@@ -207,24 +209,24 @@ Closure.prototype = {
         // reach the end of production rule
         current.look.forEach(follow.add, follow);
         return follow;
-    },
+    }
 
 }
 
 // State transition class
-const Transition = function(symbol, from, to) {
-    // properties
-    this.symbol = symbol;
-    this.from = from;
-    this.to = to;
-    this.relation = this._createRelation();
-}
+class Transition {
 
-// State transition prototype
-Transition.prototype = {
+    // constructor
+    constructor(symbol, from, to) {
+        // properties
+        this.symbol = symbol;
+        this.from = from;
+        this.to = to;
+        this.relation = this.#createRelation();
+    }
 
     // create transition item relationships
-    "_createRelation": function() {
+    #createRelation() {
         const relation = new Map();
         const items = this.from.items.filter(elem => elem.next == this.symbol);
         for (const prev of items) {
@@ -242,44 +244,44 @@ Transition.prototype = {
             relation.set(prev, next);
         }
         return relation;
-    },
+    }
 
 }
 
 // Set of symbols class
-const SymbolSet = function(rules) {
-    // non-terminal symbols
-    const first = new Map();
-    rules.forEach(elem => first.set(elem.symbol, new Set()));
-    const nrs = rules.filter(elem => 0 < elem.definition.length && first.has(elem.definition[0]));
-    const trs = rules.filter(elem => nrs.indexOf(elem) < 0);
+class SymbolSet {
 
-    // FIRST set whose definition symbol starts with a terminal symbol
-    for (const rule of trs) {
-        let term = "#epsilon#";
-        if (0 < rule.definition.length) {
-            term = rule.definition[0];
+    // constructor
+    constructor(rules) {
+        // non-terminal symbols
+        const first = new Map();
+        rules.forEach(elem => first.set(elem.symbol, new Set()));
+        const nrs = rules.filter(elem => 0 < elem.definition.length && first.has(elem.definition[0]));
+        const trs = rules.filter(elem => nrs.indexOf(elem) < 0);
+
+        // FIRST set whose definition symbol starts with a terminal symbol
+        for (const rule of trs) {
+            let term = "#epsilon#";
+            if (0 < rule.definition.length) {
+                term = rule.definition[0];
+            }
+            first.get(rule.symbol).add(term);
         }
-        first.get(rule.symbol).add(term);
-    }
 
-    // FIRST set whose definition symbol starts with a non-terminal symbol
-    const sum = (acc, cur) => acc + cur.size;
-    let before = 0;
-    let after = first.values().reduce(sum, 0);
-    while (before < after) {
-        nrs.forEach(elem => this._addFirsts(first, elem));
-        before = after;
-        after = first.values().reduce(sum, 0);
+        // FIRST set whose definition symbol starts with a non-terminal symbol
+        const sum = (acc, cur) => acc + cur.size;
+        let before = 0;
+        let after = first.values().reduce(sum, 0);
+        while (before < after) {
+            nrs.forEach(elem => this.#addFirsts(first, elem));
+            before = after;
+            after = first.values().reduce(sum, 0);
+        }
+        this.first = first;
     }
-    this.first = first;
-}
-
-// Set of symbols prototype
-SymbolSet.prototype = {
 
     // add FIRST set
-    "_addFirsts": function(first, rule) {
+    #addFirsts(first, rule) {
         // FIRST set of the production rule
         const self = first.get(rule.symbol);
         let i = 0;
@@ -300,43 +302,43 @@ SymbolSet.prototype = {
             }
             i++;
         }
-    },
+    }
 
 }
 
 // Compiler class
-const Compiler = function() {
-    this._clear();
-}
+class Compiler {
 
-// Compiler prototype
-Compiler.prototype = {
+    // constructor
+    constructor() {
+        this.#clear();
+    }
 
     // compile execution
-    "execute": function(rules) {
-        this._clear();
+    execute(rules) {
+        this.#clear();
         if (!Array.isArray(rules)) {
             return "There is no production rule.";
         }
 
         // minimize production rules
-        const rest = this._createMinRules(rules.concat());
-        const message = this._extractSymbols(rest);
+        const rest = this.#createMinRules(rules.concat());
+        const message = this.#extractSymbols(rest);
         if (message != "") {
             return message;
         }
 
         // create closures
         const start = new Closure(this.rules, new LrItem(this.rules[0], 0));
-        this._createClosures(start, []);
-        this._setLookAhead();
+        this.#createClosures(start, []);
+        this.#setLookAhead();
 
         // create the parsing table
-        return this._createTable();
-    },
+        return this.#createTable();
+    }
 
     // clear properties
-    "_clear": function() {
+    #clear() {
         this.rules = [];
         this.closures = [];
         this.transitions = [];
@@ -345,16 +347,16 @@ Compiler.prototype = {
         this.terminals = [];
         this.nonterminals = [];
         this.dummies = [];
-    },
+    }
 
     // create a minimal production rules
-    "_createMinRules": function(rules) {
+    #createMinRules(rules) {
         // add start rule
         const start = new Rule("#0#", rules[0].symbol);
         rules.unshift(start);
 
         // get all definition symbols
-        const all = this._getRuleSymbols(rules);
+        const all = this.#getRuleSymbols(rules);
         all.push("#0#");
 
         // get only rules where non-terminal symbol appears in definition
@@ -362,26 +364,26 @@ Compiler.prototype = {
 
         // returns the remaining invalid production rules
         return rules.filter(elem => all.indexOf(elem.symbol) < 0);
-    },
+    }
 
     // get all definition symbols
-    "_getRuleSymbols": function(rules) {
+    #getRuleSymbols(rules) {
         const symbols = rules.map(elem => elem.definition).flat();
-        return symbols.filter(this._distinctArray);
-    },
+        return symbols.filter(this.#distinctArray);
+    }
 
     // extract symbols
-    "_extractSymbols": function(rest) {
+    #extractSymbols(rest) {
         if (this.rules.length == 0) {
             return "There is no valid production rule.";
         }
 
         // non-terminal symbols
-        const nonterms = this.rules.map(elem => elem.symbol).filter(this._distinctArray);
+        const nonterms = this.rules.map(elem => elem.symbol).filter(this.#distinctArray);
         this.nonterminals = nonterms;
 
         // terminal symbols
-        const used = this._getRuleSymbols(this.rules);
+        const used = this.#getRuleSymbols(this.rules);
         const terms = used.filter(elem => nonterms.indexOf(elem) < 0);
         const fix = terms.filter(elem => elem.charAt(0) == "'");
         const flex = terms.filter(elem => elem.charAt(0) == "\"");
@@ -395,17 +397,17 @@ Compiler.prototype = {
         this.symbols[this.terminals.length] = "$";
 
         // definition symbols not used
-        const dummies = this._getRuleSymbols(rest);
+        const dummies = this.#getRuleSymbols(rest);
         const unused = dummies.filter(find);
         if (0 < unused.length) {
             return `no definition of non-terminal symbol: ${unused.join(" ")}`;
         }
         this.dummies = dummies;
         return "";
-    },
+    }
 
     // create closures
-    "_createClosures": function(start, exists) {
+    #createClosures(start, exists) {
         // whether it is the same as an existing closure
         if (this.closures.some(elem => elem.equals(start))) {
             return;
@@ -414,7 +416,7 @@ Compiler.prototype = {
 
         // get next symbols
         const nexts = start.items.map(elem => elem.next);
-        const symbols = nexts.filter(this._distinctArray);
+        const symbols = nexts.filter(this.#distinctArray);
 
         // create a state transition
         for (const symbol of symbols) {
@@ -440,13 +442,13 @@ Compiler.prototype = {
                 this.transitions.push(trans);
 
                 // next closure
-                this._createClosures(ahead, exists);
+                this.#createClosures(ahead, exists);
             }
         }
-    },
+    }
 
     // set the lookahead set
-    "_setLookAhead": function() {
+    #setLookAhead() {
         const symbols = new SymbolSet(this.rules);
         const all = this.closures.map(elem => elem.items).flat();
 
@@ -472,17 +474,17 @@ Compiler.prototype = {
             before = after;
             after = all.reduce(sum, 0);
         }
-    },
+    }
 
     // create the parsing table
-    "_createTable": function() {
+    #createTable() {
         const row = new Array(this.symbols.length).fill("");
         this.table = new Array(this.closures.length).fill().map(elem => row.concat());
 
         // set the action
         const error = new Map();
-        this._setReduce(error);
-        this._setShift(error);
+        this.#setReduce(error);
+        this.#setShift(error);
 
         // are there any errors?
         if (0 < error.size) {
@@ -493,10 +495,10 @@ Compiler.prototype = {
             return "There is no shift or reduction from the start symbol.";
         }
         return "";
-    },
+    }
 
     // set reductions and an acceptance
-    "_setReduce": function(error) {
+    #setReduce(error) {
         for (let i = 0; i < this.closures.length; i++) {
             // closure number is line number
             const reduce = this.closures[i].items.filter(elem => elem.next == "");
@@ -518,10 +520,10 @@ Compiler.prototype = {
                 }
             }
         }
-    },
+    }
 
     // set shifts and transitions
-    "_setShift": function(error) {
+    #setShift(error) {
         for (const trans of this.transitions) {
             const from = this.closures.indexOf(trans.from);
             const index = this.symbols.indexOf(trans.symbol);
@@ -543,12 +545,12 @@ Compiler.prototype = {
                 error.get(from).push(trans.symbol);
             }
         }
-    },
+    }
 
     // remove duplicate elements in array
-    "_distinctArray": function(val, idx, arr) {
+    #distinctArray(val, idx, arr) {
         return arr.indexOf(val) == idx;
-    },
+    }
 
 }
 

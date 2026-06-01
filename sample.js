@@ -1,51 +1,49 @@
 // Controller class
-const Controller = function() {
-    // fields
-    this._parser = new Parser(Grammar, Converter);
+class Controller {
+    #resultArea;
+    #parser = new Parser(Grammar, Converter);
 
-    // events
-    window.addEventListener("load", this._initialize.bind(this));
-}
-
-// Controller prototype
-Controller.prototype = {
+    // constructor
+    constructor() {
+        window.addEventListener("load", this.#initialize.bind(this));
+    }
 
     // initialize the private fields
-    "_initialize": function(e) {
+    #initialize(e) {
         // DOM elements
-        this._resultArea = document.getElementById("result");
+        this.#resultArea = document.getElementById("result");
         const executeButton = document.getElementById("execute");
 
         // button events
-        executeButton.addEventListener("click", this._execute.bind(this));
-    },
+        executeButton.addEventListener("click", this.#execute.bind(this));
+    }
 
     // "Execute" button process
-    "_execute": function(e) {
+    #execute(e) {
         // initialize
-        this._resultArea.textContent = "";
+        this.#resultArea.textContent = "";
 
         // lexical and syntax analyze
         const inputArea = document.getElementById("input");
-        const result = this._parser.tokenize(inputArea.value);
+        const result = this.#parser.tokenize(inputArea.value);
         if (result.tokens == null) {
-            this._setError("unknown character(s)", result.valid, result.invalid);
+            this.#setError("unknown character(s)", result.valid, result.invalid);
             return;
         }
-        const outcome = this._parser.parse(result.tokens);
+        const outcome = this.#parser.parse(result.tokens);
         if (outcome.tree == null) {
-            this._setError("syntax error", outcome.valid, outcome.invalid);
+            this.#setError("syntax error", outcome.valid, outcome.invalid);
             return;
         }
 
         // set the results
         const success = document.createElement("li");
         success.textContent = outcome.tree.result;
-        this._resultArea.appendChild(success);
-    },
+        this.#resultArea.appendChild(success);
+    }
 
     // write the error string
-    "_setError": function(title, valid, invalid) {
+    #setError(title, valid, invalid) {
         // does the valid text exist?
         if (0 < valid.length) {
             valid = `OK: ${valid}`;
@@ -61,10 +59,10 @@ Controller.prototype = {
         ok.textContent = valid;
         ng.textContent = invalid;
         ng.classList.add("error");
-        this._resultArea.appendChild(head);
-        this._resultArea.appendChild(ok);
-        this._resultArea.appendChild(ng);
-    },
+        this.#resultArea.appendChild(head);
+        this.#resultArea.appendChild(ok);
+        this.#resultArea.appendChild(ng);
+    }
 
 }
 
