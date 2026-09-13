@@ -156,7 +156,7 @@ class Controller {
         this.#resultArea.appendChild(ng);
     }
 
-    // create the syntax tree
+    // set the syntax tree
     #setTree(parent, tree) {
         let text = tree.label;
         if (tree.text != "") {
@@ -182,7 +182,7 @@ class Controller {
         tree.children.forEach(elem => this.#setTree(list, elem));
     }
 
-    // create lexical analysis elements
+    // set the lexical analysis elements
     #setElement() {
         // create a table
         const table = [];
@@ -203,7 +203,7 @@ class Controller {
         this.#setTable(this.#elementArea, table, title, type);
     }
 
-    // create dummy elements
+    // set the dummy elements
     #setDummy() {
         // create a table
         const table = [];
@@ -224,14 +224,14 @@ class Controller {
         this.#setTable(this.#dummyArea, table, title, type);
     }
 
-    // create production rules
+    // set the production rules
     #setRule() {
         const table = this.#compiler.rules.map(elem => [ elem.toString() ]);
         const title = [ "expanded rule" ];
         this.#setTable(this.#ruleArea, table, title);
     }
 
-    // create closures
+    // set the closures
     #setClosures() {
         const parent = this.#closureArea;
         parent.textContent = "";
@@ -288,7 +288,7 @@ class Controller {
         }
     }
 
-    // create transitions
+    // set the transitions
     #setTransition() {
         // create a table
         const table = [];
@@ -304,12 +304,12 @@ class Controller {
         this.#setTable(this.#transitionArea, table, title, type);
     }
 
-    // create the parsing table
+    // set the parsing table
     #setSyntax() {
         this.#setTable(this.#tableArea, this.#compiler.table, this.#compiler.symbols);
     }
 
-    // create the JavaScript program
+    // set the JavaScript program
     #setScript(tree) {
         // add a copy button
         const button = document.createElement("button");
@@ -319,11 +319,11 @@ class Controller {
 
         // write
         const code = document.createElement("pre");
-        code.textContent = this.#generator.createScript(this.#compiler, tree);
+        code.textContent = this.#generator.generateScript(this.#compiler, tree);
         this.#scriptArea.appendChild(code);
     }
 
-    // create a table
+    // set a table
     #setTable(parent, table, title, type) {
         // set default values
         const auto = !Array.isArray(type);

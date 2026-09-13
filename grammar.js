@@ -136,7 +136,7 @@ const Converter = {
             this._addRules(tree, tree.children[0].rules);
         } else {
             // two elements or more
-            const name = this._createSymbol();
+            const name = this._generateSymbol();
             this._addSymbols(tree, name);
 
             // expand alternate symbols
@@ -165,7 +165,7 @@ const Converter = {
         }
 
         // with Rept
-        const name = this._createSymbol();
+        const name = this._generateSymbol();
         this._addSymbols(tree, name);
 
         // expand repeat symbols
@@ -226,8 +226,8 @@ const Converter = {
     // current number for automatically generating symbol
     "_number": 0,
 
-    // create a new non-terminal symbol
-    "_createSymbol": function() {
+    // generate a new non-terminal symbol
+    "_generateSymbol": function() {
         this._number++;
         return `#${this._number}#`;
     },
@@ -268,7 +268,7 @@ const Converter = {
         }
     },
 
-    // create and add a new production rule
+    // generate and add a new production rule
     "_addNewRule": function(tree, name, definition) {
         // no rules yet
         if (!Array.isArray(tree.rules)) {

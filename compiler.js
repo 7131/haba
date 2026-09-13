@@ -60,7 +60,7 @@ class LrItem {
             return null;
         }
 
-        // create next LR item
+        // generate next LR item
         return new LrItem(this.rule, this.position + 1);
     }
 
@@ -84,7 +84,7 @@ class LrItem {
 // Closure class
 class Closure {
     #rules;
-    #creation = new Map();
+    #derivation = new Map();
 
     // constructor
     constructor(rules, represent) {
@@ -103,7 +103,7 @@ class Closure {
         // get the next items for each item
         for (const key of this.items) {
             const value = this.items.filter(elem => elem.rule.symbol == key.next);
-            this.#creation.set(key, value);
+            this.#derivation.set(key, value);
         }
     }
 
@@ -125,7 +125,7 @@ class Closure {
             return null;
         }
 
-        // create next closure
+        // generate next closure
         return new Closure(this.#rules, nexts);
     }
 
@@ -142,7 +142,7 @@ class Closure {
         // propagate to derived items
         for (const current of this.items) {
             const look = this.#getNextLook(current, first);
-            this.#creation.get(current).forEach(elem => elem.addLook(look));
+            this.#derivation.get(current).forEach(elem => elem.addLook(look));
         }
     }
 
@@ -222,11 +222,11 @@ class Transition {
         this.symbol = symbol;
         this.from = from;
         this.to = to;
-        this.relation = this.#createRelation();
+        this.relation = this.#generateRelation();
     }
 
-    // create transition item relationships
-    #createRelation() {
+    // generate transition item relationships
+    #generateRelation() {
         const relation = new Map();
         const items = this.from.items.filter(elem => elem.next == this.symbol);
         for (const prev of items) {
@@ -322,19 +322,19 @@ class Compiler {
         }
 
         // minimize production rules
-        const rest = this.#createMinRules(rules.concat());
+        const rest = this.#generateMinRules(rules.concat());
         const message = this.#extractSymbols(rest);
         if (message != "") {
             return message;
         }
 
-        // create closures
+        // generate closures
         const start = new Closure(this.rules, new LrItem(this.rules[0], 0));
-        this.#createClosures(start, []);
+        this.#generateClosures(start, []);
         this.#setLookAhead();
 
-        // create the parsing table
-        return this.#createTable();
+        // generate the parsing table
+        return this.#generateTable();
     }
 
     // clear properties
@@ -349,8 +349,8 @@ class Compiler {
         this.dummies = [];
     }
 
-    // create a minimal production rules
-    #createMinRules(rules) {
+    // generate a minimal production rules
+    #generateMinRules(rules) {
         // add start rule
         const start = new Rule("#0#", rules[0].symbol);
         rules.unshift(start);
@@ -406,8 +406,8 @@ class Compiler {
         return "";
     }
 
-    // create closures
-    #createClosures(start, exists) {
+    // generate closures
+    #generateClosures(start, exists) {
         // whether it is the same as an existing closure
         if (this.closures.some(elem => elem.equals(start))) {
             return;
@@ -418,7 +418,7 @@ class Compiler {
         const nexts = start.items.map(elem => elem.next);
         const symbols = nexts.filter(this.#distinctArray);
 
-        // create a state transition
+        // generate a state transition
         for (const symbol of symbols) {
             let ahead = start.goAhead(symbol);
             if (ahead != null) {
@@ -442,7 +442,7 @@ class Compiler {
                 this.transitions.push(trans);
 
                 // next closure
-                this.#createClosures(ahead, exists);
+                this.#generateClosures(ahead, exists);
             }
         }
     }
@@ -476,8 +476,8 @@ class Compiler {
         }
     }
 
-    // create the parsing table
-    #createTable() {
+    // generate the parsing table
+    #generateTable() {
         const row = new Array(this.symbols.length).fill("");
         this.table = new Array(this.closures.length).fill().map(elem => row.concat());
 

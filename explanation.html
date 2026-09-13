@@ -19,7 +19,7 @@
 
 <header>
 <h1>HABA explanation</h1>
-<p>HABA is a LALR(1) parser. When you press "Analyze" button, the lexical analysis and the syntactic analysis will be performed on the input string to create a syntax tree. It is converted into production rules, terminal symbols are extracted, and lexical analysis elements and dummy elements are obtained. Closures, state transitions, and parsing tables are also created from the production rules, and finally the grammar is output as a JavaScript program.</p>
+<p>HABA is a LALR(1) parser. When you press "Analyze" button, the lexical analysis and the syntactic analysis will be performed on the input string to generate a syntax tree. It is converted into production rules, terminal symbols are extracted, and lexical analysis elements and dummy elements are obtained. Closures, state transitions, and parsing tables are also generated from the production rules, and finally the grammar is output as a JavaScript program.</p>
 </header>
 
 <main>
@@ -166,7 +166,7 @@ Space ::= "\s+" ;
 
 <section>
 <h2>Closures and state transitions</h2>
-<p>First, we create an LR(0) closures and its state transitions by a closure operation from the production rules. After that, all LR(0) items will be converted to LR(1) items by adding "next symbols" in order, and listed as a closure.</p>
+<p>First, we generate an LR(0) closures and its state transitions by a closure operation from the production rules. After that, all LR(0) items will be converted to LR(1) items by adding "next symbols" in order, and listed as a closure.</p>
 <table class="top">
   <tr><th>number</th><th>item</th><th>next symbols</th></tr>
   <tr><td rowspan="3" class="number">0</td><td>#0# ::= &bull; Multi</td><td>$</td></tr>
@@ -200,7 +200,7 @@ Space ::= "\s+" ;
 
 <section>
 <h2>Parsing table</h2>
-<p>A parsing table is created based on closures and state transitions.</p>
+<p>A parsing table is generated based on closures and state transitions.</p>
 <table>
   <tr><th>number</th><th>'+'</th><th>"[0-9]+"</th><th>$</th><th>Multi</th><th>#1#</th><th>Num</th></tr>
   <tr><td class="number">0</td><td></td><td>s6</td><td></td><td>g1</td><td></td><td>g2</td></tr>
@@ -217,7 +217,7 @@ Space ::= "\s+" ;
 
 <section>
 <h2>JavaScript</h2>
-<p>The Grammar and Converter objects are created using the information provided so far.</p>
+<p>The Grammar and Converter objects are generated using the information provided so far.</p>
 <div class="script">
 <pre>
 // Grammar object
@@ -269,7 +269,7 @@ const Converter = {
 </pre>
 </div>
 <p>If "Ignore case" is checked, the flag of the Grammar is "i". Otherwise, it is an empty string. All terminals are lexical analysis elements expressed in regular expressions, and dummies are dummy elements. Although the rules are production rules after expansion, the parsing uses only the number of symbols in the rule definition, so the numbers of concatenated symbols are output. The table is a parsing table.</p>
-<p>The valid production rules that have entered are output to the Converter. Since only the function frame is created automatically, it is necessary to implement according to the language specification of the grammar. For example, you will write the following program.</p>
+<p>The valid production rules that have entered are output to the Converter. Since only the function frame is generated automatically, it is necessary to implement according to the language specification of the grammar. For example, you will write the following program.</p>
 <div class="script">
 <pre>
 // Syntax converter

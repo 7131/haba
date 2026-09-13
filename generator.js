@@ -6,9 +6,9 @@ class Generator {
         this.ignoreCase = false;
     }
 
-    // create the JavaScript program
-    createScript(compiler, tree) {
-        // create lists of symbols
+    // generate the JavaScript program
+    generateScript(compiler, tree) {
+        // generate lists of symbols
         const flagBlock = this.#getFlags();
         const termBlock = this.#getStrings("terminals", compiler.terminals);
         const dummyBlock = this.#getStrings("dummies", compiler.dummies);
@@ -65,7 +65,7 @@ class Generator {
             symbols.push(text);
         }
 
-        // create row list
+        // generate row list
         const after = symbols.map(elem => `"${elem}",`);
         return this.#getArray(title, after);
     }

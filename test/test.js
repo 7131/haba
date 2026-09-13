@@ -21,7 +21,7 @@ class Controller {
 
         // test settings
         this.#test = new TestTable(main.id, table.tBodies[0]);
-        this.#test.create(TestData);
+        this.#test.generate(TestData);
         this.#test.completeEvent = () => button.disabled = false;
         button.addEventListener("click", this.#start.bind(this));
     }
@@ -52,7 +52,7 @@ class Controller {
         if (message != "") {
             return message;
         }
-        return this.#generator.createScript(this.#compiler, outcome.tree);
+        return this.#generator.generateScript(this.#compiler, outcome.tree);
     }
 
 }
