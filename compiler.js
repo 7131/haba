@@ -257,7 +257,7 @@ class SymbolSet {
         const first = new Map();
         rules.forEach(elem => first.set(elem.symbol, new Set()));
         const nrs = rules.filter(elem => 0 < elem.definition.length && first.has(elem.definition[0]));
-        const trs = rules.filter(elem => nrs.indexOf(elem) < 0);
+        const trs = rules.filter(elem => !nrs.includes(elem));
 
         // FIRST set whose definition symbol starts with a terminal symbol
         for (const rule of trs) {
@@ -360,10 +360,10 @@ class Compiler {
         all.push("#0#");
 
         // get only rules where non-terminal symbol appears in definition
-        this.rules = rules.filter(elem => 0 <= all.indexOf(elem.symbol));
+        this.rules = rules.filter(elem => all.includes(elem.symbol));
 
         // returns the remaining invalid production rules
-        return rules.filter(elem => all.indexOf(elem.symbol) < 0);
+        return rules.filter(elem => !all.includes(elem.symbol));
     }
 
     // get all definition symbols
@@ -384,7 +384,7 @@ class Compiler {
 
         // terminal symbols
         const used = this.#getRuleSymbols(this.rules);
-        const terms = used.filter(elem => nonterms.indexOf(elem) < 0);
+        const terms = used.filter(elem => !nonterms.includes(elem));
         const fix = terms.filter(elem => elem.charAt(0) == "'");
         const flex = terms.filter(elem => elem.charAt(0) == "\"");
         const find = elem => elem.charAt(0) != "'" && elem.charAt(0) != "\"";
@@ -528,7 +528,7 @@ class Compiler {
             const from = this.closures.indexOf(trans.from);
             const index = this.symbols.indexOf(trans.symbol);
             let action = this.closures.indexOf(trans.to);
-            if (this.nonterminals.indexOf(trans.symbol) < 0) {
+            if (!this.nonterminals.includes(trans.symbol)) {
                 action = `s${action}`;
             } else {
                 action = `g${action}`;

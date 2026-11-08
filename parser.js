@@ -104,7 +104,7 @@ class Parser {
             const pair = grammar.rules[i].split("=");
             const symbol = pair[0];
             this.#rules.push({ "symbol": symbol, "count": parseInt(pair[1], 10) });
-            if (0 < i && nonterms.indexOf(symbol) < 0) {
+            if (0 < i && !nonterms.includes(symbol)) {
                 // non-terminal symbols
                 nonterms.push(symbol);
             }
@@ -142,7 +142,7 @@ class Parser {
             }
             if (0 < max.length) {
                 // found a token
-                if (this.#dummies.indexOf(max.label) < 0) {
+                if (!this.#dummies.includes(max.label)) {
                     tokens.push(max);
                 }
                 text = text.substring(max.length);
